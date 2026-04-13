@@ -1,0 +1,63 @@
+{
+	"name": "权益宝",
+	"version": "1.0.0",
+	"scripts": {
+		"dev": "uni -p mp-weixin --mode dev wp",
+		"dev:pre": "uni -p mp-weixin --mode pre wp",
+		"dev:trial": "uni -p mp-weixin --mode trial wp",
+		"dev:prod": "uni -p mp-weixin --mode prod wp",
+		"build": "uni build -p mp-weixin --mode prod wp"
+	},
+	"dependencies": {
+		"@dcloudio/uni-app": "3.0.0-alpha-3060420220922001",
+		"@dcloudio/uni-app-plus": "3.0.0-alpha-3060420220922001",
+		"@dcloudio/uni-components": "3.0.0-alpha-3060420220922001",
+		"@dcloudio/uni-h5": "3.0.0-alpha-3060420220922001",
+		"@dcloudio/uni-mp-alipay": "3.0.0-alpha-3060420220922001",
+		"@dcloudio/uni-mp-baidu": "3.0.0-alpha-3060420220922001",
+		"@dcloudio/uni-mp-kuaishou": "3.0.0-alpha-3060420220922001",
+		"@dcloudio/uni-mp-lark": "3.0.0-alpha-3060420220922001",
+		"@dcloudio/uni-mp-qq": "3.0.0-alpha-3060420220922001",
+		"@dcloudio/uni-mp-toutiao": "3.0.0-alpha-3060420220922001",
+		"@dcloudio/uni-mp-weixin": "3.0.0-alpha-3060420220922001",
+		"@dcloudio/uni-quickapp-webview": "3.0.0-alpha-3060420220922001",
+		"@dcloudio/uni-ui": "^1.4.28",
+		"@jridgewell/sourcemap-codec": "^1.4.15",
+		"dayjs": "^1.11.9",
+		"uni-crazy-router": "^1.1.3",
+		"uni-vite-plugin-h5-prod-effect": "^1.0.1",
+		"unplugin-vue-components": "^0.24.1",
+		"vue": "^3.2.39",
+		"vue-i18n": "^9.1.9",
+		"vuex": "^4.0.2"
+	},
+	"devDependencies": {
+		"@dcloudio/types": "^3.0.14",
+		"@dcloudio/uni-automator": "3.0.0-alpha-3060420220922001",
+		"@dcloudio/uni-cli-shared": "3.0.0-alpha-3060420220922001",
+		"@dcloudio/uni-stacktracey": "3.0.0-alpha-3060420220922001",
+		"@dcloudio/vite-plugin-uni": "3.0.0-alpha-3060420220922001",
+		"@types/uni-app": "^1.4.4",
+		"@typescript-eslint/eslint-plugin": "^5.15.0",
+		"@typescript-eslint/parser": "^5.15.0",
+		"eslint": "^8.45.0",
+		"eslint-config-prettier": "^8.9.0",
+		"eslint-plugin-prettier": "^4.2.1",
+		"eslint-plugin-vue": "^8.7.1",
+		"lodash": "^4.17.21",
+		"prettier": "^2.6.0",
+		"sass": "^1.55.0",
+		"sass-loader": "^13.3.2",
+		"typescript": "^4.8.3",
+		"vite": "^2.9.14",
+		"vite-plugin-eslint": "^1.8.1",
+		"vite-plugin-style-import": "^2.0.0"
+	},
+	"description": "权益宝",
+	"main": "env.js",
+	"directories": {
+		"test": "test"
+	},
+	"author": "",
+	"license": "ISC"
+}

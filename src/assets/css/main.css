@@ -1,0 +1,73 @@
+uni-view,
+uni-textarea,
+html,
+input,
+textarea,
+button,
+a,
+input,
+select,
+optgroup,
+option,
+img,
+audio,
+canvas,
+video,
+p,
+span,
+div,
+ul,
+li,
+tr,
+td,
+th {
+	-webkit-tap-highlight-color: transparent;
+	-moz-tap-highlight-color: transparent;
+	-o-tap-highlight-color: transparent;
+	-ms-tap-highlight-color: transparent;
+	tap-highlight-color: transparent;
+	word-break: break-all;
+	box-sizing: border-box;
+}
+
+.clearfix:after {
+	content: "";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden
+}
+
+.clearfix {
+	overflow: hidden;
+	_zoom: 1;
+}
+
+.line_one {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	word-break: break-all;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 1;
+}
+
+.fl {
+	float: left;
+}
+
+.fr {
+	float: right;
+}
+
+.pr {
+	position: relative;
+}
+
+.flex {
+	display: flex;
+}
+
+.flex1 {
+	flex: 1;
+}

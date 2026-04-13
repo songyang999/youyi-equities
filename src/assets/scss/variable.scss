@@ -1,0 +1,23 @@
+:root {
+  --background-color-primary: rgba(93, 71, 241, 0.1);
+  --color-primary: #4386f7;
+  --color-primary-disabled: #bfbaba;
+  --background-color-activity: #01ceff;
+  --button-border: #4386f7;
+}
+/* 改变主题色变量 */
+$--color-primary: #4386f7;
+$--color-blue: #12a8ff;
+$--color-success: #67c23a;
+$--color-warning: #e6a23c;
+$--color-danger: #ff4349;
+
+$--color-border: #f2f3f5;
+
+/* 字体颜色变量 */
+$--color-main: #333333; // 主要文字
+$--color-common: #999999; // 常规文字
+$--color-sub: #a4afc1; // 次要文字
+$--color-disabled: #d1d7e0; // 禁用文字
+$--color-input: #a4afc1; // input占位符
+$--color-no: #84b3f3; // 无数据文字

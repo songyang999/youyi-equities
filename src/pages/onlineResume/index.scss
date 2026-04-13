@@ -1,0 +1,17 @@
+.resume_box {
+    border-bottom: 1px solid $--color-border;
+    &:last-child {
+        border-bottom: 0;
+        margin-bottom: 0;
+    }
+    .form_title {
+        max-width: 450rpx;
+        font-weight: 600;
+        color: $--color-main;
+    }
+    .common_text {
+        color: $--color-input;
+        word-break: break-all;
+        white-space: pre-line;
+    }
+}
