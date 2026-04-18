@@ -361,7 +361,7 @@ const closeSuccess = () => {
   color: $--color-main;
 }
 .common_text {
-  color: $--color-common;
+  color: $--color-sub;
 }
 .down {
   display: block;

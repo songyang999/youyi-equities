@@ -52,14 +52,14 @@ onUnload(() => {
     color: $--color-main;
 }
 .rule_text {
-    color: $--color-common;
+    color: $--color-sub;
     line-height: 48rpx;
 }
 .bottom_text {
     position: absolute;
     bottom: 80rpx;
     width: 100%;
-    color: $--color-common;
+    color: $--color-sub;
     text-align: center;
 }
 </style>

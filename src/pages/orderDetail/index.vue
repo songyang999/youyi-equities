@@ -204,7 +204,7 @@ const handleCloseUnreg = () => {
   .card_head {
     padding: 24rpx 14rpx 24rpx 20rpx;
     border-bottom: 1px solid #ededed;
-    color: $--color-common;
+    color: $--color-sub;
     font-size: 24rpx;
     .delete_icon {
       display: block;
@@ -223,10 +223,10 @@ const handleCloseUnreg = () => {
       color: $--color-main;
     }
     .amount {
-      color: #666;
+      color: $--color-common;
     }
     .count {
-      color: $--color-common;
+      color: $--color-sub;
     }
   }
   .card_footer {
@@ -245,7 +245,7 @@ const handleCloseUnreg = () => {
     color: $--color-main;
     font-weight: 500;
     text {
-      color: $--color-common;
+      color: $--color-sub;
       font-weight: 400;
     }
   }
@@ -262,7 +262,7 @@ const handleCloseUnreg = () => {
       color: $--color-main;
     }
     .info_li_value {
-      color: $--color-common;
+      color: $--color-sub;
       max-width: 450rpx;
       .copy {
         color: $--color-main;

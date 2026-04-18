@@ -202,7 +202,7 @@ const gotoDetail = (item) => {
 }
 .no_more {
     width: 100%;
-    color: $--color-common;
+    color: $--color-sub;
     text-align: center;
 }
 </style>

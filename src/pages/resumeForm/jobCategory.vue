@@ -313,7 +313,7 @@ const selectKey = (item) => {
         box-sizing: border-box;
         border-radius: 8rpx;
         background-color: #f7f8fc;
-        color: $--color-common;
+        color: $--color-sub;
         display: flex;
         justify-content: center;
         align-items: center;

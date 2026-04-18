@@ -263,13 +263,13 @@ const close = () => {
       color: $--color-main;
     }
     .sub_text {
-      color: #666666;
+      color: $--color-common;
     }
     .danger_text {
       color: $--color-danger;
     }
     .common_text {
-      color: $--color-common;
+      color: $--color-sub;
     }
   }
   .form-box {

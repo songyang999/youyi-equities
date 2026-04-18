@@ -32,7 +32,7 @@
         >
           登录 / 注册
         </button> -->
-        <view class="bell">
+        <view class="bell" @click="goPage('/pages/message/index')">
           <image
             src="/static/images/bell.png"
             mode="aspectFit"
@@ -50,6 +50,7 @@
         </view>
         <view
           class="hot_item info_item flex1 flex flex-column justify-center align-center ml-20"
+          @click="goPage('/pages/userInfo/index')"
         >
           <image src="/static/images/info.png" class="hot_icon" />
           <text class="fs-28">个人信息</text>
@@ -83,21 +84,9 @@ import {
   handleBurialPoint,
   goPage,
   getRmainHeight,
-  prefixedUrl,
 } from "@/utils/tool";
-const { statusBarHeight, navigationBar, config, hideCustom } = getApp()
+const { config } = getApp()
   .globalData as GlobalDataType;
-
-// 图片 用computed包裹，防止切换页面重新加载
-const head_bac = computed(() => prefixedUrl("general_custom_bac.jpg"));
-const avatar = computed(() => prefixedUrl(`${config.APP_TYPE}_avatar.png`));
-const my_wallet_bac = computed(() =>
-  prefixedUrl(`${config.APP_TYPE}_wallet_bac.png`),
-);
-const my_wallet = computed(() => prefixedUrl("my_wallet.png"));
-const gap = computed(() => prefixedUrl("gap.png"));
-const down_tri = computed(() => prefixedUrl(`${config.APP_TYPE}_down_tri.png`));
-const real_name = computed(() => prefixedUrl("real_name.png"));
 
 const pageHeight = ref(0);
 const perfect = ref();
@@ -106,7 +95,7 @@ onReady(async () => {
 });
 
 onShow(async () => {
-  handleBurialPoint("my");
+  // handleBurialPoint("my");
   getPerson();
   getMyWallet();
   if (isPerfect.value) {
@@ -126,32 +115,6 @@ interface linkType {
   url: string;
   action: string;
 }
-const interviewList = ref<linkType[]>([
-  {
-    label: "申请",
-    num: "**",
-    url: "/pages/jobProgress/index?active=1",
-    action: "my_apply",
-  },
-  {
-    label: "面试",
-    num: "**",
-    url: "/pages/jobProgress/index?active=2",
-    action: "my_interview",
-  },
-  {
-    label: "推荐",
-    num: "**",
-    url: "/pages/shareBrowse/index?type=share",
-    action: "my_share",
-  },
-  {
-    label: "浏览",
-    num: "**",
-    url: "/pages/shareBrowse/index?type=browse",
-    action: "my_view",
-  },
-]);
 // 是否已实名认证
 const isCertVerify = ref(false);
 const getPerson = async () => {
@@ -164,42 +127,12 @@ const getPerson = async () => {
         avatar_url,
         personnel_name,
         phone,
-        apply_count,
-        interview_count,
-        share_count,
-        view_count,
         is_cert_verify,
       } = res.data;
       userInfo.avatar = avatar_url;
       userInfo.personnel_name =
         personnel_name || config.NICK_PR + phone.slice(-6);
       isCertVerify.value = is_cert_verify;
-      interviewList.value = [
-        {
-          label: "申请",
-          num: apply_count,
-          url: "/pages/jobProgress/index?active=1",
-          action: "my_apply",
-        },
-        {
-          label: "面试",
-          num: interview_count,
-          url: "/pages/jobProgress/index?active=2",
-          action: "my_interview",
-        },
-        {
-          label: "推荐",
-          num: share_count,
-          url: "/pages/shareBrowse/index?type=share",
-          action: "my_share",
-        },
-        {
-          label: "浏览",
-          num: view_count,
-          url: "/pages/shareBrowse/index?type=browse",
-          action: "my_view",
-        },
-      ];
     }
   } catch (error) {
     //
@@ -246,40 +179,19 @@ const getMyWallet = async () => {
     //
   }
 };
-
-const vajradayaList: linkType[] = [
-  {
-    label: "在线简历",
-    icon: "online",
-    url: "/pages/onlineResume/index",
-    action: "my_look",
-  },
-  {
-    label: "附件简历",
-    icon: "attachment",
-    url: "/pages/fileResume/index",
-    action: "my_zxresume",
-  },
-  {
-    label: "求职意向",
-    icon: "intention",
-    url: "/pages/resumeForm/jobIntention?page=my",
-    action: "my_fjresume",
-  },
-];
 const functionList: linkType[] = [
   {
     label: "常见问题",
     icon: "/static/images/bulb.png",
-    url: "",
+    url: "/pages/problem/index",
     action: "my_qzjd",
   },
-  {
-    label: "在线客服",
-    icon: "/static/images/msg.png",
-    url: "/pages/epic/index",
-    action: "",
-  },
+  // {
+  //   label: "在线客服",
+  //   icon: "/static/images/msg.png",
+  //   url: "/pages/epic/index",
+  //   action: "",
+  // },
   {
     label: "客服热线",
     icon: "/static/images/phone.png",
@@ -288,11 +200,10 @@ const functionList: linkType[] = [
   },
 ];
 const linkTo = (item: linkType) => {
-  if (!userInfo.personnel_name) {
-    openLogin();
-    return;
-  }
-  if (item.action) handleBurialPoint(item.action);
+  // if (!userInfo.personnel_name) {
+  //   openLogin();
+  //   return;
+  // }
   if (item.url) goPage(item.url);
   else makePhoneCall(item.icon);
 };

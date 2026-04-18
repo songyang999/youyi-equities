@@ -163,7 +163,7 @@ const goHome = () => {
       color: $--color-danger;
     }
     .count {
-      color: $--color-common;
+      color: $--color-sub;
     }
   }
 }
@@ -189,7 +189,7 @@ const goHome = () => {
     line-height: 50rpx;
   }
   .introduce_content {
-    color: $--color-common;
+    color: $--color-sub;
     line-height: 38rpx;
   }
 }
@@ -201,7 +201,7 @@ const goHome = () => {
 }
 .home_btn {
   height: 76rpx;
-  color: #666;
+  color: $--color-common;
   .home_icon {
     display: block;
     width: 44rpx;

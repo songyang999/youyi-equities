@@ -246,7 +246,7 @@ const gotoDetail = (item) => {
     color: $--color-danger;
   }
   .common_color {
-    color: $--color-common;
+    color: $--color-sub;
   }
   .rocket {
     display: inline-block;
@@ -279,7 +279,7 @@ const gotoDetail = (item) => {
 }
 .no_more {
   width: 100%;
-  color: $--color-common;
+  color: $--color-sub;
   text-align: center;
 }
 </style>

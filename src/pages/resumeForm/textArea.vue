@@ -116,7 +116,7 @@ const submit = () => {
     box-sizing: border-box;
     padding-bottom: 4px;
     text-align: right;
-    color: $--color-common;
+    color: $--color-sub;
     .complete {
         // font-size: 26rpx;
         height: 26px;

@@ -166,7 +166,7 @@ const scrollCity = (e: any) => {
 }
 .city_scroll_wrap {
     box-sizing: border-box;
-    color: $--color-common;
+    color: $--color-sub;
     .hot_box {
         background-color: #ffffff;
         box-sizing: border-box;

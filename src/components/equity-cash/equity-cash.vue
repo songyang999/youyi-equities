@@ -217,7 +217,7 @@ const emit = defineEmits(["close"]);
       color: $--color-main;
     }
     .common_text {
-      color: $--color-common;
+      color: $--color-sub;
     }
   }
   .form-box {

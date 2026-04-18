@@ -88,6 +88,36 @@
 				"backgroundColorTop": "#ffffff",
 				"backgroundColorBottom": "#ffffff"
 			}
+		},
+		{
+			"path": "pages/message/index",
+			"style": {
+				"navigationBarTitleText": "消息通知",
+				"navigationStyle": "custom",
+				"backgroundColor": "#ffffff",
+				"backgroundColorTop": "#ffffff",
+				"backgroundColorBottom": "#ffffff"
+			}
+		},
+		{
+			"path": "pages/problem/index",
+			"style": {
+				"navigationBarTitleText": "常见问题",
+				"navigationStyle": "custom",
+				"backgroundColor": "#ffffff",
+				"backgroundColorTop": "#ffffff",
+				"backgroundColorBottom": "#ffffff"
+			}
+		},
+		{
+			"path": "pages/userInfo/index",
+			"style": {
+				"navigationBarTitleText": "账户信息",
+				"navigationStyle": "custom",
+				"backgroundColor": "#ffffff",
+				"backgroundColorTop": "#ffffff",
+				"backgroundColorBottom": "#ffffff"
+			}
 		}
 	],
 	"globalStyle": {

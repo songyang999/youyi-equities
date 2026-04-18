@@ -302,7 +302,7 @@ const gotoDetail = (item) => {
         }
     }
     .common_color {
-        color: $--color-common;
+        color: $--color-sub;
     }
     .proceed_state {
         font-weight: 600;
@@ -354,7 +354,7 @@ const gotoDetail = (item) => {
         > text {
             display: inline-block;
             background: #f4f6fb;
-            color: $--color-common;
+            color: $--color-sub;
             border-radius: 4rpx;
         }
     }
@@ -373,7 +373,7 @@ const gotoDetail = (item) => {
 }
 .no_more {
     width: 100%;
-    color: $--color-common;
+    color: $--color-sub;
     text-align: center;
 }
 .award_icon {

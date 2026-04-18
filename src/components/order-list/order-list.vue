@@ -268,7 +268,7 @@ const handleUnreg = (item) => {
   .card_head {
     padding: 24rpx 14rpx 24rpx 20rpx;
     border-bottom: 1px solid #ededed;
-    color: $--color-common;
+    color: $--color-sub;
     font-size: 24rpx;
     .delete_icon {
       display: block;
@@ -287,10 +287,10 @@ const handleUnreg = (item) => {
       color: $--color-main;
     }
     .amount {
-      color: #666;
+      color: $--color-common;
     }
     .count {
-      color: $--color-common;
+      color: $--color-sub;
     }
     .view_btn {
       color: $--color-danger;
@@ -327,7 +327,7 @@ const handleUnreg = (item) => {
 }
 .no_more {
   width: 100%;
-  color: $--color-common;
+  color: $--color-sub;
   text-align: center;
 }
 </style>
