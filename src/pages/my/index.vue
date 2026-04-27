@@ -85,8 +85,7 @@ import {
   goPage,
   getRmainHeight,
 } from "@/utils/tool";
-const { config } = getApp()
-  .globalData as GlobalDataType;
+const { config } = getApp().globalData as GlobalDataType;
 
 const pageHeight = ref(0);
 const perfect = ref();
@@ -123,12 +122,7 @@ const getPerson = async () => {
   try {
     const res: any = await getPersonInfo();
     if (res.data) {
-      const {
-        avatar_url,
-        personnel_name,
-        phone,
-        is_cert_verify,
-      } = res.data;
+      const { avatar_url, personnel_name, phone, is_cert_verify } = res.data;
       userInfo.avatar = avatar_url;
       userInfo.personnel_name =
         personnel_name || config.NICK_PR + phone.slice(-6);
@@ -184,19 +178,25 @@ const functionList: linkType[] = [
     label: "常见问题",
     icon: "/static/images/bulb.png",
     url: "/pages/problem/index",
-    action: "my_qzjd",
+    action: "",
   },
-  // {
-  //   label: "在线客服",
-  //   icon: "/static/images/msg.png",
-  //   url: "/pages/epic/index",
-  //   action: "",
-  // },
+  {
+    label: "订单关联",
+    icon: "/static/images/relation.png",
+    url: "/pages/orderRelation/index",
+    action: "",
+  },
   {
     label: "客服热线",
     icon: "/static/images/phone.png",
     url: "",
-    action: "my_service",
+    action: "",
+  },
+  {
+    label: "包月服务",
+    icon: "/static/images/skype.png",
+    url: "/pages/skypeService/index",
+    action: "",
   },
 ];
 const linkTo = (item: linkType) => {

@@ -74,7 +74,7 @@
               </view>
             </uni-forms-item>
           </view>
-          <view class="select-box mb-30">
+          <!-- <view class="select-box mb-30">
             <uni-forms-item name="bank" :rules="rules['bank']['rules']">
               <template #label>
                 <view class="uni-forms-item__label">
@@ -93,7 +93,7 @@
                 <image src="/static/images/down.png" class="down" />
               </view>
             </uni-forms-item>
-          </view>
+          </view> -->
           <view class="input-box mb-30">
             <uni-forms-item
               name="bank_card"
@@ -117,20 +117,7 @@
               </view>
             </uni-forms-item>
           </view>
-          <button
-            :disabled="formData.is_agree"
-            type="primary"
-            hover-class="none"
-            class="mb-10"
-            @click="handleAgree"
-          >
-            同意协议并订购
-          </button>
-          <view class="tips common_text fs-24">资费XX元/月</view>
-          <view class="tips common_text fs-24 mb_80"
-            >点击按钮为同意<text>《隐私协议》《订购规则》</text></view
-          >
-          <template v-if="formData.is_agree">
+          <template v-if="!isFirst">
             <view class="select-box mb-30">
               <uni-forms-item
                 name="ver_code"
@@ -163,10 +150,23 @@
                 </view>
               </uni-forms-item>
             </view>
-            <button type="primary" hover-class="none" @click="handleSubmit">
+            <!-- <button type="primary" hover-class="none" @click="handleSubmit">
               确认签约并付费
-            </button>
+            </button> -->
           </template>
+          <button
+            :disabled="!isFirst && !formData.ver_code"
+            type="primary"
+            hover-class="none"
+            class="mb-10"
+            @click="handleAgree"
+          >
+            签约订购
+          </button>
+          <view class="tips common_text fs-24">资费XX元/月</view>
+          <view class="tips common_text fs-24 mb_80"
+            >点击按钮为同意<text>《隐私协议》《订购规则》</text></view
+          >
         </uni-forms>
       </view>
     </template>
@@ -223,7 +223,6 @@ const formData = ref({
   bank: 0,
   bank_name: "",
   bank_card: "",
-  is_agree: false,
   ver_code: "",
 });
 
@@ -320,12 +319,17 @@ const mix_setIntervals = function () {
   }, 1000)
 }
 // 同意协议
+const isFirst = ref(true)
 const handleAgree = () => {
   ruleForm.value
     .validate()
     .then((res) => {
-        formData.value.is_agree = true
+      if (isFirst.value) {
+        isFirst.value = false
         mix_setIntervals()
+      } else {
+        handleSubmit()
+      }
     })
     .catch(() => {
         toast('信息未填写或填写有误，请重新填写')

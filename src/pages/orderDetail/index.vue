@@ -1,10 +1,10 @@
 <!--
  * @Author: XHL
- * @Date: 2026-04-11
- * @Description: 订单详情
+ * @Date: 2026-04-27
+ * @Description: 包月服务
 -->
 <template>
-  <general-custom ref="general_custom" title="我的订单">
+  <general-custom ref="general_custom" title="包月服务">
     <template #content>
       <view class="px-30">
         <view class="order_item pr mt-50">

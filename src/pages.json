@@ -118,6 +118,36 @@
 				"backgroundColorTop": "#ffffff",
 				"backgroundColorBottom": "#ffffff"
 			}
+		},
+		{
+			"path": "pages/orderRelation/index",
+			"style": {
+				"navigationBarTitleText": "订单关联",
+				"navigationStyle": "custom",
+				"backgroundColor": "#ffffff",
+				"backgroundColorTop": "#ffffff",
+				"backgroundColorBottom": "#ffffff"
+			}
+		},
+		{
+			"path": "pages/skypeService/index",
+			"style": {
+				"navigationBarTitleText": "包月服务",
+				"navigationStyle": "custom",
+				"backgroundColor": "#ffffff",
+				"backgroundColorTop": "#ffffff",
+				"backgroundColorBottom": "#ffffff"
+			}
+		},
+		{
+			"path": "pages/serviceDetail/index",
+			"style": {
+				"navigationBarTitleText": "包月服务",
+				"navigationStyle": "custom",
+				"backgroundColor": "#ffffff",
+				"backgroundColorTop": "#ffffff",
+				"backgroundColorBottom": "#ffffff"
+			}
 		}
 	],
 	"globalStyle": {
