@@ -43,9 +43,25 @@
           </view>
         </view>
       </view>
-      <view class="close_service">关闭包月服务</view>
+      <view class="close_service" @click="openPopup">关闭包月服务</view>
     </template>
   </general-custom>
+  <!-- 关闭包月服务 -->
+  <popup-bottom ref="close_service" :is-gray="true">
+    <template #content>
+      <view class="popup_wrap">
+        <view class="popup_content fs-34"
+          >关闭后，商家服务到期时将不再自动扣费，确定关闭?</view
+        >
+        <view class="popup_confirm">
+          <view class="popup_btn fs-36" @click="closePopup">确定关闭</view>
+        </view>
+        <view class="popup_cancel">
+          <view class="popup_btn fs-36" @click="closePopup">取消</view>
+        </view>
+      </view>
+    </template>
+  </popup-bottom>
 </template>
 
 <script lang="ts" setup type="module">
@@ -67,14 +83,13 @@ onReady(() => {});
 // 页面卸载
 onUnload(() => {});
 
-// 复制
-const handleCopy = () => {
-  uni.setClipboardData({
-    data: "5053260638158690427",
-    success(res) {
-      toast("复制成功");
-    },
-  });
+// 关闭包月服务
+const close_service = ref();
+const openPopup = () => {
+  close_service.value.open();
+};
+const closePopup = () => {
+  close_service.value.close();
 };
 </script>
 
@@ -155,5 +170,35 @@ const handleCopy = () => {
   transform: translateX(-50%);
   bottom: 30rpx;
   padding: 30rpx;
+}
+.popup_wrap {
+  .popup_content,
+  .popup_confirm,
+  .popup_cancel {
+    background: #fff;
+  }
+  .popup_content {
+    padding: 42rpx 52rpx 20rpx;
+    border-bottom: 1px solid #ededed;
+    text-align: center;
+    color: #737373;
+  }
+  .popup_confirm {
+    width: 100%;
+    height: 120rpx;
+    text-align: center;
+    line-height: 120rpx;
+    margin-bottom: 20rpx;
+  }
+  .popup_cancel {
+    width: 100%;
+    height: 126rpx;
+    text-align: center;
+    line-height: 126rpx;
+  }
+  .popup_btn {
+    color: $--color-main;
+    font-weight: 500;
+  }
 }
 </style>
