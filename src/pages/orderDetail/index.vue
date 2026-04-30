@@ -93,6 +93,8 @@
   <cash-success v-if="dialogVisible" @close="handleClose" />
   <!-- 业务退订 -->
   <business-unreg v-if="dialogUnreg" @close="handleCloseUnreg" />
+  <!-- 退订成功 -->
+  <unreg-success v-if="dialogSuccess" @close="closeSuccess" />
 </template>
 
 <script lang="ts" setup type="module">
@@ -188,6 +190,12 @@ const openUnreg = () => {
 };
 const handleCloseUnreg = () => {
   dialogUnreg.value = false;
+  dialogSuccess.value = true;
+};
+// 退订成功
+const dialogSuccess = ref(false);
+const closeSuccess = () => {
+  dialogSuccess.value = false;
 };
 </script>
 

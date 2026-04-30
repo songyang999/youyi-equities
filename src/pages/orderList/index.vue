@@ -34,11 +34,13 @@
   <cash-success v-if="dialogVisible" @close="handleClose" />
   <!-- 业务退订 -->
   <business-unreg v-if="dialogUnreg" @close="handleCloseUnreg" />
+  <!-- 退订成功 -->
+  <unreg-success v-if="dialogSuccess" @close="closeSuccess" />
 </template>
 
 <script setup lang="ts">
 import { onLoad, onReady, onShow } from "@dcloudio/uni-app";
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, nextTick } from "vue";
 import { jobOperateList } from "@/api/my";
 import { getRmainHeight } from "@/utils/tool";
 
@@ -56,9 +58,13 @@ onLoad((query) => {
 });
 
 const scrollHeight = ref(0);
-onReady(async () => {
-  const height = await getRmainHeight(["tab_wrap"]);
-  scrollHeight.value = height - customHeaderHeight;
+onReady(() => {
+  nextTick(async () => {
+    const height = await getRmainHeight(["tab_wrap"]);
+    console.log("height", height);
+    scrollHeight.value = height - customHeaderHeight;
+    //  - customHeaderHeight;
+  });
 });
 
 onShow(() => {
@@ -144,6 +150,12 @@ const openUnreg = (item) => {
 };
 const handleCloseUnreg = () => {
   dialogUnreg.value = false;
+  dialogSuccess.value = true;
+};
+// 退订成功
+const dialogSuccess = ref(false);
+const closeSuccess = () => {
+  dialogSuccess.value = false;
 };
 </script>
 
@@ -152,12 +164,13 @@ const handleCloseUnreg = () => {
   position: fixed;
   left: 0;
   right: 0;
-  height: 40rpx;
+  height: 130rpx;
+  box-sizing: border-box;
 }
 .job_wrap {
   box-sizing: border-box;
   min-height: 100%;
-  padding-top: 132rpx;
+  padding-top: 130rpx;
 }
 .no_wrap {
   position: fixed;

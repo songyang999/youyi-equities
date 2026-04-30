@@ -50,7 +50,7 @@
               type="primary"
               class="flex1"
               hover-class="none"
-              @click="goPage('/pages/signOrder/index')"
+              @click="singleOrder"
             >
               单次订购
             </button>
@@ -78,7 +78,7 @@ import {
   onShareAppMessage,
 } from "@dcloudio/uni-app";
 import { ref, reactive, computed, nextTick } from "vue";
-import { goPage } from "@/utils/tool";
+import { goPage, toast } from "@/utils/tool";
 import dayjs from "dayjs";
 onLoad((query: any) => {
   // isLogin.value = getIsLogin()
@@ -130,6 +130,10 @@ onReady(() => {});
 // 页面卸载
 onUnload(() => {});
 
+// 单次订购
+const singleOrder = () => {
+  toast("功能暂未开通，敬请期待");
+};
 // 返回首页
 const goHome = () => {
   uni.reLaunch({

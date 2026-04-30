@@ -190,7 +190,7 @@ const functionList: linkType[] = [
     label: "客服热线",
     icon: "/static/images/phone.png",
     url: "",
-    action: "",
+    action: "my_service",
   },
   {
     label: "包月服务",
