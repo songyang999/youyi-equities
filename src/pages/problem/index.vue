@@ -7,14 +7,14 @@
     <general-custom ref="general_custom" title="常见问题">
         <template #content>
             <view class="problem_box px-30 py-32">
-                <view v-for="item in list" :key="item" class="problem_item">
+                <view v-for="(item, index) in list" :key="index" class="problem_item">
                     <view class="flex mb-24">
                         <image class="problem_icon" src="@/static/images/problem.png" />
-                        <view class="title">兑换的权益多久可以到账?</view>
+                        <view class="title">{{ item.problem }}</view>
                     </view>
                     <view class="flex">
                         <image class="problem_icon" src="@/static/images/answer.png" />
-                        <view class="info">兑换一旦确认后无法取消，请在兑换前仔细确认商品信息。?</view>
+                        <view class="info">{{ item.answer }}</view>
                     </view>
                 </view>
             </view>
@@ -23,9 +23,33 @@
 </template>
 
 <script setup lang="ts">
-const list = [
-    1, 2, 3, 4, 5
-]
+import { onLoad } from "@dcloudio/uni-app";
+import { ref } from "vue";
+import { qaList } from "@/api/my";
+
+onLoad(() => {
+    getQaList();
+});
+
+interface qaItem {
+    problem: string;
+    answer: string;
+}
+const list = ref<qaItem[]>([]);
+const getQaList = async () => {
+    try {
+        uni.showLoading({
+            mask: true,
+            title: "加载中...",
+        });
+        const res: any = await qaList();
+        list.value = res.data || [];
+    } catch (error) {
+        //
+    } finally {
+        uni.hideLoading();
+    }
+};
 </script>
 
 <style scoped lang="scss">

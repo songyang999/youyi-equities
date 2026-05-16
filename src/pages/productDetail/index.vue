@@ -45,13 +45,15 @@
                         <text class="fs-20">首页</text>
                     </view>
                     <view class="btn_box flex">
-                        <button type="primary" class="flex1" hover-class="none" @click="singleOrder">单次订购</button>
-                        <button type="primary" class="flex1" hover-class="none" @click="goPage(`/pages/signOrder/index?productKey=${productKey}`)">包月订购</button>
+                        <button type="primary" class="flex1" hover-class="none" @click="singleOrder(1)">单次订购</button>
+                        <button type="primary" class="flex1" hover-class="none" @click="singleOrder(2)">包月订购</button>
                     </view>
                 </view>
             </view>
         </template>
     </general-custom>
+    <!-- 授权登录 -->
+    <popup-login ref="auth_login" @update="getDetail" />
 </template>
 
 <script lang="ts" setup type="module">
@@ -65,6 +67,8 @@ onLoad((query: any) => {
     productKey.value = query.productKey || "";
     getDetail();
 });
+
+// 获取详情
 const detailInfo = ref<ProductItem>({
     productTypeId: 0,
     productName: "",
@@ -91,8 +95,24 @@ const getDetail = async () => {
 };
 
 // 单次订购
-const singleOrder = () => {
-    toast("功能暂未开通，敬请期待");
+const singleOrder = (type: number) => {
+    const { mobile } = getApp().globalData as GlobalDataType;
+    if (!mobile) {
+        openLogin();
+        return;
+    }
+    if (type === 1) {
+        toast("功能暂未开通，敬请期待");
+    } else {
+        goPage(`/pages/signOrder/index?productKey=${productKey.value}`);
+    }
+};
+
+// 登录
+const auth_login = ref();
+const openLogin = () => {
+    auth_login.value.login.open();
+    auth_login.value.isRead = false;
 };
 // 返回首页
 const goHome = () => {

@@ -1,6 +1,5 @@
 <script lang="ts">
 import STATIC_CONFIG from "@/config";
-import { getRecruitConst, getCityTree, getJobCategory } from "@/api";
 import { wxLogin } from "@/utils";
 import { toFixedFun } from "@/utils/tool";
 const menu: any = uni.getMenuButtonBoundingClientRect();
@@ -11,7 +10,7 @@ const capsuleRight =
     (sysInfo["screenWidth"] - menu["right"]) * 2 + menu["width"];
 const statusBarHeight = sysInfo["statusBarHeight"] || 0;
 const navigationBar = (menu["top"] - statusBarHeight) * 2 + menu["height"];
-const phone = uni.getStorageSync("phone") || "";
+const mobile = uni.getStorageSync("mobile") || "";
 const uid = uni.getStorageSync("uid") || 0;
 const open_id = uni.getStorageSync("open_id") || "";
 const location = uni.getStorageSync("location")
@@ -32,7 +31,7 @@ const globalData: GlobalDataType = {
     navigationBar,
     hideCustom, // windows/macOs电脑端打开隐藏custom
     customHeaderHeight: statusBarHeight + navigationBar,
-    phone,
+    mobile,
     location, // 位置信息
     uid,
     open_id,
@@ -95,47 +94,6 @@ export default {
     methods: {
         getStaticConfig() {
             globalData.config = STATIC_CONFIG;
-        },
-        // 常量
-        async getCommonConst() {
-            try {
-                const res: any = await getRecruitConst();
-                if (res.data) {
-                    globalData.commonConst = res.data;
-                }
-            } catch (error) {
-                //
-            }
-        },
-        // 城市下拉
-        async getCityList() {
-            try {
-                const res: any = await getCityTree({
-                    province: true,
-                    city: true,
-                    district: true,
-                });
-                if (res.data) {
-                    globalData.cityList = res.data.list || [];
-                }
-            } catch (error) {
-                //
-            }
-        },
-        // 招聘分类
-        async getCategoryList() {
-            try {
-                const res: any = await getJobCategory({
-                    major: true,
-                    minor: true,
-                    detail: true,
-                });
-                if (res.data) {
-                    globalData.categoryList = res.data.list || [];
-                }
-            } catch (error) {
-                //
-            }
         },
     },
     globalData,

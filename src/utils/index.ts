@@ -1,7 +1,6 @@
 import { http } from "@/api/http";
-import { wechatLogin, getWechatMobile, getJobBanner } from "@/api";
-import { toast, handleBurialPoint } from "@/utils/tool";
-const NODE_ENV = import.meta.env.MODE;
+import { wechatLogin, getWechatMobile } from "@/api";
+import { toast } from "@/utils/tool";
 const requestArr: (() => Promise<any>)[] = [];
 let isRefreshing = false; //请求队列，是否正在刷新token
 
@@ -11,10 +10,10 @@ export const wxLogin = () => {
         uni.login({
         success: async function (res) {
             try {
-                const { phone } = getApp().globalData as GlobalDataType;
+                const { mobile } = getApp().globalData as GlobalDataType;
                 const res2: any = await wechatLogin({
                     code: res.code,
-                    phone,
+                    mobile,
                 });
                 const { token, openid, unionid } = res2.data;
                 uni.setStorageSync("token", token);
@@ -78,41 +77,14 @@ export const getPhoneNumber = async (e: any) => {
         };
         const res: any = await getWechatMobile(params);
         const { userInfo } = res.data;
-        uni.setStorageSync("phone", userInfo.mobile);
+        uni.setStorageSync("mobile", userInfo.mobile);
         // uni.setStorageSync("token", token);
         uni.setStorageSync("userInfo", userInfo);
         const globalData = getApp().globalData as GlobalDataType;
-        globalData.phone = userInfo.mobile;
+        globalData.mobile = userInfo.mobile;
         wxLogin()
         return true;
     } catch (error: any) {
         return false;
     }
-};
-
-// 获取banner及底部活动位
-export const getJobBannerList = async () => {
-  try {
-    const globalData = getApp().globalData as GlobalDataType;
-    const { location, config } = globalData;
-    const params = {
-      city_id: +location.city_id || 0,
-      city_name: location.city_name || "北京市",
-      app_key: "",
-    };
-    if (NODE_ENV === "dev") {
-      params.app_key = config.LEASE_IDENTIFY;
-    } else if (NODE_ENV === "pre") {
-      params.app_key = config.PRE_LEASE_IDENTIFY;
-    } else if (NODE_ENV === "trial") {
-      params.app_key = config.TRIAL_LEASE_IDENTIFY;
-    } else if (NODE_ENV === "prod") {
-      params.app_key = config.PROD_LEASE_IDENTIFY;
-    }
-    const res: any = await getJobBanner(params);
-    globalData.bannerList = res.data.top_list || [];
-    // console.log(res.data)
-  } catch (error) {
-    //
-  }
 };

@@ -2,7 +2,6 @@ import dayjs from 'dayjs'
 import test from './test'
 import ENV_CONFIG from '@/config/env'
 import { burialPoint } from '@/api'
-import { getResumeView } from '@/api/resume'
 import md5 from '@/utils/md5'
 const NODE_ENV = import.meta.env.MODE
 
@@ -59,8 +58,8 @@ const sortObjectKeys = (obj) => {
  * @description: 是否登陆
  */
 export const getIsLogin = () => {
-    const { phone } = getApp().globalData as GlobalDataType
-    return !!phone
+    const { mobile } = getApp().globalData as GlobalDataType
+    return !!mobile
 }
 
 /**
@@ -378,25 +377,6 @@ export const getSceneFormat = (scene: string) => {
         result[key] = value
     }
     return result
-}
-
-/**
- * @description: 获取简历信息
- */
-export const getResumeInfo = async () => {
-    try {
-        const res: any = await getResumeView()
-        if (!res.data) return false
-        const form = res.data
-        const keys = ['employments_info', 'projects_info', 'educations_info', 'skills', 'credentials']
-        for (const key of keys) {
-            form[key] = form[key] ? form[key] : []
-        }
-        form['gender'] = form['gender'] || 1
-        return form
-    } catch (error) {
-        return false
-    }
 }
 
 /**

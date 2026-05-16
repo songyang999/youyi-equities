@@ -9,7 +9,7 @@
             <view class="user_info pr px-30 pt-20 mb-32">
                 <!-- userInfo.avatar || avatar -->
                 <image src="/static/images/avatar.png" mode="aspectFit" class="avatar mr-24" @click="openLogin" />
-                <view v-if="phone" class="flex flex-column">
+                <view v-if="mobile" class="flex flex-column">
                     <text class="user_name fs-32 mb-6">七骑士十九</text>
                     <view class="member_box flex align-center">
                         <image src="/static/images/member.png" class="member_icon" />
@@ -22,11 +22,11 @@
                 </view>
             </view>
             <view class="hot_wrap flex mx-30 px-20 py-16">
-                <view class="hot_item order_item flex1 flex flex-column justify-center align-center" @click="goPage('/pages/orderList/index')">
+                <view class="hot_item order_item flex1 flex flex-column justify-center align-center" @click="linkTo({ url: '/pages/orderList/index' })">
                     <image src="/static/images/order.png" class="hot_icon" />
                     <text class="fs-28">我的订单</text>
                 </view>
-                <view class="hot_item info_item flex1 flex flex-column justify-center align-center ml-20" @click="goPage('/pages/userInfo/index')">
+                <view class="hot_item info_item flex1 flex flex-column justify-center align-center ml-20" @click="linkTo({ url: '/pages/userInfo/index' })">
                     <image src="/static/images/info.png" class="hot_icon" />
                     <text class="fs-28">个人信息</text>
                 </view>
@@ -47,23 +47,15 @@
 
 <script setup lang="ts">
 import { onReady, onShow, onHide } from "@dcloudio/uni-app";
-import { ref, reactive, computed, nextTick } from "vue";
-import { getPersonInfo, myWallet } from "@/api/my";
-import {
-    getIsLogin,
-    handleBurialPoint,
-    goPage,
-    getRmainHeight,
-} from "@/utils/tool";
-const { config, phone } = getApp().globalData as GlobalDataType;
+import { ref, reactive } from "vue";
+import { goPage, getRmainHeight } from "@/utils/tool";
 
 const pageHeight = ref(0);
-const perfect = ref();
 onReady(async () => {
     pageHeight.value = await getRmainHeight(["tab-bar-box"]);
 });
-
-onShow(async () => {
+onShow(() => {
+    updateInfo();
     // handleBurialPoint("my");
     // getPerson();
     // getMyWallet();
@@ -73,69 +65,32 @@ onShow(async () => {
 });
 
 // 获取用户信息
-const userInfo = reactive({
-    avatar: "",
-    personnel_name: "",
-});
-interface linkType {
+// const userInfo = reactive({
+//     avatar: "",
+//     personnel_name: "",
+// });
+
+const auth_login = ref();
+const openLogin = () => {
+    if (!mobile.value) return;
+    auth_login.value.login.open();
+    auth_login.value.isRead = false;
+};
+const mobile = ref("");
+const updateInfo = () => {
+    const data = getApp().globalData as GlobalDataType;
+    mobile.value = data.mobile;
+};
+
+// 获取钱包详情
+interface linkItem {
     label?: string;
     num?: number | string;
     icon?: string;
     url: string;
-    action: string;
+    action?: string;
 }
-// 是否已实名认证
-const isCertVerify = ref(false);
-const getPerson = async () => {
-    const isLogin = getIsLogin();
-    if (!isLogin) return;
-    try {
-        const res: any = await getPersonInfo();
-        if (res.data) {
-            const { avatar_url, personnel_name, phone, is_cert_verify } =
-                res.data;
-            userInfo.avatar = avatar_url;
-            userInfo.personnel_name =
-                personnel_name || config.NICK_PR + phone.slice(-6);
-            isCertVerify.value = is_cert_verify;
-        }
-    } catch (error) {
-        //
-    }
-};
-
-const auth_login = ref();
-const openLogin = () => {
-    if (userInfo.personnel_name) return;
-    auth_login.value.login.open();
-    auth_login.value.isRead = false;
-};
-const updateInfo = (type) => {
-    // getPerson();
-};
-
-// 获取钱包详情
-const wallet = reactive({
-    balance_format: "",
-    balance_withdrawn_format: "",
-    balance_summary_format: "",
-});
-const getMyWallet = async () => {
-    const isLogin = getIsLogin();
-    if (!isLogin) return;
-    try {
-        const res: any = await myWallet();
-        if (res.data && res.data.wallet) {
-            const data = res.data.wallet;
-            wallet.balance_format = data.balance_format;
-            wallet.balance_withdrawn_format = data.balance_withdrawn_format;
-            wallet.balance_summary_format = data.balance_summary_format;
-        }
-    } catch (error) {
-        //
-    }
-};
-const functionList: linkType[] = [
+const functionList: linkItem[] = [
     {
         label: "常见问题",
         icon: "/static/images/bulb.png",
@@ -150,7 +105,7 @@ const functionList: linkType[] = [
     },
     {
         label: "客服热线",
-        icon: "/static/images/phone.png",
+        icon: "/static/images/mobile.png",
         url: "",
         action: "my_service",
     },
@@ -161,50 +116,23 @@ const functionList: linkType[] = [
         action: "",
     },
 ];
-const linkTo = (item: linkType) => {
-    // if (!userInfo.personnel_name) {
-    //   openLogin();
-    //   return;
-    // }
+const linkTo = (item: linkItem) => {
+    if (!mobile.value) {
+        openLogin();
+        return;
+    }
     if (item.url) goPage(item.url);
-    else makePhoneCall(item.icon);
+    else makePhoneCall();
 };
 
-const makePhoneCall = (phone) => {
+const makePhoneCall = () => {
     uni.makePhoneCall({
-        phoneNumber: config[phone],
+        phoneNumber: "4782913721",
         success() {},
         fail() {},
     });
 };
 
-/** 订阅消息调研 */
-// const sendMessage = () => {
-//     uni.requestSubscribeMessage({
-//         tmplIds: ['I3mR2TBLKy3Wy5jdEmc8ULLhHtgGS7C8tcgUB0LRMX0'],
-//         success: (res: any) => {
-//             console.log('res==>', res)
-//             if (res['I3mR2TBLKy3Wy5jdEmc8ULLhHtgGS7C8tcgUB0LRMX0'] === 'accept') {
-//                 console.log('同意')
-//             } else {
-//                 console.log('拒绝')
-//             }
-//         },
-//     })
-// }
-
-const isPerfect = ref(false);
-const sub_scuccess = ref(false);
-// 关闭完善简历
-const closePerfect = (data) => {
-    isPerfect.value = false;
-    if (data) {
-        sub_scuccess.value = true;
-    }
-};
-const closeSuccess = () => {
-    sub_scuccess.value = false;
-};
 // 页面卸载
 onHide(() => {
     const globalData = getApp().globalData as GlobalDataType;

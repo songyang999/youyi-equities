@@ -1,93 +1,81 @@
-import { http, upLoadFile } from '@/api/http'
-const version = '/v1'
+import { http } from '@/api/http'
 
 /**
- * @description: 获取用户信息
+ * @description: 我的订单数据接
  */
-export function getPersonInfo(data?: any) {
+export function myOrder(data?: any) {
     return http({
-        url: version + '/person/query/get',
+        url: '/equities/myOrder',
         data,
     })
 }
 
 /**
- * @description: 用户与职位操作记录(浏览/分享/投递)
+ * @description: 订单详情
  */
-export function jobOperateList(data?: any) {
+export function getOrder(data?: any) {
     return http({
-        url: version + '/person/query/job_operate_list',
+        url: '/equities/getOrder',
         data,
     })
 }
 
 /**
- * @description: 钱包-详情
+ * @description: 权益兑换
  */
-export function myWallet(data?: any) {
+export function agiotage(data?: any) {
     return http({
-        url: version + '/person/query/my_wallet',
+        url: '/equities/agiotage',
         data,
     })
 }
 
 /**
- * @description: 钱包-余额明细
+ * @description: 仅退款接口
  */
-export function myWalletRecord(data?: any) {
+export function refund(data?: any) {
     return http({
-        url: version + '/person/query/my_wallet_record',
+        url: "/equities/refund",
+        data,
+    });
+}
+
+/**
+ * @description: 订单关联
+ */
+export function relevance(data?: any) {
+    return http({
+        url: '/equities/relevance',
         data,
     })
 }
 
 /**
- * @description: 钱包-发起提现
+ * @description: 包月服务列表
  */
-export function walletWithdrawSubmit(data?: any) {
+export function getMonthlySubscriptionService(data?: any) {
     return http({
-        url: version + '/person/query/wallet_withdraw_submit',
+        url: '/equities/getMonthlySubscriptionService',
         data,
     })
 }
 
 /**
- * @description: 上传身份证图片
+ * @description: 包月服务退订
  */
-export function uploadIdCard(filePath: string, data?: any) {
-    return upLoadFile({
-        url: version + '/withdraw/maintenance/upload_id_card',
-        filePath,
+export function unsubscribe(data?: any) {
+    return http({
+        url: '/equities/unsubscribe',
         data,
     })
 }
 
 /**
- * @description: 发送验证码
+ * @description: 常见问题
  */
-export function sendCode(data?: any) {
+export function qaList(data?: any) {
     return http({
-        url: version + '/person/query/send_code',
-        data,
-    })
-}
-
-/**
- * @description: 获取实名认证信息
- */
-export function getIdentityVerify(data?: any) {
-    return http({
-        url: version + '/person/query/identity_verify',
-        data,
-    })
-}
-
-/**
- * @description: 发起实名认证
- */
-export function submitIdentityVerify(data?: any) {
-    return http({
-        url: version + '/person/maintenance/identity_verify',
+        url: '/equities/qa',
         data,
     })
 }

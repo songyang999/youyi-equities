@@ -7,10 +7,7 @@
     <general-custom title="隐私中心">
         <template #content>
             <view class="px-24 py-32">
-                <view
-                    class="policy_box flex justify-between align-center"
-                    @click="goPage('/pages/agreement/index?type=1')"
-                >
+                <view class="policy_box flex justify-between align-center" @click="goPage('/pages/agreement/index?type=1')">
                     <view class="flex align-center">
                         <svg-icon :icon-class="epic_user" class="fs-38" />
                         <view class="common_text fs-30 ml-16">用户协议</view>
@@ -36,41 +33,41 @@
 </template>
 
 <script setup lang="ts">
-import { wxLogin } from '@/utils'
-import { goPage } from '@/utils/tool'
+import { wxLogin } from "@/utils";
+import { goPage } from "@/utils/tool";
 
-const { config } = getApp().globalData as GlobalDataType
-const epic_user = `${config.APP_TYPE}_epic_user`
-const epic = `${config.APP_TYPE}_epic`
+const { config } = getApp().globalData as GlobalDataType;
+const epic_user = `${config.APP_TYPE}_epic_user`;
+const epic = `${config.APP_TYPE}_epic`;
 
 const openPrivacyContract = () => {
     uni.openPrivacyContract({
         success: () => {},
-    })
-}
+    });
+};
 
 const logOut = () => {
     uni.showModal({
-        content: '确认退出当前账号？',
-        cancelText: '取消',
-        confirmText: '确认',
+        content: "确认退出当前账号？",
+        cancelText: "取消",
+        confirmText: "确认",
         success: async function (res) {
             if (res.confirm) {
-                uni.removeStorageSync('phone')
-                uni.removeStorageSync('token')
-                uni.removeStorageSync('uid')
-                const globalData = getApp().globalData as GlobalDataType
-                globalData.phone = ''
-                globalData.uid = 0
-                globalData.first_authority = false
-                await wxLogin()
+                uni.removeStorageSync("mobile");
+                uni.removeStorageSync("token");
+                uni.removeStorageSync("uid");
+                const globalData = getApp().globalData as GlobalDataType;
+                globalData.mobile = "";
+                globalData.uid = 0;
+                globalData.first_authority = false;
+                await wxLogin();
                 uni.reLaunch({
-                    url: '/pages/home/index',
-                })
+                    url: "/pages/home/index",
+                });
             }
         },
-    })
-}
+    });
+};
 </script>
 
 <style lang="scss" scoped>

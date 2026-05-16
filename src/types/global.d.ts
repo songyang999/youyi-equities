@@ -8,7 +8,7 @@ interface GlobalDataType extends AnyObject {
     navigationBar: number
     hideCustom: Boolean
     customHeaderHeight: number
-    phone: string
+    mobile: string
     location: any
     uid: number
     open_id: string
@@ -67,6 +67,7 @@ interface formItemType {
     blur?: Function
 }
 
+// 产品数据
 interface ProductItem {
     productTypeId: number;
     productName: string;
@@ -74,4 +75,40 @@ interface ProductItem {
     productPictureUrl: string;
     productKey: string;
     productDetail: string;
+}
+
+// 订单数据
+interface OrderItem {
+    statusInfo: string;
+    orderId: string;
+    idCard: string;
+    mobile: string;
+    bindTraceNo: string;
+    productKey: string;
+    serviceName: string;
+    cardNo: string;
+    productName: string;
+    productTypeId: string;
+    createTime: string;
+    expirationTime: string;
+    conversionTime: string;
+    feeTime: string;
+    price: string;
+    productTypeName: string;
+    serviceId: string;
+    account: string;
+    status: string;
+}
+
+// 包月服务
+interface ServiceItem {
+    orderId: string;
+    statusInfo: string;
+    price: string;
+    productTypeName: string;
+    feeType: string;
+    productKey: string;
+    productName: string;
+    productTypeId: string;
+    conversionTime: string;
 }

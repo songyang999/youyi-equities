@@ -15,18 +15,18 @@
       <view class="mx-30">
         <view
           v-for="item in list"
-          :key="item"
+          :key="item.orderId"
           class="service_li mb-30"
-          @click="goPage('/pages/serviceDetail/index')"
+          @click="goPage(`/pages/serviceDetail/index?orderId=${item.orderId}`)"
         >
-          <view class="sub_text fs-24">2017-06-24 开通服务</view>
+          <view class="sub_text fs-24">{{item.conversionTime}} 开通服务</view>
           <view class="service_info fs-28 flex align-center justify-between">
             <image
               src="/static/images/service_ico.png"
               class="service_ico"
             ></image>
-            <view class="name main_text">2元-水电燃气缴费红包</view>
-            <view class="common_text">￥2.00</view>
+            <view class="name main_text">{{ item.price }}元-{{ item.productName }}</view>
+            <view class="common_text">￥{{separatorFilter(item.price, 2)}}</view>
             <image src="/static/images/right.png" class="next"></image>
           </view>
         </view>
@@ -36,8 +36,31 @@
 </template>
 
 <script lang="ts" setup type="module">
-import { goPage } from "@/utils/tool";
-const list = [1, 2, 3];
+import { onLoad } from "@dcloudio/uni-app";
+import { ref } from "vue";
+import { goPage, separatorFilter } from "@/utils/tool";
+import { getMonthlySubscriptionService } from '@/api/my';
+
+onLoad(() => {
+    getServiceList()
+})
+
+const list = ref<ServiceItem[]>([]);
+const getServiceList = async () => {
+    try {
+        uni.showLoading({
+            mask: true,
+            title: "加载中...",
+        });
+        const { mobile } = getApp().globalData as GlobalDataType;
+        const res: any = await getMonthlySubscriptionService({ mobile: mobile });
+        list.value = res.data || [];
+    } catch (error) {
+        //
+    } finally {
+        uni.hideLoading();
+    }
+}
 </script>
 
 <style lang="scss" scoped>
