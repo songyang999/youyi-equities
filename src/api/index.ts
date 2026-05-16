@@ -1,23 +1,24 @@
-import { http } from '@/api/http'
-const version = '/v1'
+import { http } from "@/api/http";
 /**
  * @description: 登录
  */
-export function login(data?: any) {
+export function wechatLogin(data?: any) {
     return http({
-        url: version + '/wechat/mini_program/login',
+        url: "/equities/wechatLogin",
         data,
-    })
+    });
 }
+//
 
 /**
  * @description: 手机号验证和获取请求
  */
-export function getUserPhoneNumber(data?: any) {
+
+export function getWechatMobile(data?: any) {
     return http({
-        url: version + '/wechat/mini_program/query/get_user_phone_number',
+        url: "/equities/getWechatMobile",
         data,
-    })
+    });
 }
 
 /**
@@ -25,9 +26,9 @@ export function getUserPhoneNumber(data?: any) {
  */
 export function burialPoint(data?: any) {
     return http({
-        url: version + '/tracking/event/submit',
+        url: "/tracking/event/submit",
         data,
-    })
+    });
 }
 
 /**
@@ -35,9 +36,9 @@ export function burialPoint(data?: any) {
  */
 export function getRecruitConst(data?: any) {
     return http({
-        url: version + '/common/query/recruit_const',
+        url: "/common/query/recruit_const",
         data,
-    })
+    });
 }
 
 /**
@@ -45,9 +46,9 @@ export function getRecruitConst(data?: any) {
  */
 export function getCityTree(data?: any) {
     return http({
-        url: version + '/common/query/city_tree',
+        url: "/common/query/city_tree",
         data,
-    })
+    });
 }
 
 /**
@@ -55,16 +56,16 @@ export function getCityTree(data?: any) {
  */
 export function getJobCategory(data?: any) {
     return http({
-        url: version + '/resume/query/job_category',
+        url: "/resume/query/job_category",
         data,
-    })
+    });
 }
 /**
  * @description: 职位库 - 职位类别
  */
 export function getJobBanner(data?: any) {
     return http({
-        url: version + '/job/query/job_banner',
+        url: "/job/query/job_banner",
         data,
-    })
+    });
 }

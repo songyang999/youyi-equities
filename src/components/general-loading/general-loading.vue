@@ -4,19 +4,18 @@
  * @Description: 全局loading
 -->
 <template>
-    <view :clas="props.hideBac ? '' : 'bac_white'" class="loading_wrap" @click.stop="">
-        <svg-icon :icon-class="`${config.APP_TYPE}_loading`" class="loading fs-46" />
+    <view :clas="props.hideBac ? '' : 'bac_white'" class="loading_wrap" @click.stop>
+        <svg-icon :icon-class="`loading`" class="loading fs-46" />
     </view>
 </template>
 
 <script setup lang="ts">
-const { config } = getApp().globalData as GlobalDataType
 const props = defineProps({
     hideBac: {
         type: Boolean,
         default: false,
     },
-})
+});
 </script>
 
 <style scoped lang="scss">

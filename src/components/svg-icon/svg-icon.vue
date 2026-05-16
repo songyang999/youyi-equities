@@ -10,16 +10,16 @@
 </template>
 
 <script setup lang="ts">
-import { defineComponent, computed } from 'vue'
-import { prefixedUrl } from '@/utils/tool'
+import { defineComponent, computed } from "vue";
+// import { prefixedUrl } from "@/utils/tool";
 defineComponent({
-    name: 'SvgIcon',
-})
+    name: "SvgIcon",
+});
 interface SvgIconProps {
-    iconClass: string
+    iconClass: string;
 }
-const props = defineProps<SvgIconProps>()
-const iconName = computed(() => prefixedUrl(`${props.iconClass}.png`))
+const props = defineProps<SvgIconProps>();
+const iconName = computed(() => `../../static/images/${props.iconClass}.png`);
 </script>
 <style scoped>
 view {

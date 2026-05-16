@@ -32,24 +32,21 @@
                         <view class="recruit_award recruit_tj_award primary-color flex align-center">
                             <svg-icon :icon-class="blue_packet" class="fs-30 mr-4" />
                             <image class="mr-8" :src="tjjl" />
-                            <view v-for="r in item.reward_rule_recommend" :key="r.id" class="refer_tag fs-22">
-                                {{ rewardRuleFormat(r) }}
-                            </view>
+                            <view v-for="r in item.reward_rule_recommend" :key="r.id" class="refer_tag fs-22">{{ rewardRuleFormat(r) }}</view>
                         </view>
                     </view>
                     <view v-if="item.reward_rule_apply" class="apply flex align-center pr">
                         <view class="recruit_award recruit_yp_award danger-color flex align-center">
                             <svg-icon icon-class="red_packet" class="fs-30 mr-4" />
                             <image class="ypjl mr-8" :src="ypjl" />
-                            <view v-for="r in item.reward_rule_apply" :key="r.id" class="refer_tag fs-22">
-                                {{ rewardRuleFormat(r) }}
-                            </view>
+                            <view v-for="r in item.reward_rule_apply" :key="r.id" class="refer_tag fs-22">{{ rewardRuleFormat(r) }}</view>
                         </view>
                     </view>
                     <view class="flex align-center justify-between mt-12">
-                        <view v-if="item.welfare && item.welfare.length" class="welfare line_ovh fs-24 main-color"
-                            >福利待遇: {{ item.welfare.map((w) => w.name).join(',') }}</view
-                        >
+                        <view
+                            v-if="item.welfare && item.welfare.length"
+                            class="welfare line_ovh fs-24 main-color"
+                        >福利待遇: {{ item.welfare.map((w) => w.name).join(',') }}</view>
                         <view class="apply_btn fs-24 px-24 py-12">立即推荐</view>
                     </view>
                 </view>
@@ -60,72 +57,77 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import { prefixedUrl, salaryFormat, goPage, handleBurialPoint, rewardRuleFormat } from '@/utils/tool'
+import { computed } from "vue";
+import {
+    prefixedUrl,
+    salaryFormat,
+    goPage,
+    rewardRuleFormat,
+} from "@/utils/tool";
 
-const { config } = getApp().globalData as GlobalDataType
-const tjjl = computed(() => prefixedUrl(`${config.APP_TYPE}_tjjl.png`))
-const ypjl = computed(() => prefixedUrl('ypjl.png'))
+const { config } = getApp().globalData as GlobalDataType;
+const tjjl = computed(() => prefixedUrl(`${config.APP_TYPE}_tjjl.png`));
+const ypjl = computed(() => prefixedUrl("ypjl.png"));
 
-const blue_packet = `${config.APP_TYPE}_blue_packet`
+const blue_packet = `${config.APP_TYPE}_blue_packet`;
 
 interface welfareType {
-    id: number
-    name: string
+    id: number;
+    name: string;
 }
 interface ruleType {
-    id: number
-    node_name: string
-    days: number
-    amount_format: string
+    id: number;
+    node_name: string;
+    days: number;
+    amount_format: string;
 }
 interface jobType {
-    id: number
-    name: string
-    welfare: welfareType[]
-    reward_rule_recommend: ruleType[]
-    reward_rule_apply: ruleType[]
+    id: number;
+    name: string;
+    welfare: welfareType[];
+    reward_rule_recommend: ruleType[];
+    reward_rule_apply: ruleType[];
 }
 //	接受父组件传值
 const props = defineProps({
     height: {
         type: Number,
-        default: 0
+        default: 0,
     },
     list: {
-        type:  Array<jobType>,
-        default: () => []
+        type: Array<jobType>,
+        default: () => [],
     },
     loading: {
         type: Boolean,
-        default: false
+        default: false,
     },
     scrollY: {
         type: Boolean,
-        default: true
+        default: true,
     },
     scrollTop: {
         type: Number,
-        default: 0
-    }
-})
+        default: 0,
+    },
+});
 
-const emit = defineEmits(['lower', 'upper'])
+const emit = defineEmits(["lower", "upper"]);
 // 上滑加载
 const scrolltolower = () => {
-    if (props.loading) return
-    emit('lower')
-}
+    if (props.loading) return;
+    emit("lower");
+};
 // 到顶了
 const scrolltoupper = () => {
-    emit('upper')
-}
+    emit("upper");
+};
 
 // 点击跳转
 const gotoDetail = (item) => {
-    handleBurialPoint({ action: 'reward_position', job_id: item.id })
-    goPage(`/pages/jobDetail/index?job_id=${item.id}`)
-}
+    // handleBurialPoint({ action: 'reward_position', job_id: item.id })
+    goPage(`/pages/jobDetail/index?job_id=${item.id}`);
+};
 </script>
 
 <style scoped lang="scss">

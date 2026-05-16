@@ -66,3 +66,12 @@ interface formItemType {
     change?: Function
     blur?: Function
 }
+
+interface ProductItem {
+    productTypeId: number;
+    productName: string;
+    price: number;
+    productPictureUrl: string;
+    productKey: string;
+    productDetail: string;
+}
