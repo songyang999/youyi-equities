@@ -48,17 +48,19 @@
 </template>
 
 <script setup lang="ts">
-import { onLoad, onReady, onShareAppMessage } from "@dcloudio/uni-app";
+import { onShow, onReady, onShareAppMessage } from "@dcloudio/uni-app";
 import { ref, nextTick } from "vue";
 import { homePage } from "@/api/home";
 import { getRmainHeight } from "@/utils/tool";
 const { customHeaderHeight } = getApp().globalData as GlobalDataType;
 
 const goProduct = (item) => {
-    uni.reLaunch({ url: `/pages/product/index?id=${item.key}` });
+    uni.reLaunch({
+        url: `/pages/product/index?productTypeId=${item.productTypeId}`,
+    });
 };
 
-onLoad((query: any) => {
+onShow((_) => {
     getHomePage();
 });
 // 热区
@@ -117,11 +119,11 @@ onReady(async () => {
 
 // 分享给好友
 onShareAppMessage(() => {
-    const { uid } = getApp().globalData as GlobalDataType;
+    // const { uid } = getApp().globalData as GlobalDataType;
     let path = "/pages/home/index";
-    if (uid) path += `?uid=${uid}&ut=1`;
+    // if (uid) path += `?uid=${uid}&ut=1`;
     const shareObj = {
-        title: "好友推荐给你一波好工作，快来看看吧~",
+        title: "快来权益宝领福利吧",
         path,
     };
     return shareObj;

@@ -8,7 +8,6 @@
         <template #content>
             <view class="search_wrap px-30 pt-20 pb-30">
                 <view class="search flex align-center">
-                    <!-- <svg-icon icon-class="search" class="fs-24" /> -->
                     <input
                         v-model="keyword"
                         confirm-type="search"
@@ -67,8 +66,8 @@ onReady(async () => {
 });
 
 onLoad((query: any) => {
-    if (query.id) {
-        activeTab.value = +query.id;
+    if (query?.productTypeId) {
+        activeTab.value = +query.productTypeId;
     }
     getProductPage();
 });
@@ -83,7 +82,8 @@ const navList = ref<NavItem[]>([]);
 const activeTab = ref(0);
 const handleClick = (item) => {
     activeTab.value = item.productTypeId;
-    productList.value = item.allProductArray || [];
+    // productList.value = item.allProductArray || [];
+    searchList();
 };
 
 // 商品列表
@@ -98,7 +98,13 @@ const getProductPage = async () => {
         const { allProductTypeArray = [] } = res.data || {};
         navList.value = allProductTypeArray || [];
         if (navList.value.length > 0) {
-            handleClick(navList.value[0]);
+            let nav: any = navList.value[0];
+            if (activeTab.value) {
+                nav = navList.value.find(
+                    (item) => item.productTypeId === activeTab.value
+                );
+            }
+            handleClick(nav);
         }
     } catch (error) {
         //

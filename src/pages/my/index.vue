@@ -47,7 +47,7 @@
 
 <script setup lang="ts">
 import { onReady, onShow, onHide } from "@dcloudio/uni-app";
-import { ref, reactive } from "vue";
+import { ref } from "vue";
 import { goPage, getRmainHeight } from "@/utils/tool";
 
 const pageHeight = ref(0);
@@ -72,7 +72,7 @@ onShow(() => {
 
 const auth_login = ref();
 const openLogin = () => {
-    if (!mobile.value) return;
+    if (mobile.value) return;
     auth_login.value.login.open();
     auth_login.value.isRead = false;
 };

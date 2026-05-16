@@ -19,7 +19,8 @@
                     <view class="fs-28">
                         <view class="main_color mb-12">使用该功能需注册/登录平台账号，阅读并同意</view>
                         <view class="main_color flex">
-                            <view class="primary_color" @click="goPage('/pages/agreement/index?type=1')">《用户协议》</view>和
+                            <!-- @click="goPage('/pages/agreement/index?type=1')" -->
+                            <view class="primary_color">《用户协议》</view>和
                             <view class="primary_color" @click="openPrivacyContract">《隐私指引》</view>
                         </view>
                     </view>

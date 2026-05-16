@@ -119,6 +119,16 @@
 				"backgroundColorBottom": "#ffffff"
 			}
 		},
+        {
+			"path": "pages/editUser/index",
+			"style": {
+				"navigationBarTitleText": "修改信息",
+				"navigationStyle": "custom",
+				"backgroundColor": "#ffffff",
+				"backgroundColorTop": "#ffffff",
+				"backgroundColorBottom": "#ffffff"
+			}
+		},
 		{
 			"path": "pages/orderRelation/index",
 			"style": {

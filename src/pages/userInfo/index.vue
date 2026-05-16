@@ -20,7 +20,7 @@
                             <view class="info_main fs-32">手机号码</view>
                             <view class="info_sub fs-24">请输入手机号码</view>
                         </view>
-                        <image class="next" src="@/static/images/right.png" />
+                        <!-- <image class="next" src="@/static/images/right.png" /> -->
                     </view>
                 </view>
                 <view class="flex mb-24">
@@ -30,7 +30,7 @@
                             <view class="info_main fs-32">邮箱</view>
                             <view class="info_sub fs-24">请输入邮箱</view>
                         </view>
-                        <image class="next" src="@/static/images/right.png" />
+                        <!-- <image class="next" src="@/static/images/right.png" /> -->
                     </view>
                 </view>
                 <view class="flex">
@@ -40,16 +40,39 @@
                             <view class="info_main fs-32">地址</view>
                             <view class="info_sub fs-24">请输入地址</view>
                         </view>
-                        <image class="next" src="@/static/images/right.png" />
+                        <!-- <image class="next" src="@/static/images/right.png" /> -->
                     </view>
                 </view>
             </view>
-            <button type="primary" class="mx-50">修改信息</button>
+            <button type="primary" class="mx-50 mb-50" @click="goPage('/pages/editUser/index')">修改信息</button>
+            <button class="mx-50" @click="logOut">退出登录</button>
         </template>
     </general-custom>
 </template>
 
 <script setup lang="ts">
+import { wxLogin } from "@/utils";
+import { goPage } from "@/utils/tool";
+const logOut = () => {
+    uni.showModal({
+        content: "确认退出当前账号？",
+        cancelText: "取消",
+        confirmText: "确认",
+        success: async function (res) {
+            if (res.confirm) {
+                uni.removeStorageSync("mobile");
+                uni.removeStorageSync("token");
+                uni.removeStorageSync("userInfo");
+                const globalData = getApp().globalData as GlobalDataType;
+                globalData.mobile = "";
+                await wxLogin();
+                uni.reLaunch({
+                    url: "/pages/home/index",
+                });
+            }
+        },
+    });
+};
 </script>
 
 <style scoped lang="scss">
@@ -83,7 +106,7 @@
         margin-right: 22rpx;
     }
     .info_li {
-        border-bottom: 1px solid #EDEDED;
+        border-bottom: 1px solid #ededed;
         &:last-child {
             border-bottom: 0;
         }
