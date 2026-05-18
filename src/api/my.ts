@@ -1,4 +1,35 @@
-import { http } from '@/api/http'
+import { http, upLoadFile } from '@/api/http'
+
+/**
+ * @description: 获取用户信息接口
+ */
+export function wechatUserInfo(data?: any) {
+    return http({
+        url: '/equities/wechatUserInfo',
+        data,
+    })
+}
+
+/**
+ * @description: 更新用户信息接口
+ */
+export function updateWechatUserInfo(data?: any) {
+    return http({
+        url: '/equities/updateWechatUserInfo',
+        data,
+    })
+}
+
+/**
+ * @description: 上传头像接口
+ */
+export function pictureUpload(filePath: string, data?: any) {
+    return upLoadFile({
+        url: '/equities/pictureUpload',
+        filePath,
+        data,
+    })
+}
 
 /**
  * @description: 我的订单数据接

@@ -54,7 +54,7 @@
         <view class="picker_view" @click.stop>
             <picker-view :value="onePickerIndex" @change="changeOnePicker" @pickstart="pickerStart" @pickend="pickerEnd">
                 <picker-view-column class="picker_view_column">
-                    <view v-for="opt in firstColumn" :key="opt['id']" class="item">{{ opt["name"] }}</view>
+                    <view v-for="opt in firstColumn" :key="opt['sKey']" class="item">{{ opt["sValue"] }}</view>
                 </picker-view-column>
             </picker-view>
             <view class="picker_view_choose flex">
@@ -68,7 +68,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import test from "@/utils/test";
-// import { toast } from "@/utils/tool";
 const ruleForm = ref();
 const formData = ref({
     equity: 0,
@@ -94,21 +93,16 @@ const rules = {
     },
 };
 // picker
-const firstColumn = ref([
-    {
-        id: 1,
-        name: "腾讯会员",
-    },
-    { id: 2, name: "爱奇艺会员" },
-]);
+const { commonConst } = getApp().globalData as GlobalDataType;
+const firstColumn = commonConst.equity || [];
 // 单列选择器
 const isShowOnePicker = ref(false);
 const onePickerIndex = ref<number[]>([0]);
 const openOnePicker = () => {
     isShowOnePicker.value = true;
     if (formData.value.equity) {
-        onePickerIndex.value[0] = firstColumn.value.findIndex(
-            (opt) => opt["id"] === formData.value.equity
+        onePickerIndex.value[0] = firstColumn.findIndex(
+            (opt) => opt["sKey"] === formData.value.equity
         );
     } else {
         onePickerIndex.value = [0];
@@ -130,9 +124,9 @@ const closeOnePicker = () => {
 };
 const confirmOnePicker = () => {
     if (disabled) return;
-    formData.value.equity = firstColumn.value[onePickerIndex.value[0]]["id"];
+    formData.value.equity = firstColumn[onePickerIndex.value[0]]["sKey"];
     formData.value.equity_format =
-        firstColumn.value[onePickerIndex.value[0]]["name"];
+        firstColumn[onePickerIndex.value[0]]["sValue"];
     setTimeout(() => {
         isShowOnePicker.value = false;
     }, 300);
@@ -142,7 +136,7 @@ const handleSubmit = () => {
     ruleForm.value
         .validate()
         .then((res) => {
-            emit("close");
+            emit("close", formData.value);
         })
         .catch(() => {
             //

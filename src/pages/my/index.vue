@@ -47,28 +47,43 @@
 
 <script setup lang="ts">
 import { onReady, onShow, onHide } from "@dcloudio/uni-app";
-import { ref } from "vue";
+import { ref, nextTick } from "vue";
 import { goPage, getRmainHeight } from "@/utils/tool";
+import { wechatUserInfo } from "@/api/my";
 
 const pageHeight = ref(0);
 onReady(async () => {
     pageHeight.value = await getRmainHeight(["tab-bar-box"]);
 });
 onShow(() => {
-    updateInfo();
-    // handleBurialPoint("my");
+    const { userInfo: info } = getApp().globalData as GlobalDataType;
+    userInfo.value = info;
+    mobile.value = info.mobile;
+    // updateInfo();
     // getPerson();
-    // getMyWallet();
-    // if (isPerfect.value) {
-    //     perfect.value.updateInfo();
-    // }
 });
 
 // 获取用户信息
-// const userInfo = reactive({
-//     avatar: "",
-//     personnel_name: "",
-// });
+const userInfo = ref({
+    // avatar: "",
+    // personnel_name: "",
+});
+const getPerson = async () => {
+    try {
+        uni.showLoading({
+            mask: true,
+            title: "加载中...",
+        });
+        const res: any = await wechatUserInfo();
+    } catch (error) {
+        //
+    } finally {
+        uni.hideLoading();
+    }
+    // if (res.result?.userInfo) {
+    //     userInfo.value = res.result?.userInfo;
+    // }
+};
 
 const auth_login = ref();
 const openLogin = () => {
@@ -78,8 +93,9 @@ const openLogin = () => {
 };
 const mobile = ref("");
 const updateInfo = () => {
-    const data = getApp().globalData as GlobalDataType;
-    mobile.value = data.mobile;
+    nextTick(() => {
+        getPerson();
+    });
 };
 
 // 获取钱包详情

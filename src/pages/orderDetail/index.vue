@@ -85,7 +85,7 @@
     <!-- 权益兑换 -->
     <equity-cash v-if="dialogEquity" @close="openCash" />
     <!-- 权益兑换成功 -->
-    <cash-success v-if="dialogVisible" @close="handleClose" />
+    <cash-success v-if="dialogVisible" :content="content" @close="handleClose" />
     <!-- 业务退订 -->
     <business-unreg v-if="dialogUnreg" @close="handleCloseUnreg" />
     <!-- 退订成功 -->
@@ -131,26 +131,32 @@ const handleCopy = () => {
 
 // 权益兑换
 const dialogEquity = ref(false);
-const openEquity = async () => {
+const openEquity = () => {
+    dialogEquity.value = true;
+};
+// 兑换成功
+const dialogVisible = ref(false);
+const content = ref("");
+const openCash = async (data) => {
     try {
         uni.showLoading({
             mask: true,
             title: "加载中...",
         });
-        const res: any = await agiotage({ orderId: orderDetail.value.orderId });
-
-        dialogEquity.value = true;
+        const params = {
+            equityProductCode: data.equity,
+            boundMobile: data.mobile,
+            orderId: orderDetail.value.orderId,
+        };
+        const res: any = await agiotage(params);
+        content.value = res.result?.msg || "";
+        dialogEquity.value = false;
+        dialogVisible.value = true;
     } catch (error) {
         //
     } finally {
         uni.hideLoading();
     }
-};
-// 兑换成功
-const dialogVisible = ref(false);
-const openCash = () => {
-    dialogEquity.value = false;
-    dialogVisible.value = true;
 };
 const handleClose = () => {
     dialogVisible.value = false;

@@ -15,10 +15,11 @@ export const wxLogin = () => {
                     code: res.code,
                     mobile,
                 });
-                const { token, openid, unionid } = res2.data;
+                const { token, openid, unionid, userInfo } = res2.data;
                 uni.setStorageSync("token", token);
                 uni.setStorageSync("open_id", openid);
                 uni.setStorageSync("union_id", unionid);
+                uni.setStorageSync("userInfo", userInfo);
                 const globalData = getApp().globalData as GlobalDataType;
                 globalData.open_id = openid;
                 resolve({ status: 200 });
@@ -79,7 +80,7 @@ export const getPhoneNumber = async (e: any) => {
         const { userInfo } = res.data;
         uni.setStorageSync("mobile", userInfo.mobile);
         // uni.setStorageSync("token", token);
-        uni.setStorageSync("userInfo", userInfo);
+        
         const globalData = getApp().globalData as GlobalDataType;
         globalData.mobile = userInfo.mobile;
         wxLogin()

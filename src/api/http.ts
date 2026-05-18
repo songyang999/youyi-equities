@@ -51,7 +51,7 @@ export const http = (params: ParamsType) => {
                     } else {
                         if (res.data.result.code === "200") {
                             return resolve(res.data);
-                        } else if (res.data.result.code === "403") {
+                        } else if (["403"].includes(res.data.result.code)) {
                             // token已过期
                             uni.removeStorageSync('token')
                             uni.removeStorageSync('open_id')

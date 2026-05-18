@@ -8,7 +8,6 @@ export function wechatLogin(data?: any) {
         data,
     });
 }
-//
 
 /**
  * @description: 手机号验证和获取请求
@@ -22,11 +21,33 @@ export function getWechatMobile(data?: any) {
 }
 
 /**
- * @description: 埋点
+ * @description: 权益下拉框数据接口
  */
-export function burialPoint(data?: any) {
+
+export function equity(data?: any) {
     return http({
-        url: "/tracking/event/submit",
+        url: "/combo/equity",
         data,
     });
 }
+
+/**
+ * @description: 退款原因下拉框数据接口
+ */
+
+export function reason(data?: any) {
+    return http({
+        url: "/combo/reason",
+        data,
+    });
+}
+
+/**
+ * @description: 埋点
+ */
+// export function burialPoint(data?: any) {
+//     return http({
+//         url: "/tracking/event/submit",
+//         data,
+//     });
+// }

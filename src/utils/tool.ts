@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
 import test from './test'
 import ENV_CONFIG from '@/config/env'
-import { burialPoint } from '@/api'
+// import { burialPoint } from '@/api'
 import md5 from '@/utils/md5'
 const NODE_ENV = import.meta.env.MODE
 
@@ -71,22 +71,22 @@ export const handleBurialPoint = async (action: string | object) => {
     putBurialPoint(action, option)
 }
 const putBurialPoint = async (action: string | object, option: any) => {
-    clearTimeout(option.timer)
-    const app = getApp()
-    let open_id = ''
-    if (app && app.globalData) {
-        const global = getApp().globalData as GlobalDataType
-        open_id = global.open_id
-    }
+    // clearTimeout(option.timer)
+    // const app = getApp()
+    // let open_id = ''
+    // if (app && app.globalData) {
+    //     const global = getApp().globalData as GlobalDataType
+    //     open_id = global.open_id
+    // }
 
-    if (open_id) {
-        const params = typeof action === 'string' ? { action, open_id: open_id } : { open_id: open_id, ...action }
-        await burialPoint(params)
-    } else {
-        option.timer = setTimeout(() => {
-            putBurialPoint(action, option)
-        }, 300)
-    }
+    // if (open_id) {
+    //     const params = typeof action === 'string' ? { action, open_id: open_id } : { open_id: open_id, ...action }
+    //     await burialPoint(params)
+    // } else {
+    //     option.timer = setTimeout(() => {
+    //         putBurialPoint(action, option)
+    //     }, 300)
+    // }
 }
 
 /**

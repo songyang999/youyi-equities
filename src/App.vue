@@ -1,5 +1,6 @@
 <script lang="ts">
 import STATIC_CONFIG from "@/config";
+import { equity, reason } from "@/api";
 import { wxLogin } from "@/utils";
 import { toFixedFun } from "@/utils/tool";
 const menu: any = uni.getMenuButtonBoundingClientRect();
@@ -54,19 +55,14 @@ export default {
         uni.removeStorageSync("location");
         globalData.location = {};
         await this.getStaticConfig();
-        // uni.login({
-        //     success: async function (res) {
-        //         console.log(res)
-        //     },
-        // })
         if (!uni.getStorageSync("token")) await wxLogin();
-        // await this.getCommonConst();
-        // await this.getCityList();
-        // await this.getCategoryList();
+        // 获取权益下拉数据
+        await this.getEquity();
+        // 获取退款原因下拉数据
+        await this.getReason();
     },
     onShow: function () {
         console.log("App Show");
-        // handleBurialPoint("miniapp_start");
         //检查小程序是否有新版本，有的话重新启动
         const updateManager = uni.getUpdateManager();
         updateManager.onCheckForUpdate(() => {
@@ -94,6 +90,24 @@ export default {
     methods: {
         getStaticConfig() {
             globalData.config = STATIC_CONFIG;
+        },
+        // 获取权益下拉数据
+        async getEquity() {
+            try {
+                const res: any = await equity();
+                globalData.commonConst["equity"] = res.data || [];
+            } catch (error) {
+                //
+            }
+        },
+        // 获取退款原因下拉数据
+        async getReason() {
+            try {
+                const res: any = await reason();
+                globalData.commonConst["reason"] = res.data || [];
+            } catch (error) {
+                //
+            }
         },
     },
     globalData,
