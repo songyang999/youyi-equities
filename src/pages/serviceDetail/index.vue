@@ -42,7 +42,7 @@
                     </view>
                 </view>
             </view>
-            <view class="close_service" @click="openPopup">关闭包月服务</view>
+            <view v-if="detail?.statusInfo === '生效中'" class="close_service" @click="openPopup">关闭包月服务</view>
         </template>
     </general-custom>
     <!-- 关闭包月服务 -->

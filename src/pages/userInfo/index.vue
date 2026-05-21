@@ -8,39 +8,45 @@
         <template #content>
             <view class="flex flex-column align-center pt-20">
                 <view class="avatar_box">
-                    <image class="avatar" src="@/static/images/avatar.png" />
+                    <image class="avatar" :src="userInfo.avatarUrl || '/static/images/avatar.png'" />
                 </view>
-                <view class="name fs-32">账号信息</view>
+                <view class="name fs-32">{{userInfo.nickName || '游客'}}</view>
             </view>
             <view class="info_card mx-50">
                 <view class="flex mb-24">
                     <image class="info_icon" src="@/static/images/mobile.png" />
                     <view class="info_li flex1 flex justify-between align-center pb-30">
-                        <view class="info_content">
+                        <view v-if="userInfo.mobile" class="info_content">
+                            <view class="info_main fs-32">{{userInfo.mobile}}</view>
+                        </view>
+                        <view v-else class="info_content">
                             <view class="info_main fs-32">手机号码</view>
                             <view class="info_sub fs-24">请输入手机号码</view>
                         </view>
-                        <!-- <image class="next" src="@/static/images/right.png" /> -->
                     </view>
                 </view>
                 <view class="flex mb-24">
                     <image class="info_icon" src="@/static/images/mail.png" />
                     <view class="info_li flex1 flex justify-between align-center pb-30">
-                        <view class="info_content">
+                        <view v-if="userInfo.email" class="info_content">
+                            <view class="info_main fs-32">{{userInfo.email}}</view>
+                        </view>
+                        <view v-else class="info_content">
                             <view class="info_main fs-32">邮箱</view>
                             <view class="info_sub fs-24">请输入邮箱</view>
                         </view>
-                        <!-- <image class="next" src="@/static/images/right.png" /> -->
                     </view>
                 </view>
                 <view class="flex">
                     <image class="info_icon" src="@/static/images/loc.png" />
-                    <view class="info_li flex1 flex justify-between align-center pb-30">
-                        <view class="info_content">
+                    <view class="info_li flex1 flex justify-between align-center pb-30 no_border">
+                        <view v-if="userInfo.address" class="info_content">
+                            <view class="info_main fs-32">{{userInfo.address}}</view>
+                        </view>
+                        <view v-else class="info_content">
                             <view class="info_main fs-32">地址</view>
                             <view class="info_sub fs-24">请输入地址</view>
                         </view>
-                        <!-- <image class="next" src="@/static/images/right.png" /> -->
                     </view>
                 </view>
             </view>
@@ -51,8 +57,41 @@
 </template>
 
 <script setup lang="ts">
+import { onShow } from "@dcloudio/uni-app";
+import { ref } from "vue";
 import { wxLogin } from "@/utils";
 import { goPage } from "@/utils/tool";
+import { wechatUserInfo } from "@/api/my";
+
+onShow(() => {
+    getPerson();
+});
+
+// 获取用户信息
+const userInfo = ref({
+    avatarUrl: "",
+    nickName: "",
+    mobile: "",
+    email: "",
+    address: "",
+});
+const getPerson = async () => {
+    try {
+        uni.showLoading({
+            mask: true,
+            title: "加载中...",
+        });
+        const res: any = await wechatUserInfo();
+        userInfo.value = res.data || {};
+        const { mobile } = getApp().globalData as GlobalDataType;
+        userInfo.value.mobile = mobile || "";
+    } catch (error) {
+        //
+    } finally {
+        uni.hideLoading();
+    }
+};
+
 const logOut = () => {
     uni.showModal({
         content: "确认退出当前账号？",
@@ -107,9 +146,7 @@ const logOut = () => {
     }
     .info_li {
         border-bottom: 1px solid #ededed;
-        &:last-child {
-            border-bottom: 0;
-        }
+        height: 78rpx;
         .info_main {
             color: $--color-main;
         }
@@ -121,6 +158,9 @@ const logOut = () => {
             width: 30rpx;
             height: 30rpx;
         }
+    }
+    .no_border {
+        border-bottom: 0;
     }
 }
 </style>

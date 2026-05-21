@@ -59,6 +59,14 @@
 				"backgroundColorBottom": "#ffffff"
 			}
 		},
+        {
+			"path": "pages/signWeb/index",
+			"style": {
+				"backgroundColor": "#ffffff",
+				"backgroundColorTop": "#ffffff",
+				"backgroundColorBottom": "#ffffff"
+			}
+		},
 		{
 			"path": "pages/resumeForm/personInfo",
 			"style": {

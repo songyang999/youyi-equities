@@ -37,12 +37,12 @@
                 <view class="info_card">
                     <view class="info_title fs-28 mb-30">
                         订单信息
-                        <text class="ml-18 fs-24">2026-02-04</text>
+                        <text class="ml-18 fs-24">{{dayjs(orderDetail.createTime).format('YYYY-MM-DD')}}</text>
                     </view>
                     <view class="info_li">
                         <view class="info_li_label">订单编号</view>
-                        <view class="info_li_value" @click="handleCopy">
-                            {{ orderDetail.orderId }}
+                        <view class="info_li_value flex" @click="handleCopy">
+                            <view class="line_ovh order_id">{{ orderDetail.orderId }}</view>
                             <text class="mx-8">|</text>
                             <text class="copy">复制</text>
                         </view>
@@ -64,7 +64,7 @@
                         <view class="info_li_value">微信</view>
                     </view>
                     <view class="info_li">
-                        <view class="info_li_label">支付宝交易号</view>
+                        <view class="info_li_label">支付交易号</view>
                         <view class="info_li_value">{{orderDetail.bindTraceNo}}</view>
                     </view>
                     <view class="info_li">
@@ -73,13 +73,15 @@
                     </view>
                 </view>
             </view>
-            <view class="footer" />
-            <view class="footer-box">
-                <view class="btn_box flex align-center py-14">
-                    <button type="primary" hover-class="none" @click="openEquity">权益兑换</button>
-                    <button type="primary" hover-class="none" @click="openUnreg">业务退订</button>
+            <template v-if="+orderDetail.status === 1">
+                <view class="footer" />
+                <view class="footer-box">
+                    <view class="btn_box flex align-center py-14">
+                        <button type="primary" hover-class="none" @click="openEquity">权益兑换</button>
+                        <button type="primary" hover-class="none" @click="openUnreg">业务退订</button>
+                    </view>
                 </view>
-            </view>
+            </template>
         </template>
     </general-custom>
     <!-- 权益兑换 -->
@@ -97,6 +99,7 @@ import { onLoad } from "@dcloudio/uni-app";
 import { ref } from "vue";
 import { toast } from "@/utils/tool";
 import { getOrder, agiotage } from "@/api/my";
+import dayjs from "dayjs";
 onLoad((query: any) => {
     if (query?.orderId) {
         getOrderDetail(query.orderId);
@@ -111,7 +114,7 @@ const getOrderDetail = async (orderId: string) => {
             title: "加载中...",
         });
         const res: any = await getOrder({ orderId });
-        orderDetail.value = res.data || {};
+        orderDetail.value = res?.data[0] || {};
     } catch (error) {
         //
     } finally {
@@ -152,6 +155,7 @@ const openCash = async (data) => {
         content.value = res.result?.msg || "";
         dialogEquity.value = false;
         dialogVisible.value = true;
+        getOrderDetail(orderDetail.value.orderId);
     } catch (error) {
         //
     } finally {
@@ -254,6 +258,9 @@ const closeSuccess = () => {
             .copy {
                 color: $--color-main;
             }
+        }
+        .order_id {
+            max-width: 360rpx;
         }
     }
 }

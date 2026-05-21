@@ -7,10 +7,9 @@
     <general-custom ref="general_custom" :hide-back="true" title="个人中心">
         <template #content>
             <view class="user_info pr px-30 pt-20 mb-32">
-                <!-- userInfo.avatar || avatar -->
-                <image src="/static/images/avatar.png" mode="aspectFit" class="avatar mr-24" @click="openLogin" />
+                <image :src="userInfo.avatarUrl || '/static/images/avatar.png'" mode="aspectFit" class="avatar mr-24" @click="openLogin" />
                 <view v-if="mobile" class="flex flex-column">
-                    <text class="user_name fs-32 mb-6">七骑士十九</text>
+                    <text class="user_name fs-32 mb-6">{{userInfo.nickName || '游客'}}</text>
                     <view class="member_box flex align-center">
                         <image src="/static/images/member.png" class="member_icon" />
                         <text class="fs-28">黄金会员</text>
@@ -55,18 +54,18 @@ const pageHeight = ref(0);
 onReady(async () => {
     pageHeight.value = await getRmainHeight(["tab-bar-box"]);
 });
+const mobile = ref("");
 onShow(() => {
-    const { userInfo: info } = getApp().globalData as GlobalDataType;
-    userInfo.value = info;
-    mobile.value = info.mobile;
-    // updateInfo();
-    // getPerson();
+    const { mobile: phone } = getApp().globalData as GlobalDataType;
+    mobile.value = phone;
+    if (!phone) return;
+    getPerson();
 });
 
 // 获取用户信息
 const userInfo = ref({
-    // avatar: "",
-    // personnel_name: "",
+    avatarUrl: "",
+    nickName: "",
 });
 const getPerson = async () => {
     try {
@@ -75,6 +74,7 @@ const getPerson = async () => {
             title: "加载中...",
         });
         const res: any = await wechatUserInfo();
+        userInfo.value = res.data || {};
     } catch (error) {
         //
     } finally {
@@ -91,7 +91,7 @@ const openLogin = () => {
     auth_login.value.login.open();
     auth_login.value.isRead = false;
 };
-const mobile = ref("");
+
 const updateInfo = () => {
     nextTick(() => {
         getPerson();

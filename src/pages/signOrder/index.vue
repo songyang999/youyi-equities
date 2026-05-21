@@ -133,8 +133,8 @@
 
 <script lang="ts" setup type="module">
 import { onLoad, onUnload } from "@dcloudio/uni-app";
-import { ref } from "vue";
-import { toast } from "@/utils/tool";
+import { nextTick, ref } from "vue";
+import { toast, goPage } from "@/utils/tool";
 import { isRedirect, bindMsg, bindCommit } from "@/api/product";
 import test from "@/utils/test";
 const ruleForm = ref();
@@ -149,6 +149,8 @@ const formData = ref({
 
 onLoad((query: any) => {
     formData.value.productKey = query?.productKey || "";
+    const { mobile } = getApp().globalData as GlobalDataType;
+    formData.value.mobile = mobile || "";
 });
 
 const rules = {
@@ -236,7 +238,11 @@ const bindMsgFn = async () => {
         const res: any = await bindMsg(formData.value);
         if (isGoto.value) {
             const url = res.data?.url || "";
-            console.log("url==>", url);
+            const globalData = getApp().globalData as GlobalDataType;
+            globalData.signUrl = url;
+            nextTick(() => {
+                goPage("/pages/signWeb/index");
+            });
         } else {
             // false时不需要验证码
             mix_setIntervals();

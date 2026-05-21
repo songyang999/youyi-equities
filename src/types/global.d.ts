@@ -9,7 +9,6 @@ interface GlobalDataType extends AnyObject {
     hideCustom: Boolean
     customHeaderHeight: number
     mobile: string
-    location: any
     uid: number
     open_id: string
     device_id: string
@@ -24,6 +23,7 @@ interface GlobalDataType extends AnyObject {
     config: any
     shareData: any
     bannerList: any[]
+    signUrl: string
 }
 
 // 配置文件

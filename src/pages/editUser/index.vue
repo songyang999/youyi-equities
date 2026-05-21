@@ -11,7 +11,7 @@
                     <view class="flex justify-center align-center mb-30">
                         <view class="avatar_box flex align-center">
                             <button class="avatar_btn" hover-class="none" open-type="chooseAvatar" @chooseavatar="onChooseAvatar">
-                                <image :src="formData.avatar || '/static/images/avatar.png'" />
+                                <image :src="formData.avatarUrl || '/static/images/avatar.png'" />
                             </button>
                         </view>
                     </view>
@@ -36,10 +36,10 @@
                         </uni-forms-item>
                     </view>
                     <view class="input-box mb-30">
-                        <uni-forms-item name="mobile" :rules="rules['mobile']['rules']">
+                        <uni-forms-item name="mobile">
                             <template #label>
                                 <view class="uni-forms-item__label">
-                                    <text class="is-required">*</text>
+                                    <text class="is-required hide">*</text>
                                     <text>手机号码</text>
                                 </view>
                             </template>
@@ -104,32 +104,45 @@
 </template>
 
 <script lang="ts" setup type="module">
-import { onLoad, onUnload } from "@dcloudio/uni-app";
+import { onLoad } from "@dcloudio/uni-app";
 import { ref } from "vue";
 import { toast } from "@/utils/tool";
-import { isRedirect, bindMsg, bindCommit } from "@/api/product";
-import { pictureUpload, updateWechatUserInfo } from "@/api/my";
+import { pictureUpload, updateWechatUserInfo, wechatUserInfo } from "@/api/my";
 import test from "@/utils/test";
+
+onLoad(() => {
+    getPerson();
+});
+
+// 获取用户信息
 const ruleForm = ref();
 const formData = ref({
-    avatar: "",
+    avatarUrl: "",
     nickName: "",
     mobile: "",
     email: "",
     address: "",
 });
-
-onLoad(() => {});
+const getPerson = async () => {
+    try {
+        uni.showLoading({
+            mask: true,
+            title: "加载中...",
+        });
+        const res: any = await wechatUserInfo();
+        formData.value = res.data || {};
+        const { mobile } = getApp().globalData as GlobalDataType;
+        formData.value.mobile = mobile || "";
+    } catch (error) {
+        //
+    } finally {
+        uni.hideLoading();
+    }
+};
 
 const rules = {
     nickName: {
         rules: [{ required: true, errorMessage: "请输入姓名" }],
-    },
-    mobile: {
-        rules: [
-            { required: true, errorMessage: "请输入手机号码" },
-            { validateFunction: test.checkMobile },
-        ],
     },
     email: {
         rules: [{ validateFunction: test.checkEmail }],
@@ -140,11 +153,11 @@ const rules = {
 const onChooseAvatar = async (e) => {
     try {
         const { avatarUrl } = e.detail;
+        console.log(e.detail);
         const res: any = await pictureUpload(avatarUrl);
         if (res.data) {
             formData.value["iconId"] = res.data.iconId;
-            formData.value["avatar"] = res.data.url;
-            // generalForm.value.updateForm('avatar', res.data.annex_path)
+            formData.value["avatarUrl"] = res.data.url;
         }
     } catch (error) {
         //

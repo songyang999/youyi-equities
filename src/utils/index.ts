@@ -15,13 +15,13 @@ export const wxLogin = () => {
                     code: res.code,
                     mobile,
                 });
-                const { token, openid, unionid, userInfo } = res2.data;
+                const { token, unionid, userInfo } = res2.data;
                 uni.setStorageSync("token", token);
-                uni.setStorageSync("open_id", openid);
+                uni.setStorageSync("open_id", userInfo?.openId || '');
                 uni.setStorageSync("union_id", unionid);
                 uni.setStorageSync("userInfo", userInfo);
                 const globalData = getApp().globalData as GlobalDataType;
-                globalData.open_id = openid;
+                globalData.open_id = userInfo?.openId || '';
                 resolve({ status: 200 });
             } catch (error: any) {
                 resolve({ status: 500 });
@@ -77,13 +77,11 @@ export const getPhoneNumber = async (e: any) => {
             unionid
         };
         const res: any = await getWechatMobile(params);
-        const { userInfo } = res.data;
+        const { userInfo, token } = res.data;
         uni.setStorageSync("mobile", userInfo.mobile);
-        // uni.setStorageSync("token", token);
-        
+        uni.setStorageSync("token", token);
         const globalData = getApp().globalData as GlobalDataType;
         globalData.mobile = userInfo.mobile;
-        wxLogin()
         return true;
     } catch (error: any) {
         return false;

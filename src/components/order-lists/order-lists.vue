@@ -45,7 +45,7 @@
                             <view>共1件</view>
                             <view class="ml-20">
                                 付款总额￥
-                                <text class="salary">5.00</text>
+                                <text class="salary">{{ separatorFilter(item.price, 2) }}</text>
                             </view>
                         </view>
                         <view v-if="+item.status === 1" class="flex justify-end mt-8" @click.stop>
@@ -68,7 +68,7 @@
 <script setup lang="ts">
 import { onReady } from "@dcloudio/uni-app";
 import { ref } from "vue";
-import { goPage } from "@/utils/tool";
+import { goPage, separatorFilter } from "@/utils/tool";
 
 //	接受父组件传值
 const props = defineProps({

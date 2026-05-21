@@ -14,9 +14,6 @@ const navigationBar = (menu["top"] - statusBarHeight) * 2 + menu["height"];
 const mobile = uni.getStorageSync("mobile") || "";
 const uid = uni.getStorageSync("uid") || 0;
 const open_id = uni.getStorageSync("open_id") || "";
-const location = uni.getStorageSync("location")
-    ? JSON.parse(uni.getStorageSync("location"))
-    : {};
 const hideCustom =
     system.includes("windows") ||
     system.includes("Windows") ||
@@ -33,7 +30,6 @@ const globalData: GlobalDataType = {
     hideCustom, // windows/macOs电脑端打开隐藏custom
     customHeaderHeight: statusBarHeight + navigationBar,
     mobile,
-    location, // 位置信息
     uid,
     open_id,
     device_id: deviceId, // 设备id
@@ -48,12 +44,10 @@ const globalData: GlobalDataType = {
     config: {}, // 静态变量
     shareData: {}, // 分享数据
     bannerList: [], // banner数据
+    signUrl: "", // 签约路由
 };
 export default {
     onLaunch: async function (query) {
-        console.log("App Launch 清空城市信息", query);
-        uni.removeStorageSync("location");
-        globalData.location = {};
         await this.getStaticConfig();
         if (!uni.getStorageSync("token")) await wxLogin();
         // 获取权益下拉数据

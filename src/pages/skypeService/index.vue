@@ -36,12 +36,12 @@
 </template>
 
 <script lang="ts" setup type="module">
-import { onLoad } from "@dcloudio/uni-app";
+import { onShow } from "@dcloudio/uni-app";
 import { ref } from "vue";
 import { goPage, separatorFilter } from "@/utils/tool";
 import { getMonthlySubscriptionService } from '@/api/my';
 
-onLoad(() => {
+onShow(() => {
     getServiceList()
 })
 

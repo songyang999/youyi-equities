@@ -10,7 +10,7 @@
                 <tabs :tab-nav="tabList" :active="active" @change="changeTab" />
             </view>
             <view v-if="orderList.length" class="job_wrap">
-                <order-list :list="orderList" :height="scrollHeight" :loading="loading" type="progress" @cash="openEquity" @unreg="openUnreg" />
+                <order-lists :list="orderList" :height="scrollHeight" :loading="loading" type="progress" @cash="openEquity" @unreg="openUnreg" />
             </view>
             <view v-else class="no_wrap">
                 <no-data />
@@ -28,17 +28,14 @@
 </template>
 
 <script setup lang="ts">
-import { onLoad, onReady } from "@dcloudio/uni-app";
+import { onReady, onShow } from "@dcloudio/uni-app";
 import { ref, nextTick } from "vue";
 import { myOrder } from "@/api/my";
 import { getRmainHeight } from "@/utils/tool";
 
 const { customHeaderHeight } = getApp().globalData as GlobalDataType;
 
-onLoad((query) => {
-    // if (query.active) {
-    //     active.value = +query.active;
-    // }
+onShow(() => {
     getList();
 });
 
@@ -47,7 +44,6 @@ onReady(() => {
     nextTick(async () => {
         const height = await getRmainHeight(["tab_wrap"]);
         scrollHeight.value = height - customHeaderHeight;
-        //  - customHeaderHeight;
     });
 });
 
@@ -86,6 +82,7 @@ const changeTab = (tab) => {
     if (active.value === tab.val) return;
     active.value = tab.val;
     orderList.value = tab.orderList || [];
+    console.log(tab.orderList);
 };
 const loading = ref(false);
 const getList = async () => {
@@ -145,7 +142,8 @@ const closeSuccess = () => {
 }
 .job_wrap {
     box-sizing: border-box;
-    min-height: 100%;
+    // min-height: 100%;
+    overflow: hidden;
     padding-top: 130rpx;
 }
 .no_wrap {
