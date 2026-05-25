@@ -157,7 +157,7 @@ const onChooseAvatar = async (e) => {
         const res: any = await pictureUpload(avatarUrl);
         if (res.data) {
             formData.value["iconId"] = res.data.iconId;
-            formData.value["avatarUrl"] = res.data.url;
+            formData.value["avatarUrl"] = res.data.iconUrl;
         }
     } catch (error) {
         //

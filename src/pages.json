@@ -68,16 +68,6 @@
 			}
 		},
 		{
-			"path": "pages/resumeForm/personInfo",
-			"style": {
-				"navigationBarTitleText": "个人信息",
-				"navigationStyle": "custom",
-				"backgroundColor": "#ffffff",
-				"backgroundColorTop": "#ffffff",
-				"backgroundColorBottom": "#ffffff"
-			}
-		},
-		{
 			"path": "pages/orderList/index",
 			"style": {
 				"navigationBarTitleText": "我的订单",

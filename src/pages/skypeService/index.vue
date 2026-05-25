@@ -6,31 +6,36 @@
 <template>
   <general-custom ref="general_custom" title="包月服务">
     <template #content>
-      <image src="/static/images/success_icon.png" class="success_icon"></image>
-      <view class="tips fs-28"
-        ><text
-          >您已开通如下包月产品服务，\n我们将按约定的规则自动续费。</text
-        ></view
-      >
-      <view class="mx-30">
-        <view
-          v-for="item in list"
-          :key="item.orderId"
-          class="service_li mb-30"
-          @click="goPage(`/pages/serviceDetail/index?orderId=${item.orderId}`)"
-        >
-          <view class="sub_text fs-24">{{item.conversionTime}} 开通服务</view>
-          <view class="service_info fs-28 flex align-center justify-between">
-            <image
-              src="/static/images/service_ico.png"
-              class="service_ico"
-            ></image>
-            <view class="name main_text">{{ item.price }}元-{{ item.productName }}</view>
-            <view class="common_text">￥{{separatorFilter(item.price, 2)}}</view>
-            <image src="/static/images/right.png" class="next"></image>
-          </view>
+        <template v-if="list.length > 0">
+            <image src="/static/images/success_icon.png" class="success_icon"></image>
+            <view class="tips fs-28"
+                ><text
+                >您已开通如下包月产品服务，\n我们将按约定的规则自动续费。</text
+                ></view
+            >
+            <view class="mx-30">
+                <view
+                v-for="item in list"
+                :key="item.orderId"
+                class="service_li mb-30"
+                @click="goPage(`/pages/serviceDetail/index?orderId=${item.orderId}`)"
+                >
+                <view class="sub_text fs-24">{{item.conversionTime}} 开通服务</view>
+                <view class="service_info fs-28 flex align-center justify-between">
+                    <image
+                    src="/static/images/service_ico.png"
+                    class="service_ico"
+                    ></image>
+                    <view class="name main_text">{{ item.price }}元-{{ item.productName }}</view>
+                    <view class="common_text">￥{{separatorFilter(item.price, 2)}}</view>
+                    <image src="/static/images/right.png" class="next"></image>
+                </view>
+                </view>
+            </view>
+        </template>
+        <view v-else class="pt-64">
+            <no-data text="暂无数据" />
         </view>
-      </view>
     </template>
   </general-custom>
 </template>

@@ -54,12 +54,9 @@ const pageHeight = ref(0);
 onReady(async () => {
     pageHeight.value = await getRmainHeight(["tab-bar-box"]);
 });
-const mobile = ref("");
+
 onShow(() => {
-    const { mobile: phone } = getApp().globalData as GlobalDataType;
-    mobile.value = phone;
-    if (!phone) return;
-    getPerson();
+    updateInfo();
 });
 
 // 获取用户信息
@@ -94,6 +91,9 @@ const openLogin = () => {
 
 const updateInfo = () => {
     nextTick(() => {
+        const { mobile: phone } = getApp().globalData as GlobalDataType;
+        mobile.value = phone;
+        if (!phone) return;
         getPerson();
     });
 };
@@ -140,7 +140,7 @@ const linkTo = (item: linkItem) => {
     if (item.url) goPage(item.url);
     else makePhoneCall();
 };
-
+const mobile = ref("");
 const makePhoneCall = () => {
     uni.makePhoneCall({
         phoneNumber: "4782913721",
@@ -150,10 +150,7 @@ const makePhoneCall = () => {
 };
 
 // 页面卸载
-onHide(() => {
-    const globalData = getApp().globalData as GlobalDataType;
-    globalData.isInit = true;
-});
+onHide(() => {});
 </script>
 
 <style scoped lang="scss">

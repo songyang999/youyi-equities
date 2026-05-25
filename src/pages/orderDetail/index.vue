@@ -29,7 +29,7 @@
                             <view>共1件</view>
                             <view class="ml-20">
                                 付款总额￥
-                                <text class="salary">5.00</text>
+                                <text class="salary">{{ separatorFilter(orderDetail.price, 2) }}</text>
                             </view>
                         </view>
                     </view>
@@ -97,7 +97,7 @@
 <script lang="ts" setup type="module">
 import { onLoad } from "@dcloudio/uni-app";
 import { ref } from "vue";
-import { toast } from "@/utils/tool";
+import { toast, separatorFilter } from "@/utils/tool";
 import { getOrder, agiotage } from "@/api/my";
 import dayjs from "dayjs";
 onLoad((query: any) => {
