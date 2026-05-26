@@ -75,6 +75,7 @@ interface ProductItem {
     productPictureUrl: string;
     productKey: string;
     productDetail: string;
+    productSold: string;
 }
 
 // 订单数据
@@ -83,7 +84,7 @@ interface OrderItem {
     orderId: string;
     idCard: string;
     mobile: string;
-    bindTraceNo: string;
+    payTraceNo: string;
     productKey: string;
     serviceName: string;
     cardNo: string;

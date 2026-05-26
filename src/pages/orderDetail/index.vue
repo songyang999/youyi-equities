@@ -1,10 +1,10 @@
 <!--
  * @Author: XHL
  * @Date: 2026-04-27
- * @Description: 包月服务
+ * @Description: 我的订单
 -->
 <template>
-    <general-custom ref="general_custom" title="包月服务">
+    <general-custom ref="general_custom" title="我的订单">
         <template #content>
             <view class="px-30">
                 <view class="order_item pr mt-50">
@@ -13,7 +13,7 @@
                         <view class="flex align-center">
                             {{ orderDetail.statusInfo }}
                             <text class="ml-15 mr-10">|</text>
-                            <image src="/static/images/delete_icon.png" class="delete_icon" />
+                            <image src="/static/images/delete_icon.png" class="delete_icon" @click="handleDelete" />
                         </view>
                     </view>
                     <view class="card_main py-30 px-20 flex justify-between">
@@ -47,30 +47,30 @@
                             <text class="copy">复制</text>
                         </view>
                     </view>
-                    <view class="info_li">
+                    <!-- <view class="info_li">
                         <view class="info_li_label">成交时间</view>
                         <view class="info_li_value">{{ orderDetail.createTime }}</view>
-                    </view>
+                    </view>-->
                     <view class="info_li">
                         <view class="info_li_label">付款时间</view>
                         <view class="info_li_value">{{ orderDetail.feeTime }}</view>
                     </view>
                     <view class="info_li">
-                        <view class="info_li_label">兑换时间</view>
-                        <view class="info_li_value">{{orderDetail.conversionTime}}</view>
-                    </view>
-                    <view class="info_li">
-                        <view class="info_li_label">订购方式</view>
-                        <view class="info_li_value">微信</view>
-                    </view>
-                    <view class="info_li">
                         <view class="info_li_label">支付交易号</view>
-                        <view class="info_li_value">{{orderDetail.bindTraceNo}}</view>
+                        <view class="info_li_value">{{orderDetail.payTraceNo}}</view>
                     </view>
                     <view class="info_li">
                         <view class="info_li_label">支付方式</view>
-                        <view class="info_li_value">微信支付</view>
+                        <view class="info_li_value">{{ orderDetail.serviceName }}</view>
                     </view>
+                    <view class="info_li">
+                        <view class="info_li_label">兑换时间</view>
+                        <view class="info_li_value">{{orderDetail.conversionTime}}</view>
+                    </view>
+                    <!-- <view class="info_li">
+                        <view class="info_li_label">订购方式</view>
+                        <view class="info_li_value">微信</view>
+                    </view>-->
                 </view>
             </view>
             <template v-if="+orderDetail.status === 1">
@@ -98,7 +98,7 @@
 import { onLoad } from "@dcloudio/uni-app";
 import { ref } from "vue";
 import { toast, separatorFilter } from "@/utils/tool";
-import { getOrder, agiotage } from "@/api/my";
+import { getOrder, agiotage, deleteOrder } from "@/api/my";
 import dayjs from "dayjs";
 onLoad((query: any) => {
     if (query?.orderId) {
@@ -180,6 +180,28 @@ const dialogSuccess = ref(false);
 const closeSuccess = () => {
     dialogSuccess.value = false;
 };
+
+// 删除订单
+const handleDelete = () => {
+    uni.showModal({
+        content: "确定删除当前订单吗？",
+        cancelText: "取消",
+        confirmText: "确定",
+        success: async function (res) {
+            if (res.confirm) {
+                try {
+                    await deleteOrder({ orderId: orderDetail.value.orderId });
+                    toast("删除成功");
+                    setTimeout(() => {
+                        uni.navigateBack();
+                    }, 2000);
+                } catch (error) {
+                    //
+                }
+            }
+        },
+    });
+};
 </script>
 
 <style lang="scss" scoped>
@@ -255,6 +277,7 @@ const closeSuccess = () => {
         .info_li_value {
             color: $--color-sub;
             max-width: 450rpx;
+            word-break: break-all;
             .copy {
                 color: $--color-main;
             }

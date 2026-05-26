@@ -33,7 +33,7 @@
                         <!-- <view class="fs-28">¥10.00</view> -->
                         <view class="flex align-center">
                             <image src="/static/images/rocket.png" class="rocket" />
-                            <text class="common_color fs-32 rocket_text">100</text>
+                            <text class="common_color fs-32 rocket_text">{{item.productSold}}</text>
                         </view>
                     </view>
                 </view>

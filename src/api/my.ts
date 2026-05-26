@@ -110,3 +110,13 @@ export function qaList(data?: any) {
         data,
     })
 }
+
+/**
+ * @description: 删除订单
+ */
+export function deleteOrder(data?: any) {
+    return http({
+        url: '/equities/deleteOrder',
+        data,
+    })
+}

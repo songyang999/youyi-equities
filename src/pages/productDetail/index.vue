@@ -19,7 +19,7 @@
                         </view>
                         <view class="fs-28 count">
                             已售
-                            <text class="fs-26">344</text>
+                            <text class="fs-26">{{ detailInfo.productSold }}</text>
                         </view>
                     </view>
                 </view>
@@ -76,6 +76,7 @@ const detailInfo = ref<ProductItem>({
     productPictureUrl: "",
     productKey: "",
     productDetail: "",
+    productSold: "0",
 });
 const getDetail = async () => {
     try {

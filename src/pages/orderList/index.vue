@@ -10,7 +10,15 @@
                 <tabs :tab-nav="tabList" :active="active" @change="changeTab" />
             </view>
             <view v-if="orderList.length" class="job_wrap">
-                <order-lists :list="orderList" :height="scrollHeight" :loading="loading" type="progress" @cash="openEquity" @unreg="openUnreg" />
+                <order-lists
+                    :list="orderList"
+                    :height="scrollHeight"
+                    :loading="loading"
+                    type="progress"
+                    @delete="handleDelete"
+                    @cash="openEquity"
+                    @unreg="openUnreg"
+                />
             </view>
             <view v-else class="no_wrap">
                 <no-data />
@@ -30,8 +38,8 @@
 <script setup lang="ts">
 import { onReady, onShow } from "@dcloudio/uni-app";
 import { ref, nextTick } from "vue";
-import { myOrder } from "@/api/my";
-import { getRmainHeight } from "@/utils/tool";
+import { myOrder, deleteOrder } from "@/api/my";
+import { getRmainHeight, toast } from "@/utils/tool";
 
 const { customHeaderHeight } = getApp().globalData as GlobalDataType;
 
@@ -79,10 +87,9 @@ const tabList = ref<TabItem[]>([
     },
 ]);
 const changeTab = (tab) => {
-    if (active.value === tab.val) return;
+    // if (active.value === tab.val) return;
     active.value = tab.val;
     orderList.value = tab.orderList || [];
-    console.log(tab.orderList);
 };
 const loading = ref(false);
 const getList = async () => {
@@ -93,7 +100,10 @@ const getList = async () => {
         tabList.value.forEach((item) => {
             item.orderList = res.data[item.listKey] || [];
         });
-        changeTab(tabList.value[0]);
+        const tab = active.value
+            ? tabList.value.find((item) => item.val === active.value)
+            : tabList.value[0];
+        changeTab(tab);
     } catch (error) {
         //
     } finally {
@@ -129,6 +139,27 @@ const handleCloseUnreg = () => {
 const dialogSuccess = ref(false);
 const closeSuccess = () => {
     dialogSuccess.value = false;
+};
+// 删除订单
+const handleDelete = (orderId) => {
+    uni.showModal({
+        content: "确定删除当前订单吗？",
+        cancelText: "取消",
+        confirmText: "确定",
+        success: async function (res) {
+            if (res.confirm) {
+                try {
+                    await deleteOrder({ orderId });
+                    toast("删除成功");
+                    setTimeout(() => {
+                        getList();
+                    }, 2000);
+                } catch (error) {
+                    //
+                }
+            }
+        },
+    });
 };
 </script>
 

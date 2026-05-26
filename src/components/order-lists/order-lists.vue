@@ -28,7 +28,7 @@
                         <view class="flex align-center">
                             {{ item.statusInfo }}
                             <text class="ml-15 mr-10">|</text>
-                            <image src="/static/images/delete_icon.png" class="delete_icon" />
+                            <image src="/static/images/delete_icon.png" class="delete_icon" @click.stop="handleDelete(item)" />
                         </view>
                     </view>
                     <view class="card_main py-30 px-20 flex justify-between">
@@ -113,6 +113,7 @@ const emit = defineEmits([
     "detail",
     "cash",
     "unreg",
+    "delete",
 ]);
 const triggered = ref(false);
 const enabled = ref(false);
@@ -158,6 +159,10 @@ const handleCash = (item) => {
 // 业务退订
 const handleUnreg = (item) => {
     emit("unreg", item);
+};
+// 删除
+const handleDelete = (item) => {
+    emit("delete", item.orderId);
 };
 </script>
 
