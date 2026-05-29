@@ -54,3 +54,13 @@ export function bindCommit(data?: any) {
         data,
     });
 }
+
+/**
+ * @description: 获取银行下拉
+ */
+export function comboBank(data?: any) {
+    return http({
+        url: "/combo/bank",
+        data,
+    });
+}

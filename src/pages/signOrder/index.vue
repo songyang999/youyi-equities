@@ -68,6 +68,21 @@
                             </view>
                         </uni-forms-item>
                     </view>
+                    <view class="select-box mb-30">
+                        <uni-forms-item name="bank" :rules="rules['bank']['rules']">
+                            <template #label>
+                                <view class="uni-forms-item__label">
+                                    <text class="is-required">*</text>
+                                    <text>银行</text>
+                                </view>
+                            </template>
+                            <view class="input-box flex justify-between align-center" @click="openOnePicker">
+                                <view v-if="formData.bank" class="fs-26 main_text">{{ formData.bank_name }}</view>
+                                <view v-else class="fs-26 common_text">请选择银行</view>
+                                <image src="/static/images/down.png" class="down" />
+                            </view>
+                        </uni-forms-item>
+                    </view>
                     <view class="input-box mb-30">
                         <uni-forms-item name="cardNo" :rules="rules['cardNo']['rules']">
                             <template #label>
@@ -127,6 +142,20 @@
             </view>
         </template>
     </general-custom>
+    <!-- 单列选择 -->
+    <view v-if="isShowOnePicker" class="picker_model" catchtouchmove="true" @click.stop="closeOnePicker">
+        <view class="picker_view" @click.stop>
+            <picker-view :value="onePickerIndex" @change="changeOnePicker" @pickstart="pickerStart" @pickend="pickerEnd">
+                <picker-view-column class="picker_view_column">
+                    <view v-for="opt in firstColumn" :key="opt['sKey']" class="item">{{ opt["sValue"] }}</view>
+                </picker-view-column>
+            </picker-view>
+            <view class="picker_view_choose flex">
+                <button class="flex1" hover-class="none" @click="closeOnePicker">取消</button>
+                <button type="primary" class="flex1" hover-class="none" @click="confirmOnePicker">确定</button>
+            </view>
+        </view>
+    </view>
     <!-- 订购成功 -->
     <order-success v-if="dialogVisible" @close="closeSuccess" />
 </template>
@@ -135,13 +164,15 @@
 import { onLoad, onUnload } from "@dcloudio/uni-app";
 import { nextTick, ref } from "vue";
 import { toast, goPage } from "@/utils/tool";
-import { isRedirect, bindMsg, bindCommit } from "@/api/product";
+import { isRedirect, bindMsg, bindCommit, comboBank } from "@/api/product";
 import test from "@/utils/test";
 const ruleForm = ref();
 const formData = ref({
     account: "",
     mobile: "",
     idCard: "",
+    bank: "",
+    bank_name: "",
     cardNo: "",
     msgCode: "",
     productKey: "",
@@ -151,8 +182,15 @@ onLoad((query: any) => {
     formData.value.productKey = query?.productKey || "";
     const { mobile } = getApp().globalData as GlobalDataType;
     formData.value.mobile = mobile || "";
+    getComboBank();
 });
 
+const checkBank = (rule, value, data, callback) => {
+    if (!value) {
+        callback("请选择银行");
+    }
+    return true;
+};
 const rules = {
     account: {
         rules: [{ required: true, errorMessage: "请输入姓名" }],
@@ -169,6 +207,9 @@ const rules = {
             { validateFunction: test.checkIdCard },
         ],
     },
+    bank: {
+        rules: [{ validateFunction: checkBank }],
+    },
     cardNo: {
         rules: [
             { required: true, errorMessage: "请输入银行卡号" },
@@ -178,6 +219,57 @@ const rules = {
     msgCode: {
         rules: [{ required: true, errorMessage: "请输入验证码" }],
     },
+};
+
+// picker
+interface bankType {
+    sKey: string;
+    sValue: string;
+}
+const firstColumn = ref<bankType[]>([]);
+const getComboBank = async () => {
+    try {
+        const res: any = await comboBank();
+        firstColumn.value = res.data || [];
+    } catch (error) {
+        //
+    }
+};
+// 单列选择器
+const isShowOnePicker = ref(false);
+const onePickerIndex = ref<number[]>([0]);
+const openOnePicker = () => {
+    isShowOnePicker.value = true;
+    if (formData.value.bank) {
+        onePickerIndex.value[0] = firstColumn.value.findIndex(
+            (opt) => opt["sKey"] === formData.value.bank
+        );
+    } else {
+        onePickerIndex.value = [0];
+    }
+};
+const changeOnePicker = (e) => {
+    onePickerIndex.value = e.detail.value;
+};
+let disabled = false;
+const pickerStart = () => {
+    disabled = true;
+};
+const pickerEnd = () => {
+    disabled = false;
+};
+const closeOnePicker = () => {
+    if (disabled) return;
+    isShowOnePicker.value = false;
+};
+const confirmOnePicker = () => {
+    if (disabled) return;
+    formData.value.bank = firstColumn.value[onePickerIndex.value[0]]["sKey"];
+    formData.value.bank_name =
+        firstColumn.value[onePickerIndex.value[0]]["sValue"];
+    setTimeout(() => {
+        isShowOnePicker.value = false;
+    }, 300);
 };
 
 // 获取验证码

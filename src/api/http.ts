@@ -43,7 +43,6 @@ export const http = (params: ParamsType) => {
             header,
             dataType: params.dataType || "json",
             success: (res: any) => {
-                // console.log(params.url, res.header.Trace_id)
                 // uni.hideLoading()
                 if (res.statusCode === 200) {
                     if (params.back) {
