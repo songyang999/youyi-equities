@@ -69,7 +69,7 @@
                         </uni-forms-item>
                     </view>
                     <view class="select-box mb-30">
-                        <uni-forms-item name="bank" :rules="rules['bank']['rules']">
+                        <uni-forms-item name="bankInsCd" :rules="rules['bankInsCd']['rules']">
                             <template #label>
                                 <view class="uni-forms-item__label">
                                     <text class="is-required">*</text>
@@ -77,7 +77,7 @@
                                 </view>
                             </template>
                             <view class="input-box flex justify-between align-center" @click="openOnePicker">
-                                <view v-if="formData.bank" class="fs-26 main_text">{{ formData.bank_name }}</view>
+                                <view v-if="formData.bankInsCd" class="fs-26 main_text">{{ formData.bank_name }}</view>
                                 <view v-else class="fs-26 common_text">请选择银行</view>
                                 <image src="/static/images/down.png" class="down" />
                             </view>
@@ -171,7 +171,7 @@ const formData = ref({
     account: "",
     mobile: "",
     idCard: "",
-    bank: "",
+    bankInsCd: "",
     bank_name: "",
     cardNo: "",
     msgCode: "",
@@ -207,7 +207,7 @@ const rules = {
             { validateFunction: test.checkIdCard },
         ],
     },
-    bank: {
+    bankInsCd: {
         rules: [{ validateFunction: checkBank }],
     },
     cardNo: {
@@ -240,9 +240,9 @@ const isShowOnePicker = ref(false);
 const onePickerIndex = ref<number[]>([0]);
 const openOnePicker = () => {
     isShowOnePicker.value = true;
-    if (formData.value.bank) {
+    if (formData.value.bankInsCd) {
         onePickerIndex.value[0] = firstColumn.value.findIndex(
-            (opt) => opt["sKey"] === formData.value.bank
+            (opt) => opt["sKey"] === formData.value.bankInsCd
         );
     } else {
         onePickerIndex.value = [0];
@@ -264,7 +264,7 @@ const closeOnePicker = () => {
 };
 const confirmOnePicker = () => {
     if (disabled) return;
-    formData.value.bank = firstColumn.value[onePickerIndex.value[0]]["sKey"];
+    formData.value.bankInsCd = firstColumn.value[onePickerIndex.value[0]]["sKey"];
     formData.value.bank_name =
         firstColumn.value[onePickerIndex.value[0]]["sValue"];
     setTimeout(() => {
@@ -317,10 +317,12 @@ const checkRedirect = async () => {
         isGoto.value = false;
         const res: any = await isRedirect({
             cardNo: formData.value.cardNo,
+            bankInsCd: formData.value.bankInsCd,
         });
         isGoto.value = res.data?.isRedirect;
         bindMsgFn();
     } catch (error) {
+        isGoto.value = false;
         uni.hideLoading();
     }
 };
@@ -335,8 +337,7 @@ const bindMsgFn = async () => {
             nextTick(() => {
                 goPage("/pages/signWeb/index");
             });
-        } else {
-            // false时不需要验证码
+        } else { // false时需要验证码
             mix_setIntervals();
         }
     } catch (error) {
