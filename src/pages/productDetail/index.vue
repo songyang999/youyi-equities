@@ -105,7 +105,9 @@ const singleOrder = (type: number) => {
     if (type === 1) {
         toast("功能暂未开通，敬请期待");
     } else {
-        goPage(`/pages/signOrder/index?productKey=${productKey.value}`);
+        goPage(
+            `/pages/signOrder/index?productKey=${productKey.value}&price=${detailInfo.value.price}`
+        );
     }
 };
 

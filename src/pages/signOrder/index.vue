@@ -103,37 +103,37 @@
                             </view>
                         </uni-forms-item>
                     </view>
-                    <template v-if="!isFirst && !isGoto">
-                        <view class="select-box mb-30">
-                            <uni-forms-item name="msgCode" :rules="rules['msgCode']['rules']">
-                                <template #label>
-                                    <view class="uni-forms-item__label">
-                                        <text class="is-required">*</text>
-                                        <text>验证码</text>
-                                    </view>
-                                </template>
-                                <view class="input-box flex justify-between align-center">
-                                    <input
-                                        v-model="formData.msgCode"
-                                        :maxlength="100"
-                                        placeholder="请输入验证码"
-                                        :placeholder-style="`font-size: 13px;color:#999999;`"
-                                        class="input fs-28"
-                                        type="text"
-                                    />
-                                    <button
-                                        :disabled="mix_timer < 1 ? false : true"
-                                        type="primary"
-                                        hover-class="none"
-                                        class="send_btn"
-                                        @click="getCode"
-                                    >{{ mix_codeText }}</button>
+                    <!-- <template v-if="!isFirst && !isGoto"> -->
+                    <view class="select-box mb-30">
+                        <uni-forms-item name="msgCode" :rules="rules['msgCode']['rules']">
+                            <template #label>
+                                <view class="uni-forms-item__label">
+                                    <text class="is-required">*</text>
+                                    <text>验证码</text>
                                 </view>
-                            </uni-forms-item>
-                        </view>
-                    </template>
-                    <button :disabled="!isFirst && !isGoto && !formData.msgCode" type="primary" hover-class="none" class="mb-10" @click="handleAgree">签约订购</button>
-                    <view class="tips common_text fs-24">资费XX元/月</view>
+                            </template>
+                            <view class="input-box flex justify-between align-center">
+                                <input
+                                    v-model="formData.msgCode"
+                                    :maxlength="100"
+                                    placeholder="请输入验证码"
+                                    :placeholder-style="`font-size: 13px;color:#999999;`"
+                                    class="input fs-28"
+                                    type="text"
+                                />
+                                <button
+                                    :disabled="mix_timer < 1 ? false : true"
+                                    type="primary"
+                                    hover-class="none"
+                                    class="send_btn"
+                                    @click="checkRedirect"
+                                >{{ mix_codeText }}</button>
+                            </view>
+                        </uni-forms-item>
+                    </view>
+                    <!-- </template> -->
+                    <button type="primary" hover-class="none" class="mb-10" @click="handleAgree">签约订购</button>
+                    <view class="tips common_text fs-24">资费{{ separatorFilter(price, 2) }}元/月</view>
                     <view class="tips common_text fs-24 mb_80">
                         点击按钮为同意
                         <text>《隐私协议》《订购规则》</text>
@@ -157,13 +157,13 @@
         </view>
     </view>
     <!-- 订购成功 -->
-    <order-success v-if="dialogVisible" @close="closeSuccess" />
+    <order-success v-if="dialogVisible" :price="price" @close="closeSuccess" />
 </template>
 
 <script lang="ts" setup type="module">
 import { onLoad, onUnload } from "@dcloudio/uni-app";
 import { nextTick, ref } from "vue";
-import { toast, goPage } from "@/utils/tool";
+import { toast, goPage, separatorFilter } from "@/utils/tool";
 import { isRedirect, bindMsg, bindCommit, comboBank } from "@/api/product";
 import test from "@/utils/test";
 const ruleForm = ref();
@@ -176,10 +176,13 @@ const formData = ref({
     cardNo: "",
     msgCode: "",
     productKey: "",
+    bindMchntssn: "",
 });
 
+const price = ref(0);
 onLoad((query: any) => {
     formData.value.productKey = query?.productKey || "";
+    price.value = Number(query?.price) || 0;
     const { mobile } = getApp().globalData as GlobalDataType;
     formData.value.mobile = mobile || "";
     getComboBank();
@@ -264,7 +267,8 @@ const closeOnePicker = () => {
 };
 const confirmOnePicker = () => {
     if (disabled) return;
-    formData.value.bankInsCd = firstColumn.value[onePickerIndex.value[0]]["sKey"];
+    formData.value.bankInsCd =
+        firstColumn.value[onePickerIndex.value[0]]["sKey"];
     formData.value.bank_name =
         firstColumn.value[onePickerIndex.value[0]]["sValue"];
     setTimeout(() => {
@@ -275,7 +279,7 @@ const confirmOnePicker = () => {
 // 获取验证码
 let mix_num: any = 60;
 let mix_timer: any = ref(null);
-const mix_codeText: any = ref("重新发送");
+const mix_codeText: any = ref("发送验证码");
 const mix_setIntervals = function () {
     mix_timer.value = setInterval(() => {
         mix_num--;
@@ -289,17 +293,11 @@ const mix_setIntervals = function () {
     }, 1000);
 };
 // 同意协议
-const isFirst = ref(true);
 const handleAgree = () => {
     ruleForm.value
         .validate()
         .then((res) => {
-            if (isFirst.value) {
-                isFirst.value = false;
-                checkRedirect();
-            } else {
-                handleSubmit();
-            }
+            handleSubmit();
         })
         .catch(() => {
             toast("信息未填写或填写有误，请重新填写");
@@ -307,22 +305,20 @@ const handleAgree = () => {
 };
 
 // 验证银行卡
-const isGoto = ref(false);
 const checkRedirect = async () => {
     try {
         uni.showLoading({
             mask: true,
             title: "加载中...",
         });
-        isGoto.value = false;
         const res: any = await isRedirect({
             cardNo: formData.value.cardNo,
             bankInsCd: formData.value.bankInsCd,
         });
-        isGoto.value = res.data?.isRedirect;
-        bindMsgFn();
+        if (!res.data?.isRedirect) {
+            bindMsgFn();
+        }
     } catch (error) {
-        isGoto.value = false;
         uni.hideLoading();
     }
 };
@@ -330,25 +326,14 @@ const checkRedirect = async () => {
 const bindMsgFn = async () => {
     try {
         const res: any = await bindMsg(formData.value);
-        if (isGoto.value) {
-            const url = res.data?.url || "";
-            const globalData = getApp().globalData as GlobalDataType;
-            globalData.signUrl = url;
-            nextTick(() => {
-                goPage("/pages/signWeb/index");
-            });
-        } else { // false时需要验证码
-            mix_setIntervals();
-        }
+        formData.value.bindMchntssn = res.data?.bindMchntssn || "";
+        // false时需要验证码
+        mix_setIntervals();
     } catch (error) {
         //
     } finally {
         uni.hideLoading();
     }
-};
-// 重新发送
-const getCode = () => {
-    mix_setIntervals();
 };
 onUnload(() => {
     clearInterval(mix_timer.value);

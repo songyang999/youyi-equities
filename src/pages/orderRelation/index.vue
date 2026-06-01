@@ -110,7 +110,7 @@ const rules = {
 // 获取验证码
 let mix_num: any = 60;
 let mix_timer: any = ref(null);
-const mix_codeText: any = ref("重新发送");
+const mix_codeText: any = ref("发送验证码");
 const mix_setIntervals = function () {
     mix_timer.value = setInterval(() => {
         mix_num--;
