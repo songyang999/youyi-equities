@@ -31,10 +31,23 @@
                 </view>
             </view>
             <view class="function_wrap mx-30 px-30 py-40">
-                <view v-for="(item, index) in functionList" :key="index" class="function_item" @click="linkTo(item)">
+                <view
+                    v-for="(item, index) in functionList"
+                    :key="index"
+                    :class="{'function_phone_item': item.action === 'my_service'}"
+                    class="function_item"
+                    @click="linkTo(item)"
+                >
                     <image :src="item.icon" class="fuc_icon mr-10" />
                     <text class="fuc_name fs-28">{{ item.label }}</text>
-                    <text v-if="item.action === 'my_service'" class="fuc_phone fs-28">400-9999-999</text>
+                    <view v-if="item.action === 'my_service'" class="fuc_phone fs-28" @click.stop="handleCopy">
+                        <view>
+                            {{email}}
+                            <text class="mx-8">|</text>
+                            <text class="copy">复制</text>
+                        </view>
+                        <view>工作时间:周一至周五9:00-18:00</view>
+                    </view>
                     <image v-else src="/static/images/right.png" class="next" />
                 </view>
             </view>
@@ -47,7 +60,7 @@
 <script setup lang="ts">
 import { onReady, onShow, onHide } from "@dcloudio/uni-app";
 import { ref, nextTick } from "vue";
-import { goPage, getRmainHeight } from "@/utils/tool";
+import { goPage, getRmainHeight, toast } from "@/utils/tool";
 import { wechatUserInfo } from "@/api/my";
 
 const pageHeight = ref(0);
@@ -120,7 +133,7 @@ const functionList: linkItem[] = [
         action: "",
     },
     {
-        label: "客服热线",
+        label: "客服邮箱",
         icon: "/static/images/mobile.png",
         url: "",
         action: "my_service",
@@ -138,14 +151,25 @@ const linkTo = (item: linkItem) => {
         return;
     }
     if (item.url) goPage(item.url);
-    else makePhoneCall();
+    // else makePhoneCall();
 };
 const mobile = ref("");
-const makePhoneCall = () => {
-    uni.makePhoneCall({
-        phoneNumber: "4782913721",
-        success() {},
-        fail() {},
+// const makePhoneCall = () => {
+//     uni.makePhoneCall({
+//         phoneNumber: "4782913721",
+//         success() {},
+//         fail() {},
+//     });
+// };
+
+// 复制
+const email = ref("kongzhongkefu@163.com");
+const handleCopy = () => {
+    uni.setClipboardData({
+        data: email.value,
+        success(res) {
+            toast("复制成功");
+        },
     });
 };
 
@@ -258,11 +282,20 @@ onHide(() => {});
         }
         .fuc_phone {
             color: #7e7e7e;
+            text-align: right;
         }
         .next {
             display: block;
             width: 24rpx;
             height: 26rpx;
+        }
+    }
+    .function_phone_item {
+        height: 80rpx;
+        line-height: 40rpx;
+        align-items: flex-start;
+        .copy {
+            color: $--color-main;
         }
     }
 }
