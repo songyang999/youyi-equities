@@ -1,193 +1,202 @@
 {
-	"easycom": {
-		"autoscan": true,
-		"custom": {
-			"^uni-(.*)": "@dcloudio/uni-ui/lib/uni-$1/uni-$1.vue"
-		}
-	},
-	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-		{
-			"path": "pages/home/index",
-			"style": {
-				"navigationBarTitleText": "首页",
-				"navigationStyle": "custom",
-				"backgroundColor": "#ffffff",
-				"backgroundColorTop": "#ffffff",
-				"backgroundColorBottom": "#EEF1F6",
-				"disableScroll": true
-			}
-		},
-		{
-			"path": "pages/product/index",
-			"style": {
-				"navigationBarTitleText": "产品",
-				"navigationStyle": "custom",
-				"backgroundColor": "#ffffff",
-				"backgroundColorTop": "#ffffff",
-				"backgroundColorBottom": "#EEF1F6",
-				"disableScroll": true
-			}
-		},
-		{
-			"path": "pages/my/index",
-			"style": {
-				"navigationBarTitleText": "我的",
-				"navigationStyle": "custom",
-				"backgroundColor": "#ffffff",
-				"backgroundColorTop": "#ffffff",
-				"backgroundColorBottom": "#EEF1F6",
-				"disableScroll": true
-			}
-		},
-		{
-			"path": "pages/productDetail/index",
-			"style": {
-				"navigationBarTitleText": "产品详情",
-				"navigationStyle": "custom",
-				"backgroundColor": "#ffffff",
-				"backgroundColorTop": "#ffffff",
-				"backgroundColorBottom": "#ffffff"
-			}
-		},
-		{
-			"path": "pages/signOrder/index",
-			"style": {
-				"navigationBarTitleText": "签约订购",
-				"navigationStyle": "custom",
-				"backgroundColor": "#ffffff",
-				"backgroundColorTop": "#ffffff",
-				"backgroundColorBottom": "#ffffff"
-			}
-		},
+    "easycom": {
+        "autoscan": true,
+        "custom": {
+            "^uni-(.*)": "@dcloudio/uni-ui/lib/uni-$1/uni-$1.vue"
+        }
+    },
+    "pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
         {
-			"path": "pages/signWeb/index",
-			"style": {
-				"backgroundColor": "#ffffff",
-				"backgroundColorTop": "#ffffff",
-				"backgroundColorBottom": "#ffffff"
-			}
-		},
-		{
-			"path": "pages/orderList/index",
-			"style": {
-				"navigationBarTitleText": "我的订单",
-				"navigationStyle": "custom",
-				"backgroundColor": "#ffffff",
-				"backgroundColorTop": "#ffffff",
-				"backgroundColorBottom": "#ffffff"
-			}
-		},
-		{
-			"path": "pages/orderDetail/index",
-			"style": {
-				"navigationBarTitleText": "我的订单",
-				"navigationStyle": "custom",
-				"backgroundColor": "#ffffff",
-				"backgroundColorTop": "#ffffff",
-				"backgroundColorBottom": "#ffffff"
-			}
-		},
-		{
-			"path": "pages/message/index",
-			"style": {
-				"navigationBarTitleText": "消息通知",
-				"navigationStyle": "custom",
-				"backgroundColor": "#ffffff",
-				"backgroundColorTop": "#ffffff",
-				"backgroundColorBottom": "#ffffff"
-			}
-		},
-		{
-			"path": "pages/problem/index",
-			"style": {
-				"navigationBarTitleText": "常见问题",
-				"navigationStyle": "custom",
-				"backgroundColor": "#ffffff",
-				"backgroundColorTop": "#ffffff",
-				"backgroundColorBottom": "#ffffff"
-			}
-		},
-		{
-			"path": "pages/userInfo/index",
-			"style": {
-				"navigationBarTitleText": "账户信息",
-				"navigationStyle": "custom",
-				"backgroundColor": "#ffffff",
-				"backgroundColorTop": "#ffffff",
-				"backgroundColorBottom": "#ffffff"
-			}
-		},
+            "path": "pages/home/index",
+            "style": {
+                "navigationBarTitleText": "首页",
+                "navigationStyle": "custom",
+                "backgroundColor": "#ffffff",
+                "backgroundColorTop": "#ffffff",
+                "backgroundColorBottom": "#EEF1F6",
+                "disableScroll": true
+            }
+        },
         {
-			"path": "pages/editUser/index",
-			"style": {
-				"navigationBarTitleText": "修改信息",
-				"navigationStyle": "custom",
-				"backgroundColor": "#ffffff",
-				"backgroundColorTop": "#ffffff",
-				"backgroundColorBottom": "#ffffff"
-			}
-		},
-		{
-			"path": "pages/orderRelation/index",
-			"style": {
-				"navigationBarTitleText": "订单关联",
-				"navigationStyle": "custom",
-				"backgroundColor": "#ffffff",
-				"backgroundColorTop": "#ffffff",
-				"backgroundColorBottom": "#ffffff"
-			}
-		},
-		{
-			"path": "pages/skypeService/index",
-			"style": {
-				"navigationBarTitleText": "包月服务",
-				"navigationStyle": "custom",
-				"backgroundColor": "#ffffff",
-				"backgroundColorTop": "#ffffff",
-				"backgroundColorBottom": "#ffffff"
-			}
-		},
-		{
-			"path": "pages/serviceDetail/index",
-			"style": {
-				"navigationBarTitleText": "包月服务",
-				"navigationStyle": "custom",
-				"backgroundColor": "#ffffff",
-				"backgroundColorTop": "#ffffff",
-				"backgroundColorBottom": "#ffffff"
-			}
-		}
-	],
-	"globalStyle": {
-		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
-	},
-	"tabBar": {
-		"custom": false,
-		"color": "#999999",
-		"selectedColor": "#448AF8",
-		"backgroundColor": "#ffffff",
-		"list": [
-			{
-				"pagePath": "pages/home/index",
-				"text": "首页",
-				"iconPath": "static/images/home.png",
-				"selectedIconPath": "/static/images/selected_home.png"
-			},
-			{
-				"pagePath": "pages/product/index",
-				"text": "产品",
-				"iconPath": "static/images/product.png",
-				"selectedIconPath": "static/images/selected_product.png"
-			},
-			{
-				"pagePath": "pages/my/index",
-				"text": "我的",
-				"iconPath": "static/images/my.png",
-				"selectedIconPath": "static/images/selected_my.png"
-			}
-		]
-	}
+            "path": "pages/product/index",
+            "style": {
+                "navigationBarTitleText": "产品",
+                "navigationStyle": "custom",
+                "backgroundColor": "#ffffff",
+                "backgroundColorTop": "#ffffff",
+                "backgroundColorBottom": "#EEF1F6",
+                "disableScroll": true
+            }
+        },
+        {
+            "path": "pages/my/index",
+            "style": {
+                "navigationBarTitleText": "我的",
+                "navigationStyle": "custom",
+                "backgroundColor": "#ffffff",
+                "backgroundColorTop": "#ffffff",
+                "backgroundColorBottom": "#EEF1F6",
+                "disableScroll": true
+            }
+        },
+        {
+            "path": "pages/productDetail/index",
+            "style": {
+                "navigationBarTitleText": "产品详情",
+                "navigationStyle": "custom",
+                "backgroundColor": "#ffffff",
+                "backgroundColorTop": "#ffffff",
+                "backgroundColorBottom": "#ffffff"
+            }
+        },
+        {
+            "path": "pages/signOrder/index",
+            "style": {
+                "navigationBarTitleText": "签约订购",
+                "navigationStyle": "custom",
+                "backgroundColor": "#ffffff",
+                "backgroundColorTop": "#ffffff",
+                "backgroundColorBottom": "#ffffff"
+            }
+        },
+        {
+            "path": "pages/signWeb/index",
+            "style": {
+                "backgroundColor": "#ffffff",
+                "backgroundColorTop": "#ffffff",
+                "backgroundColorBottom": "#ffffff"
+            }
+        },
+        {
+            "path": "pages/agreement/index",
+            "style": {
+                "navigationBarTitleText": "扣款授权确认书",
+                "backgroundColor": "#ffffff",
+                "backgroundColorTop": "#ffffff",
+                "backgroundColorBottom": "#ffffff"
+            }
+        },
+        {
+            "path": "pages/orderList/index",
+            "style": {
+                "navigationBarTitleText": "我的订单",
+                "navigationStyle": "custom",
+                "backgroundColor": "#ffffff",
+                "backgroundColorTop": "#ffffff",
+                "backgroundColorBottom": "#ffffff"
+            }
+        },
+        {
+            "path": "pages/orderDetail/index",
+            "style": {
+                "navigationBarTitleText": "我的订单",
+                "navigationStyle": "custom",
+                "backgroundColor": "#ffffff",
+                "backgroundColorTop": "#ffffff",
+                "backgroundColorBottom": "#ffffff"
+            }
+        },
+        {
+            "path": "pages/message/index",
+            "style": {
+                "navigationBarTitleText": "消息通知",
+                "navigationStyle": "custom",
+                "backgroundColor": "#ffffff",
+                "backgroundColorTop": "#ffffff",
+                "backgroundColorBottom": "#ffffff"
+            }
+        },
+        {
+            "path": "pages/problem/index",
+            "style": {
+                "navigationBarTitleText": "常见问题",
+                "navigationStyle": "custom",
+                "backgroundColor": "#ffffff",
+                "backgroundColorTop": "#ffffff",
+                "backgroundColorBottom": "#ffffff"
+            }
+        },
+        {
+            "path": "pages/userInfo/index",
+            "style": {
+                "navigationBarTitleText": "账户信息",
+                "navigationStyle": "custom",
+                "backgroundColor": "#ffffff",
+                "backgroundColorTop": "#ffffff",
+                "backgroundColorBottom": "#ffffff"
+            }
+        },
+        {
+            "path": "pages/editUser/index",
+            "style": {
+                "navigationBarTitleText": "修改信息",
+                "navigationStyle": "custom",
+                "backgroundColor": "#ffffff",
+                "backgroundColorTop": "#ffffff",
+                "backgroundColorBottom": "#ffffff"
+            }
+        },
+        {
+            "path": "pages/orderRelation/index",
+            "style": {
+                "navigationBarTitleText": "订单关联",
+                "navigationStyle": "custom",
+                "backgroundColor": "#ffffff",
+                "backgroundColorTop": "#ffffff",
+                "backgroundColorBottom": "#ffffff"
+            }
+        },
+        {
+            "path": "pages/skypeService/index",
+            "style": {
+                "navigationBarTitleText": "包月服务",
+                "navigationStyle": "custom",
+                "backgroundColor": "#ffffff",
+                "backgroundColorTop": "#ffffff",
+                "backgroundColorBottom": "#ffffff"
+            }
+        },
+        {
+            "path": "pages/serviceDetail/index",
+            "style": {
+                "navigationBarTitleText": "包月服务",
+                "navigationStyle": "custom",
+                "backgroundColor": "#ffffff",
+                "backgroundColorTop": "#ffffff",
+                "backgroundColorBottom": "#ffffff"
+            }
+        }
+    ],
+    "globalStyle": {
+        "navigationBarTextStyle": "black",
+        "navigationBarTitleText": "uni-app",
+        "navigationBarBackgroundColor": "#F8F8F8",
+        "backgroundColor": "#F8F8F8"
+    },
+    "tabBar": {
+        "custom": false,
+        "color": "#999999",
+        "selectedColor": "#448AF8",
+        "backgroundColor": "#ffffff",
+        "list": [
+            {
+                "pagePath": "pages/home/index",
+                "text": "首页",
+                "iconPath": "static/images/home.png",
+                "selectedIconPath": "/static/images/selected_home.png"
+            },
+            {
+                "pagePath": "pages/product/index",
+                "text": "产品",
+                "iconPath": "static/images/product.png",
+                "selectedIconPath": "static/images/selected_product.png"
+            },
+            {
+                "pagePath": "pages/my/index",
+                "text": "我的",
+                "iconPath": "static/images/my.png",
+                "selectedIconPath": "static/images/selected_my.png"
+            }
+        ]
+    }
 }

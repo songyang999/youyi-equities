@@ -8,9 +8,9 @@
     <popup-bottom ref="login">
         <template #content>
             <view class="pa-32">
-                <!-- <view class="flex flex-column align-center mb-64">
-          <image :src="logo" mode="aspectFit" class="logo" />
-                </view>-->
+                <view class="flex flex-column align-center mb-64">
+                    <image src="/static/images/logo.jpeg" mode="aspectFit" class="logo" />
+                </view>
                 <view class="flex mb-64">
                     <view class="check_box flex align-center pr-16" @click="updateRead">
                         <svg-icon v-if="isRead" icon-class="checked" class="fs-28" />
@@ -19,9 +19,8 @@
                     <view class="fs-28">
                         <view class="main_color mb-12">使用该功能需注册/登录平台账号，阅读并同意</view>
                         <view class="main_color flex">
-                            <!-- @click="goPage('/pages/agreement/index?type=1')" -->
-                            <view class="primary_color">《用户协议》</view>和
-                            <view class="primary_color" @click="openPrivacyContract">《隐私指引》</view>
+                            <view class="primary_color" @click="openPrivacyContract">《隐私指引》</view>和
+                            <view class="primary_color" @click="goPage('/pages/agreement/index')">《扣款授权确认书》</view>
                         </view>
                     </view>
                 </view>
