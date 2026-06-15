@@ -19,8 +19,7 @@
                     <view class="fs-28">
                         <view class="main_color mb-12">使用该功能需注册/登录平台账号，阅读并同意</view>
                         <view class="main_color flex">
-                            <view class="primary_color" @click="openPrivacyContract">《隐私指引》</view>和
-                            <view class="primary_color" @click="goPage('/pages/agreement/index')">《扣款授权确认书》</view>
+                            <view class="primary_color" @click="openPrivacyContract">《隐私指引》</view>
                         </view>
                     </view>
                 </view>
@@ -42,7 +41,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { getPhoneNumber } from "@/utils";
-import { toast, goPage } from "@/utils/tool";
+import { toast } from "@/utils/tool";
 
 const login = ref();
 

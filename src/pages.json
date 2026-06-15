@@ -77,6 +77,15 @@
             }
         },
         {
+            "path": "pages/privacy/index",
+            "style": {
+                "navigationBarTitleText": "隐私协议",
+                "backgroundColor": "#ffffff",
+                "backgroundColorTop": "#ffffff",
+                "backgroundColorBottom": "#ffffff"
+            }
+        },
+        {
             "path": "pages/orderList/index",
             "style": {
                 "navigationBarTitleText": "我的订单",

@@ -135,8 +135,7 @@
                     <button type="primary" hover-class="none" class="mb-10" @click="handleAgree">签约订购</button>
                     <view class="tips common_text fs-24">资费{{ separatorFilter(price, 2) }}元/月</view>
                     <view class="tips common_text fs-24 mb_80">
-                        点击按钮为同意
-                        <text>《隐私协议》《订购规则》</text>
+                        点击按钮视为同意<text @click="goPage('/pages/privacy/index')">《隐私协议》</text>及<text @click="goPage('/pages/agreement/index')">《扣款授权确认书》</text>
                     </view>
                 </uni-forms>
             </view>
@@ -162,7 +161,7 @@
 
 <script lang="ts" setup type="module">
 import { onLoad, onUnload } from "@dcloudio/uni-app";
-import { nextTick, ref } from "vue";
+import { ref } from "vue";
 import { toast, goPage, separatorFilter } from "@/utils/tool";
 import { isRedirect, bindMsg, bindCommit, comboBank } from "@/api/product";
 import test from "@/utils/test";

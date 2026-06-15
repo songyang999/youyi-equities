@@ -24,18 +24,8 @@
                     </view>
                 </view>
             </view>
-            <view class="product_introduce">
-                <view class="product_title flex justify-center align-center">
-                    <image class="star" src="/static/images/star_left.png" />
-                    <view class="fs-40 mx-2">{{detailInfo.productName}}</view>
-                    <image class="star" src="/static/images/star_right.png" />
-                </view>
-                <view>
-                    <view class="introduce_title fs-34">产品介绍</view>
-                    <view class="introduce_content fs-26">
-                        <text>{{detailInfo.productDetail}}</text>
-                    </view>
-                </view>
+            <view class="introduce_images">
+                <image v-for="i in 6" :key="i" :src="`/static/images/${imageFolder}/${i}.png`" mode="widthFix" class="introduce_img" />
             </view>
             <view class="footer" />
             <view class="footer-box">
@@ -58,11 +48,15 @@
 
 <script lang="ts" setup type="module">
 import { onLoad } from "@dcloudio/uni-app";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { goPage, toast } from "@/utils/tool";
 import { getEquieitsProduct } from "@/api/product";
 
 const productKey = ref("");
+// 根据 productKey 判断图片目录：1-视频 2-音频
+const imageFolder = computed(() =>
+    productKey.value === "EQ_P_0000002" ? "video" : "audio"
+);
 onLoad((query: any) => {
     productKey.value = query.productKey || "";
     getDetail();
@@ -131,7 +125,7 @@ const goHome = () => {
     background: #fff;
     .product_img {
         width: 100%;
-        height: 630rpx;
+        height: 750rpx;
         overflow: hidden;
         image {
             display: block;
@@ -154,30 +148,11 @@ const goHome = () => {
         }
     }
 }
-.product_introduce {
-    background: #fff;
+.introduce_images {
     width: 100%;
-    padding: 62rpx;
-    box-sizing: border-box;
-    .product_title {
-        height: 68rpx;
-        font-weight: 500;
-        color: $--color-primary;
-        margin-bottom: 54rpx;
-        .star {
-            display: block;
-            width: 54rpx;
-            height: 54rpx;
-        }
-    }
-    .introduce_title {
-        color: $--color-main;
-        font-weight: 500;
-        line-height: 50rpx;
-    }
-    .introduce_content {
-        color: $--color-sub;
-        line-height: 38rpx;
+    .introduce_img {
+        display: block;
+        width: 100%;
     }
 }
 .footer {
