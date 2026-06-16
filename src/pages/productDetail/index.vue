@@ -25,7 +25,7 @@
                 </view>
             </view>
             <view class="introduce_images">
-                <image v-for="i in 6" :key="i" :src="`/static/images/${imageFolder}/${i}.png`" mode="widthFix" class="introduce_img" />
+                <image v-for="item in productDetail" :key="item.index" :src="item.content" mode="widthFix" class="introduce_img" />
             </view>
             <view class="footer" />
             <view class="footer-box">
@@ -72,6 +72,11 @@ const detailInfo = ref<ProductItem>({
     productDetail: "",
     productSold: "0",
 });
+interface imgItem {
+    index: number;
+    content: string;
+}
+const productDetail = ref<imgItem[]>([]);
 const getDetail = async () => {
     try {
         uni.showLoading({
@@ -81,7 +86,11 @@ const getDetail = async () => {
         const res: any = await getEquieitsProduct({
             productKey: productKey.value,
         });
-        detailInfo.value = res?.data[0] || {};
+        const data = res?.data[0] || {};
+        detailInfo.value = data;
+        productDetail.value = data.productDetail
+            ? JSON.parse(data.productDetail)
+            : [];
     } catch (error) {
         //
     } finally {

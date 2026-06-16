@@ -92,7 +92,7 @@ const putBurialPoint = async (action: string | object, option: any) => {
 /**
  * @description: toast提示
  */
-export const toast = (title: string, duration = 1500) => {
+export const toast = (title: string, duration = 3000) => {
     uni.showToast({
         title: title,
         icon: 'none',

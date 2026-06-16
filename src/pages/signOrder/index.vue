@@ -135,7 +135,9 @@
                     <button type="primary" hover-class="none" class="mb-10" @click="handleAgree">签约订购</button>
                     <view class="tips common_text fs-24">资费{{ separatorFilter(price, 2) }}元/月</view>
                     <view class="tips common_text fs-24 mb_80">
-                        点击按钮视为同意<text @click="goPage('/pages/privacy/index')">《隐私协议》</text>及<text @click="goPage('/pages/agreement/index')">《扣款授权确认书》</text>
+                        点击按钮视为同意
+                        <text @click="goPage('/pages/privacy/index')">《隐私协议》</text>及
+                        <text @click="goPage('/pages/agreement/index')">《扣款授权确认书》</text>
                     </view>
                 </uni-forms>
             </view>
@@ -156,15 +158,16 @@
         </view>
     </view>
     <!-- 订购成功 -->
-    <order-success v-if="dialogVisible" :price="price" @close="closeSuccess" />
+    <order-success v-if="dialogVisible" :price="price" :name="productName" @close="closeSuccess" />
 </template>
 
 <script lang="ts" setup type="module">
 import { onLoad, onUnload } from "@dcloudio/uni-app";
-import { ref } from "vue";
-import { toast, goPage, separatorFilter } from "@/utils/tool";
+import { ref, computed } from "vue";
+import { toast, goPage, separatorFilter, trim } from "@/utils/tool";
 import { isRedirect, bindMsg, bindCommit, comboBank } from "@/api/product";
 import test from "@/utils/test";
+import _ from "lodash";
 const ruleForm = ref();
 const formData = ref({
     account: "",
@@ -186,6 +189,10 @@ onLoad((query: any) => {
     formData.value.mobile = mobile || "";
     getComboBank();
 });
+
+const productName = computed(() =>
+    formData.value.productKey === "EQ_P_0000002" ? "视频会员" : "音频会员"
+);
 
 const checkBank = (rule, value, data, callback) => {
     if (!value) {
@@ -311,7 +318,7 @@ const checkRedirect = async () => {
             title: "加载中...",
         });
         const res: any = await isRedirect({
-            cardNo: formData.value.cardNo,
+            cardNo: trim(formData.value.cardNo, "all"),
             bankInsCd: formData.value.bankInsCd,
         });
         if (!res.data?.isRedirect) {
@@ -324,7 +331,9 @@ const checkRedirect = async () => {
 // 发送验证码/获取跳转银行链接
 const bindMsgFn = async () => {
     try {
-        const res: any = await bindMsg(formData.value);
+        const params = _.cloneDeep(formData.value);
+        params.cardNo = trim(params.cardNo, "all");
+        const res: any = await bindMsg(params);
         formData.value.bindMchntssn = res.data?.bindMchntssn || "";
         // false时需要验证码
         mix_setIntervals();
@@ -356,7 +365,9 @@ const bindCommitFn = async () => {
             mask: true,
             title: "加载中...",
         });
-        await bindCommit(formData.value);
+        const params = _.cloneDeep(formData.value);
+        params.cardNo = trim(params.cardNo, "all");
+        await bindCommit(params);
         dialogVisible.value = true;
     } catch (error) {
         //
