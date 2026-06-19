@@ -146,10 +146,6 @@ const handleSubmit = () => {
 const content = ref("");
 const handleRelevance = async () => {
     try {
-        uni.showLoading({
-            mask: true,
-            title: "加载中...",
-        });
         const { mobile } = getApp().globalData as GlobalDataType;
         const params = {
             ...formData.value,
@@ -160,8 +156,6 @@ const handleRelevance = async () => {
         content.value = res.result.msg || "";
     } catch (error) {
         //
-    } finally {
-        uni.hideLoading();
     }
 };
 const closeSuccess = () => {

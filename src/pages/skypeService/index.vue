@@ -53,17 +53,11 @@ onShow(() => {
 const list = ref<ServiceItem[]>([]);
 const getServiceList = async () => {
     try {
-        uni.showLoading({
-            mask: true,
-            title: "加载中...",
-        });
         const { mobile } = getApp().globalData as GlobalDataType;
         const res: any = await getMonthlySubscriptionService({ mobile: mobile });
         list.value = res.data || [];
     } catch (error) {
         //
-    } finally {
-        uni.hideLoading();
     }
 }
 </script>

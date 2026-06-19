@@ -99,6 +99,7 @@
                                     :placeholder-style="`font-size: 13px;color:#999999;`"
                                     class="input fs-28"
                                     type="text"
+                                    @blur="_ => {formData.cardNo = trim(formData.cardNo, 'all')}"
                                 />
                             </view>
                         </uni-forms-item>
@@ -159,6 +160,8 @@
     </view>
     <!-- 订购成功 -->
     <order-success v-if="dialogVisible" :price="price" :name="productName" @close="closeSuccess" />
+    <!-- 订购失败 -->
+    <order-failure v-if="dialogFailVisible" :error-msg="errorMsg" @close="closeFailure" />
 </template>
 
 <script lang="ts" setup type="module">
@@ -185,14 +188,18 @@ const price = ref(0);
 onLoad((query: any) => {
     formData.value.productKey = query?.productKey || "";
     price.value = Number(query?.price) || 0;
-    const { mobile } = getApp().globalData as GlobalDataType;
-    formData.value.mobile = mobile || "";
     getComboBank();
 });
 
-const productName = computed(() =>
-    formData.value.productKey === "EQ_P_0000002" ? "视频会员" : "音频会员"
-);
+const productName = computed(() => {
+    if (formData.value.productKey === "EQ_P_0000002") {
+        return "视频会员"
+    } else if (formData.value.productKey === "EQ_P_0000003") {
+        return "音频会员"
+    } else {
+        return ""
+    }
+});
 
 const checkBank = (rule, value, data, callback) => {
     if (!value) {
@@ -313,34 +320,27 @@ const handleAgree = () => {
 // 验证银行卡
 const checkRedirect = async () => {
     try {
-        uni.showLoading({
-            mask: true,
-            title: "加载中...",
-        });
         const res: any = await isRedirect({
-            cardNo: trim(formData.value.cardNo, "all"),
+            cardNo: formData.value.cardNo,
             bankInsCd: formData.value.bankInsCd,
         });
         if (!res.data?.isRedirect) {
             bindMsgFn();
         }
     } catch (error) {
-        uni.hideLoading();
+        //
     }
 };
 // 发送验证码/获取跳转银行链接
 const bindMsgFn = async () => {
     try {
         const params = _.cloneDeep(formData.value);
-        params.cardNo = trim(params.cardNo, "all");
         const res: any = await bindMsg(params);
         formData.value.bindMchntssn = res.data?.bindMchntssn || "";
         // false时需要验证码
         mix_setIntervals();
     } catch (error) {
         //
-    } finally {
-        uni.hideLoading();
     }
 };
 onUnload(() => {
@@ -359,20 +359,21 @@ const handleSubmit = () => {
             toast("信息未填写或填写有误，请重新填写");
         });
 };
+const dialogFailVisible = ref(false);
+const errorMsg = ref("");
+const closeFailure = () => {
+    dialogFailVisible.value = false;
+};
 const bindCommitFn = async () => {
     try {
-        uni.showLoading({
-            mask: true,
-            title: "加载中...",
-        });
         const params = _.cloneDeep(formData.value);
-        params.cardNo = trim(params.cardNo, "all");
         await bindCommit(params);
         dialogVisible.value = true;
-    } catch (error) {
-        //
-    } finally {
-        uni.hideLoading();
+    } catch (error: any) {
+        if (error?.result?.msg) {
+            errorMsg.value = error.result.msg;
+            dialogFailVisible.value = true;
+        }
     }
 };
 const closeSuccess = () => {

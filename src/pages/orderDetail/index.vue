@@ -73,12 +73,15 @@
                     </view>-->
                 </view>
             </view>
-            <template v-if="+orderDetail.status === 1">
+            <template v-if="[-1, 1].includes(Number(orderDetail.status))">
                 <view class="footer" />
                 <view class="footer-box">
                     <view class="btn_box flex align-center py-14">
-                        <button type="primary" hover-class="none" @click="openEquity">权益兑换</button>
-                        <button type="primary" hover-class="none" @click="openUnreg">业务退订</button>
+                        <template v-if="Number(orderDetail.status) === 1">
+                            <button type="primary" hover-class="none" @click="openEquity">权益兑换</button>
+                            <button type="primary" hover-class="none" @click="openUnreg">业务退订</button>
+                        </template>
+                        <button v-else type="primary" hover-class="none" @click="handlePayOrder">继续付款</button>
                     </view>
                 </view>
             </template>
@@ -91,14 +94,18 @@
     <!-- 业务退订 -->
     <business-unreg v-if="dialogUnreg" @close="handleCloseUnreg" />
     <!-- 退订成功 -->
-    <unreg-success v-if="dialogSuccess" @close="closeSuccess" />
+    <unreg-success v-if="dialogSuccess" @close="closeSuccessUnreg" />
+    <!-- 订购成功 -->
+    <order-success v-if="dialogSuccessVisible" :price="orderDetail.price" :name="productName" @close="closeSuccess" />
+    <!-- 订购失败 -->
+    <order-failure v-if="dialogFailVisible" :error-msg="errorMsg" @close="closeFailure" />
 </template>
 
 <script lang="ts" setup type="module">
 import { onLoad } from "@dcloudio/uni-app";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { toast, separatorFilter } from "@/utils/tool";
-import { getOrder, agiotage, deleteOrder } from "@/api/my";
+import { getOrder, agiotage, deleteOrder, payOrder } from "@/api/my";
 import dayjs from "dayjs";
 onLoad((query: any) => {
     if (query?.orderId) {
@@ -109,16 +116,10 @@ onLoad((query: any) => {
 const orderDetail = ref<OrderItem>({});
 const getOrderDetail = async (orderId: string) => {
     try {
-        uni.showLoading({
-            mask: true,
-            title: "加载中...",
-        });
         const res: any = await getOrder({ orderId });
         orderDetail.value = res?.data[0] || {};
     } catch (error) {
         //
-    } finally {
-        uni.hideLoading();
     }
 };
 
@@ -142,14 +143,10 @@ const dialogVisible = ref(false);
 const content = ref("");
 const openCash = async (data) => {
     try {
-        uni.showLoading({
-            mask: true,
-            title: "加载中...",
-        });
         const params = {
-            equityProductCode: data.equity,
+            equityCode: data.equity,
             boundMobile: data.mobile,
-            orderId: orderDetail.value.orderId,
+            orderId: orderDetail.value.orderId
         };
         const res: any = await agiotage(params);
         content.value = res.result?.msg || "";
@@ -158,8 +155,6 @@ const openCash = async (data) => {
         getOrderDetail(orderDetail.value.orderId);
     } catch (error) {
         //
-    } finally {
-        uni.hideLoading();
     }
 };
 const handleClose = () => {
@@ -177,7 +172,7 @@ const handleCloseUnreg = () => {
 };
 // 退订成功
 const dialogSuccess = ref(false);
-const closeSuccess = () => {
+const closeSuccessUnreg = () => {
     dialogSuccess.value = false;
 };
 
@@ -202,6 +197,39 @@ const handleDelete = () => {
         },
     });
 };
+
+const productName = computed(() => {
+    if (orderDetail.value.productKey === "EQ_P_0000002") {
+        return "视频会员"
+    } else if (orderDetail.value.productKey === "EQ_P_0000003") {
+        return "音频会员"
+    } else {
+        return orderDetail.value.productName
+    }
+});
+const dialogSuccessVisible = ref(false);
+const closeSuccess = () => {
+    dialogSuccessVisible.value = false;
+    getOrderDetail(orderDetail.value.orderId)
+};
+const dialogFailVisible = ref(false);
+const errorMsg = ref("");
+const closeFailure = () => {
+    dialogFailVisible.value = false;
+    getOrderDetail(orderDetail.value.orderId)
+};
+// 继续付款
+const handlePayOrder = async () => {
+    try {
+        await payOrder({orderId: orderDetail.value.orderId})
+        dialogSuccessVisible.value = true;
+    } catch (error: any) {
+        if (error?.result?.msg) {
+            errorMsg.value = error.result.msg;
+            dialogFailVisible.value = true;
+        }
+    }
+}
 </script>
 
 <style lang="scss" scoped>

@@ -48,9 +48,12 @@
                                 <text class="salary">{{ separatorFilter(item.price, 2) }}</text>
                             </view>
                         </view>
-                        <view v-if="+item.status === 1" class="flex justify-end mt-8" @click.stop>
-                            <button type="default" hover-class="none" class="danger_btn" @click="handleCash(item)">权益兑换</button>
-                            <button type="default" hover-class="none" class="common_btn" @click="handleUnreg(item)">业务退订</button>
+                        <view v-if="[-1, 1].includes(Number(item.status))" class="flex justify-end mt-8" @click.stop>
+                            <template v-if="Number(item.status) === 1">
+                                <button type="default" hover-class="none" class="danger_btn" @click="handleCash(item)">权益兑换</button>
+                                <button type="default" hover-class="none" class="common_btn" @click="handleUnreg(item)">业务退订</button>
+                            </template>
+                            <button v-else type="default" hover-class="none" class="primary_btn" @click="handleRefresh(item)">继续付款</button>
                         </view>
                     </view>
                 </view>
@@ -114,6 +117,7 @@ const emit = defineEmits([
     "cash",
     "unreg",
     "delete",
+    "refresh"
 ]);
 const triggered = ref(false);
 const enabled = ref(false);
@@ -163,6 +167,10 @@ const handleUnreg = (item) => {
 // 删除
 const handleDelete = (item) => {
     emit("delete", item.orderId);
+};
+// 继续付款
+const handleRefresh = (item) => {
+    emit("refresh", item);
 };
 </script>
 
@@ -241,6 +249,10 @@ const handleDelete = (item) => {
             color: #777;
             border-color: #777;
             margin-left: 16rpx;
+        }
+        .primary_btn {
+            color: $--color-primary;
+            border-color: $--color-primary;
         }
     }
 }

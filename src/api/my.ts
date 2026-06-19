@@ -120,3 +120,24 @@ export function deleteOrder(data?: any) {
         data,
     })
 }
+
+/**
+ * @description: 继续付款
+ */
+export function payOrder(data?: any) {
+    return http({
+        url: '/equities/payOrder',
+        data,
+        toastNo: true
+    })
+}
+
+/**
+ * @description: 我的权益
+ */
+export function getEquity(data?: any) {
+    return http({
+        url: '/equities/getEquity',
+        data
+    })
+}

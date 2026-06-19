@@ -79,20 +79,11 @@ const userInfo = ref({
 });
 const getPerson = async () => {
     try {
-        uni.showLoading({
-            mask: true,
-            title: "加载中...",
-        });
         const res: any = await wechatUserInfo();
         userInfo.value = res.data || {};
     } catch (error) {
         //
-    } finally {
-        uni.hideLoading();
     }
-    // if (res.result?.userInfo) {
-    //     userInfo.value = res.result?.userInfo;
-    // }
 };
 
 const auth_login = ref();

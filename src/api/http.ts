@@ -26,14 +26,16 @@ function dispose() {
         // 'Wx-App-Id': urlData.wx_app_id || '',
         token,
     };
-    // uni.showLoading({
-    //     mask: true,
-    //     title: '加载中...',
-    // })
     return header;
 }
 export const http = (params: ParamsType) => {
     const header = dispose();
+    if (!params.loadingNo) {
+        uni.showLoading({
+            mask: true,
+            title: '加载中...',
+        })
+    }
     return new Promise((resolve, reject) => {
         uni.request({
             method: params.method || "POST",
@@ -43,7 +45,9 @@ export const http = (params: ParamsType) => {
             header,
             dataType: params.dataType || "json",
             success: (res: any) => {
-                // uni.hideLoading()
+                if (!params.loadingNo) {
+                    uni.hideLoading()
+                }
                 if (res.statusCode === 200) {
                     if (params.back) {
                         return resolve(res.data);
@@ -56,11 +60,12 @@ export const http = (params: ParamsType) => {
                             uni.removeStorageSync('open_id')
                             uni.removeStorageSync('union_id')
                             const globalData = getApp().globalData as GlobalDataType
-                            // globalData.uid = 0
                             globalData.open_id = ''
                             refreshLogin(params, resolve)
                         } else {
-                            toast(res.data.result.msg);
+                            if (!params.toastNo) {
+                                toast(res.data.result.msg);
+                            }
                             return reject(res.data);
                         }
                     }

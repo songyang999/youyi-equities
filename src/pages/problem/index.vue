@@ -38,16 +38,10 @@ interface qaItem {
 const list = ref<qaItem[]>([]);
 const getQaList = async () => {
     try {
-        uni.showLoading({
-            mask: true,
-            title: "加载中...",
-        });
         const res: any = await qaList();
         list.value = res.data || [];
     } catch (error) {
         //
-    } finally {
-        uni.hideLoading();
     }
 };
 </script>

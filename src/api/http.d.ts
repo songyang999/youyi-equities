@@ -5,4 +5,6 @@ export type ParamsType = {
     data: any
     dataType?: string
     back?: boolean
+    toastNo?: boolean
+    loadingNo?: boolean
 }

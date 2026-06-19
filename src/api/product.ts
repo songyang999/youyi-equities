@@ -52,6 +52,7 @@ export function bindCommit(data?: any) {
     return http({
         url: "/equities/bindCommit",
         data,
+        toastNo: true
     });
 }
 

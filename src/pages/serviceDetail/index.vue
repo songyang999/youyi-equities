@@ -77,10 +77,6 @@ onLoad((query: any) => {
 const detail = ref<ServiceItem>();
 const getServiceDetail = async (orderId: string) => {
     try {
-        uni.showLoading({
-            mask: true,
-            title: "加载中...",
-        });
         const { mobile } = getApp().globalData as GlobalDataType;
         const res: any = await getMonthlySubscriptionService({
             mobile: mobile,
@@ -90,8 +86,6 @@ const getServiceDetail = async (orderId: string) => {
         );
     } catch (error) {
         //
-    } finally {
-        uni.hideLoading();
     }
 };
 
@@ -105,17 +99,11 @@ const closePopup = () => {
 };
 const commitUnsubscribe = async () => {
     try {
-        uni.showLoading({
-            mask: true,
-            title: "加载中...",
-        });
         await unsubscribe({ orderId: detail.value?.orderId });
         closePopup();
         uni.navigateBack();
     } catch (error) {
         //
-    } finally {
-        uni.hideLoading();
     }
 };
 </script>

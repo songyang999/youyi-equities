@@ -65,10 +65,6 @@ const getPhone = async (e: any) => {
         return;
     }
     try {
-        uni.showLoading({
-            mask: true,
-            title: "加载中...",
-        });
         const res: any = await getPhoneNumber(e);
         if (res) {
             login.value.close();
@@ -76,8 +72,6 @@ const getPhone = async (e: any) => {
         }
     } catch (error) {
         //
-    } finally {
-        uni.hideLoading();
     }
 };
 </script>

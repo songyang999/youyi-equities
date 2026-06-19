@@ -77,18 +77,12 @@ const userInfo = ref({
 });
 const getPerson = async () => {
     try {
-        uni.showLoading({
-            mask: true,
-            title: "加载中...",
-        });
         const res: any = await wechatUserInfo();
         userInfo.value = res.data || {};
         const { mobile } = getApp().globalData as GlobalDataType;
         userInfo.value.mobile = mobile || "";
     } catch (error) {
         //
-    } finally {
-        uni.hideLoading();
     }
 };
 

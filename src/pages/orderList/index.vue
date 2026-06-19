@@ -18,6 +18,7 @@
                     @delete="handleDelete"
                     @cash="openEquity"
                     @unreg="openUnreg"
+                    @refresh="handlePayOrder"
                 />
             </view>
             <view v-else class="no_wrap">
@@ -32,14 +33,18 @@
     <!-- 业务退订 -->
     <business-unreg v-if="dialogUnreg" @close="handleCloseUnreg" />
     <!-- 退订成功 -->
-    <unreg-success v-if="dialogSuccess" @close="closeSuccess" />
+    <unreg-success v-if="dialogSuccess" @close="closeSuccessUnreg" />
+    <!-- 订购成功 -->
+    <order-success v-if="dialogSuccessVisible" :price="orderDetail.price" :name="productName" @close="closeSuccess" />
+    <!-- 订购失败 -->
+    <order-failure v-if="dialogFailVisible" :error-msg="errorMsg" @close="closeFailure" />
 </template>
 
 <script setup lang="ts">
 import { onReady, onShow } from "@dcloudio/uni-app";
-import { ref, nextTick } from "vue";
-import { myOrder, deleteOrder } from "@/api/my";
-import { getRmainHeight, toast } from "@/utils/tool";
+import { ref, nextTick, computed } from "vue";
+import { myOrder, deleteOrder, payOrder } from "@/api/my";
+import { getRmainHeight, toast, goPage } from "@/utils/tool";
 
 const { customHeaderHeight } = getApp().globalData as GlobalDataType;
 
@@ -137,7 +142,7 @@ const handleCloseUnreg = () => {
 };
 // 退订成功
 const dialogSuccess = ref(false);
-const closeSuccess = () => {
+const closeSuccessUnreg = () => {
     dialogSuccess.value = false;
 };
 // 删除订单
@@ -161,6 +166,42 @@ const handleDelete = (orderId) => {
         },
     });
 };
+
+const orderDetail = ref<OrderItem>({});
+// 名称
+const productName = computed(() => {
+    if (orderDetail.value.productKey === "EQ_P_0000002") {
+        return "视频会员"
+    } else if (orderDetail.value.productKey === "EQ_P_0000003") {
+        return "音频会员"
+    } else {
+        return orderDetail.value.productName
+    }
+});
+const dialogSuccessVisible = ref(false);
+const closeSuccess = () => {
+    dialogSuccessVisible.value = false;
+    goPage(`/pages/orderDetail/index?orderId=${orderDetail.value.orderId}`);
+};
+const dialogFailVisible = ref(false);
+const errorMsg = ref("");
+const closeFailure = () => {
+    dialogFailVisible.value = false;
+    goPage(`/pages/orderDetail/index?orderId=${orderDetail.value.orderId}`);
+};
+// 继续付款
+const handlePayOrder = async (data: OrderItem) => {
+    try {
+        orderDetail.value = data;
+        await payOrder({orderId: data.orderId})
+        dialogSuccessVisible.value = true;
+    } catch (error: any) {
+        if (error?.result?.msg) {
+            errorMsg.value = error.result.msg;
+            dialogFailVisible.value = true;
+        }
+    }
+}
 </script>
 
 <style scoped lang="scss">

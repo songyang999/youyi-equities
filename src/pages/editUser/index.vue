@@ -125,18 +125,12 @@ const formData = ref({
 });
 const getPerson = async () => {
     try {
-        uni.showLoading({
-            mask: true,
-            title: "加载中...",
-        });
         const res: any = await wechatUserInfo();
         formData.value = res.data || {};
         const { mobile } = getApp().globalData as GlobalDataType;
         formData.value.mobile = mobile || "";
     } catch (error) {
         //
-    } finally {
-        uni.hideLoading();
     }
 };
 
@@ -177,18 +171,12 @@ const handleSubmit = () => {
 };
 const updateInfo = async () => {
     try {
-        uni.showLoading({
-            mask: true,
-            title: "加载中...",
-        });
         await updateWechatUserInfo(formData.value);
         uni.navigateBack({
             delta: 1,
         });
     } catch (error) {
         //
-    } finally {
-        uni.hideLoading();
     }
 };
 </script>

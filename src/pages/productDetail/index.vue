@@ -54,9 +54,9 @@ import { getEquieitsProduct } from "@/api/product";
 
 const productKey = ref("");
 // 根据 productKey 判断图片目录：1-视频 2-音频
-const imageFolder = computed(() =>
-    productKey.value === "EQ_P_0000002" ? "video" : "audio"
-);
+// const imageFolder = computed(() =>
+//     productKey.value === "EQ_P_0000002" ? "video" : "audio"
+// );
 onLoad((query: any) => {
     productKey.value = query.productKey || "";
     getDetail();
@@ -79,10 +79,6 @@ interface imgItem {
 const productDetail = ref<imgItem[]>([]);
 const getDetail = async () => {
     try {
-        uni.showLoading({
-            mask: true,
-            title: "加载中...",
-        });
         const res: any = await getEquieitsProduct({
             productKey: productKey.value,
         });
@@ -93,8 +89,6 @@ const getDetail = async () => {
             : [];
     } catch (error) {
         //
-    } finally {
-        uni.hideLoading();
     }
 };
 
