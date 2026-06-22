@@ -8,12 +8,13 @@
         <template #content>
             <view class="user_info pr px-30 pt-20 mb-32">
                 <image :src="userInfo.avatarUrl || '/static/images/avatar.png'" mode="aspectFit" class="avatar mr-24" @click="openLogin" />
-                <view v-if="mobile" class="flex flex-column">
-                    <text class="user_name fs-32 mb-6">{{userInfo.nickName || '游客'}}</text>
-                    <view class="member_box flex align-center">
+                <view v-if="mobile" class="flex align-center" @click="linkTo({ url: '/pages/userInfo/index' })">
+                    <text class="user_name fs-32">{{userInfo.nickName || '游客'}}</text>
+                    <image src="/static/images/right.png" mode="aspectFit" class="right_icon" />
+                    <!-- <view class="member_box flex align-center">
                         <image src="/static/images/member.png" class="member_icon" />
                         <text class="fs-28">黄金会员</text>
-                    </view>
+                    </view> -->
                 </view>
                 <button v-else class="login_btn ml-16 fs-32" hover-class="none" @click="openLogin">登录 / 注册</button>
                 <view class="bell" @click="goPage('/pages/message/index')">
@@ -25,9 +26,9 @@
                     <image src="/static/images/order.png" class="hot_icon" />
                     <text class="fs-28">我的订单</text>
                 </view>
-                <view class="hot_item info_item flex1 flex flex-column justify-center align-center ml-20" @click="linkTo({ url: '/pages/userInfo/index' })">
-                    <image src="/static/images/info.png" class="hot_icon" />
-                    <text class="fs-28">个人信息</text>
+                <view class="hot_item info_item flex1 flex flex-column justify-center align-center ml-20" @click="linkTo({ url: '/pages/myQuanyi/index' })">
+                    <image src="/static/images/quanyi.png" class="hot_icon" />
+                    <text class="fs-28">我的权益</text>
                 </view>
             </view>
             <view class="function_wrap mx-30 px-30 py-40">
@@ -189,6 +190,12 @@ onHide(() => {});
     .user_name {
         color: $--color-main;
         font-weight: 500;
+    }
+    .right_icon {
+        display: block;
+        width: 24rpx;
+        height: 24rpx;
+        margin-left: 20rpx;
     }
     .member_box {
         padding: 2rpx 16rpx;
