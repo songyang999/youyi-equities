@@ -10,8 +10,8 @@
                 <image src="/static/images/close.png" />
             </view>
             <image :src="props.iconUrl" mode="aspectFill" class="platform_icon" />
-            <view class="dialog_title fs-36">{{ props.equityName }}</view>
-            <view class="dialog_subtitle fs-28">
+            <view class="dialog_title fs-34">{{ props.equityName }}</view>
+            <view class="dialog_subtitle fs-32">
                 {{ props.equityCount }}张兑换券，确认兑换{{ props.displayName }}
             </view>
             <view class="input_box">
@@ -19,12 +19,12 @@
                     v-model="mobile"
                     :maxlength="11"
                     placeholder="请输入充值账号对应手机号码"
-                    :placeholder-style="`font-size: 13px;color:#999999;`"
-                    class="input fs-28"
+                    :placeholder-style="`font-size: 16px;color:#999999;`"
+                    class="input fs-32"
                     type="number"
                 />
             </view>
-            <view class="tip_text fs-24">
+            <view class="tip_text fs-28">
                 您领取的权益将自动发放至上面所填手机号绑定的平台账号，请确认填写的手机号码无误，权益已经兑换无法退还，逾期视为自动放弃，请及时使用。
             </view>
             <view class="btn_group flex">
@@ -95,16 +95,16 @@ const handleConfirm = () => {
         left: 50%;
         top: 50%;
         transform: translate(-50%, -50%);
-        width: 686rpx;
-        padding: 90rpx 44rpx 40rpx;
+        width: 620rpx;
+        padding: 62rpx 42rpx 40rpx;
         box-sizing: border-box;
         border-radius: 16rpx;
         background-color: #fff;
 
         .close_btn {
             position: absolute;
-            top: -96rpx;
-            right: 0;
+            top: -90rpx;
+            right: -25rpx;
             width: 50rpx;
             height: 50rpx;
 
@@ -118,11 +118,11 @@ const handleConfirm = () => {
         .platform_icon {
             position: absolute;
             left: 50%;
-            top: -40rpx;
+            top: -45rpx;
             transform: translateX(-50%);
             display: block;
-            width: 104rpx;
-            height: 104rpx;
+            width: 90rpx;
+            height: 90rpx;
             border-radius: 16rpx;
         }
 
@@ -132,34 +132,33 @@ const handleConfirm = () => {
             color: $--color-main;
             font-weight: bold;
             line-height: 50rpx;
-            margin-bottom: 16rpx;
+            margin-bottom: 20rpx;
         }
 
         .dialog_subtitle {
             width: 100%;
             text-align: center;
             color: $--color-primary;
-            line-height: 40rpx;
-            margin-bottom: 32rpx;
+            line-height: 50rpx;
+            margin-bottom: 14rpx;
         }
 
         .input_box {
-            background: #f7f8fa;
-            border-radius: 12rpx;
+            background: #EBEBEB;
+            border-radius: 16rpx;
             padding: 0 24rpx;
-            margin-bottom: 24rpx;
-
+            margin-bottom: 30rpx;
             .input {
                 width: 100%;
-                height: 88rpx;
-                line-height: 88rpx;
+                height: 70rpx;
+                line-height: 70rpx;
                 color: $--color-main;
             }
         }
         .tip_text {
-            color: $--color-sub;
-            line-height: 36rpx;
-            margin-bottom: 40rpx;
+            color: $--color-common;
+            line-height: 44rpx;
+            margin-bottom: 30rpx;
         }
         .btn_group {
             button {
