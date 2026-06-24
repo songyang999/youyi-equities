@@ -48,15 +48,12 @@
 
 <script lang="ts" setup type="module">
 import { onLoad } from "@dcloudio/uni-app";
-import { computed, ref } from "vue";
+import { ref } from "vue";
 import { goPage, toast } from "@/utils/tool";
 import { getEquieitsProduct } from "@/api/product";
 
 const productKey = ref("");
 // 根据 productKey 判断图片目录：1-视频 2-音频
-// const imageFolder = computed(() =>
-//     productKey.value === "EQ_P_0000002" ? "video" : "audio"
-// );
 onLoad((query: any) => {
     productKey.value = query.productKey || "";
     getDetail();

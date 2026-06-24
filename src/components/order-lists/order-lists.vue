@@ -50,8 +50,8 @@
                         </view>
                         <view v-if="[-1, 1].includes(Number(item.status))" class="flex justify-end mt-8" @click.stop>
                             <template v-if="Number(item.status) === 1">
-                                <button type="default" hover-class="none" class="danger_btn" @click="handleCash(item)">权益兑换</button>
-                                <button type="default" hover-class="none" class="common_btn" @click="handleUnreg(item)">业务退订</button>
+                                <!-- <button type="default" hover-class="none" class="danger_btn" @click="handleCash(item)">权益兑换</button> -->
+                                <button type="default" hover-class="none" class="common_btn" @click="handleUnreg(item)">申请退款</button>
                             </template>
                             <button v-else type="default" hover-class="none" class="primary_btn" @click="handleRefresh(item)">继续付款</button>
                         </view>
@@ -160,7 +160,7 @@ const gotoDetail = (item) => {
 const handleCash = (item) => {
     emit("cash", item);
 };
-// 业务退订
+// 申请退款
 const handleUnreg = (item) => {
     emit("unreg", item);
 };

@@ -58,6 +58,7 @@ export function agiotage(data?: any) {
     return http({
         url: '/equities/agiotage',
         data,
+        toastNo: true
     })
 }
 

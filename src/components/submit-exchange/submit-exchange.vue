@@ -9,10 +9,10 @@
             <view class="close_btn" @click="close">
                 <image src="/static/images/close.png" />
             </view>
-            <image :src="props.iconUrl || '/static/images/no_data.png'" mode="aspectFill" class="platform_icon" />
+            <image :src="props.iconUrl" mode="aspectFill" class="platform_icon" />
             <view class="dialog_title fs-36">{{ props.equityName }}</view>
             <view class="dialog_subtitle fs-28">
-                {{ props.equityCount }}张兑换券，确认兑换{{ props.platformName }}
+                {{ props.equityCount }}张兑换券，确认兑换{{ props.displayName }}
             </view>
             <view class="input_box">
                 <input
@@ -29,7 +29,7 @@
             </view>
             <view class="btn_group flex">
                 <button hover-class="none" class="flex1 cancel_btn" @click="close">我再想想</button>
-                <button hover-class="none" class="flex1 confirm_btn ml-20" @click="handleConfirm">确认兑换</button>
+                <button hover-class="none" class="flex1 confirm_btn" @click="handleConfirm">确认兑换</button>
             </view>
         </view>
     </view>
@@ -45,6 +45,10 @@ const props = defineProps({
         type: String,
         default: "",
     },
+    displayName: {
+        type: String,
+        default: "",
+    },
     iconUrl: {
         type: String,
         default: "",
@@ -52,10 +56,6 @@ const props = defineProps({
     equityCount: {
         type: Number,
         default: 1,
-    },
-    platformName: {
-        type: String,
-        default: "",
     },
 });
 
@@ -156,27 +156,24 @@ const handleConfirm = () => {
                 color: $--color-main;
             }
         }
-
         .tip_text {
             color: $--color-sub;
             line-height: 36rpx;
             margin-bottom: 40rpx;
         }
-
         .btn_group {
             button {
                 margin: 0;
             }
-
             .cancel_btn {
                 color: $--color-primary;
                 border-color: $--color-primary;
             }
-
             .confirm_btn {
                 color: #fff;
                 background-color: $--color-primary;
                 border-color: $--color-primary;
+                margin-left: 12rpx;
             }
         }
     }

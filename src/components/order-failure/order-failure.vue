@@ -7,7 +7,7 @@
     <view class="deliver_bac" catchtouchmove="true" @click.stop>
         <view class="deliver_wrap">
             <image class="yes_icon" src="/static/images/fail.png" />
-            <view class="yes_title fs-40">订购失败</view>
+            <view class="yes_title fs-40">{{ title }}</view>
             <view class="yes_content mt-30 fs-28 px-28">
                 <text>{{ errorMsg }}</text>
             </view>
@@ -22,6 +22,10 @@
 const emit = defineEmits(["close"]);
 
 const props = defineProps({
+    title: {
+        type: String,
+        default: "",
+    },
     errorMsg: {
         type: String,
         default: "",

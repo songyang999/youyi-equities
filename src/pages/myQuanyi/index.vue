@@ -9,58 +9,71 @@
             <view class="quanyi_wrap px-30 pb-40">
                 <view
                     v-for="(section, index) in benefitSections"
-                    :key="section.equityType"
+                    :key="index"
                     class="benefit_card pr mb-30"
                 >
-                    <image :src="[index === 0 ? '/static/images/video_bac.png' : '/static/images/audio_bac.png']" mode="aspectFill" class="header_bg" />
+                    <image :src="[isVideo(section.equityType) ? '/static/images/video_bac.png' : '/static/images/audio_bac.png']" mode="aspectFill" class="header_bg" />
                     <view class="card_header pr">
                         <view class="header_content">
                             <view class="voucher_tip fs-32">
-                                <text class="count">{{ section.explain }}</text>
+                                <text class="count">{{ section.equityCount }}</text>
                                 张
-                                <text class="highlight">{{ index === 0 ? '视频会员' : '音频会员' }}</text>
+                                <text class="highlight">{{ isVideo(section.equityType) ? '视频会员' : '音频会员' }}</text>
                                 权益兑换券待使用
-                                <!-- {{ section.equityType }} -->
                             </view>
                             <view class="card_title fs-32">{{ section.theme }}</view>
                             <view class="card_subtitle fs-28">{{ section.explain }}</view>
                         </view>
                     </view>
                     <view class="dashed_line pr"></view>
-                    <view :class="[index === 0 ? 'grid_video' : 'grid_audio']" class="platform_grid pr">
-                        <view
-                            v-for="item in section.equityArray"
-                            :key="item.productKey"
-                            class="platform_item flex flex-column align-center"
-                        >
-                            <view class="logo_placeholder">
-                                <image :src="item.iconUrl" mode="aspectFit" class="logo_img" />
+                    <view :class="[isVideo(section.equityType) ? 'grid_video' : 'grid_audio']" class="platform_grid pr">
+                        <view class="grid_box">
+                            <view
+                                v-for="item in section.equityArray"
+                                :key="item.equityCode"
+                                class="platform_item flex flex-column align-center"
+                                >
+                                <view class="logo_placeholder">
+                                    <image :src="item.iconUrl" mode="aspectFit" class="logo_img" />
+                                </view>
+                                <view class="platform_name fs-24"><text>{{ item.displayName }}</text></view>
+                                <view class="redeem_btn fs-24" @click="handleExchange(item, section)">立即兑换</view>
                             </view>
-                            <view class="platform_name fs-24">{{ item.equityName }}</view>
-                            <view class="redeem_btn fs-24">立即兑换</view>
                         </view>
                     </view>
                 </view>
             </view>
         </template>
     </general-custom>
-    <exchange-success v-if="exchangeVisible" @close="handleCloseExchange" />
+    <!-- 兑换成功 -->
+    <exchange-success v-if="successVisible" @close="closeSuccess" />
+    <!-- 兑换失败 -->
+    <order-failure v-if="dialogFailVisible" :error-msg="errorMsg" title="兑换失败" @close="closeFailure" />
+    <submit-exchange
+        v-if="exchangeVisible"
+        :equity-name="equityName"
+        :display-name="displayName"
+        :icon-url="iconUrl"
+        :equity-count="equityCount"
+        @close="closeExchange"
+        @confirm="confirmExchange"
+    />
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
-import { getEquity } from '@/api/my'
+import { getEquity, agiotage } from '@/api/my'
 
 onLoad(() => {
     getList()
 })
 
 interface EquityItem {
-    productKey: string;
+    equityCode: string;
     iconUrl: string;
     equityName: string;
-    equityType: number;
+    displayName: string;
 }
 interface BenefitSection {
     explain: string;
@@ -70,21 +83,89 @@ interface BenefitSection {
     equityArray: EquityItem[];
 }
 
+const isVideo = (equityType) => {
+    return equityType.includes('视频会员')
+}
+// 权益名字格式化
+const formatDisplayName = (name: string) => {
+    if (!name) return "";
+    const index = name.lastIndexOf("会员");
+    if (index <= 0) return name;
+    return `${name.slice(0, index)}\n${name.slice(index)}`;
+};
+// 权益列表
 const benefitSections = ref<BenefitSection[]>([]);
 const getList = async() => {
     try {
         const res: any = await getEquity();
-        benefitSections.value = res.data || [];
+        benefitSections.value = (res.data || []).map((section: BenefitSection) => ({
+            ...section,
+            equityArray: (section.equityArray || []).map((item) => ({
+                ...item,
+                displayName: formatDisplayName(item.displayName),
+            })),
+        }));
     } catch (error) {
         //
     }
 }
 
-const exchangeVisible = ref(false)
-const handleCloseExchange = () => {
-    exchangeVisible.value = false
+// 兑换成功
+const successVisible = ref(false)
+const closeSuccess = () => {
+    successVisible.value = false
 }
 
+const exchangeVisible = ref(false);
+const equityName = ref("");
+const displayName = ref("");
+const equityCode = ref("");
+const iconUrl = ref("");
+const equityCount = ref(0);
+const handleExchange = (item: EquityItem, section: BenefitSection) => {
+    exchangeVisible.value = true;
+    equityName.value = item.equityName;
+    displayName.value = item.displayName.replace("\n", "");
+    equityCode.value = item.equityCode;
+    iconUrl.value = item.iconUrl;
+    equityCount.value = section.equityCount;
+}
+
+// 关闭兑换
+const closeExchange = () => {
+    exchangeVisible.value = false
+    equityName.value = "";
+    displayName.value = "";
+    equityCode.value = "";
+    iconUrl.value = "";
+    equityCount.value = 0;
+}
+
+const dialogFailVisible = ref(false);
+const errorMsg = ref("");
+const closeFailure = () => {
+    dialogFailVisible.value = false;
+};
+// 确认兑换
+const confirmExchange = async(data) => {
+    try {
+        const params = {
+            equityCode: equityCode.value,
+            boundMobile: data.mobile
+        };
+        await agiotage(params);
+        getList()
+        successVisible.value = true
+    } catch (error: any) {
+        if (error?.result?.msg) {
+            errorMsg.value = error.result.msg;
+            dialogFailVisible.value = true;
+        }
+    } finally {
+        closeExchange()
+    }
+    
+}
 </script>
 
 <style scoped lang="scss">
@@ -153,11 +234,15 @@ const handleCloseExchange = () => {
 }
 
 .platform_grid {
-    display: flex;
-    flex-wrap: wrap;
     padding: 8rpx 40rpx 28rpx;
     box-sizing: border-box;
-    overflow-y: auto;
+    .grid_box {
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+        overflow: hidden;
+        height: 450rpx;
+    }
 }
 
 .grid_video .platform_item {
@@ -172,7 +257,7 @@ const handleCloseExchange = () => {
 .grid_audio .platform_item {
     width: calc(33.33% - 20rpx);
     margin-bottom: 24rpx;
-    margin-right: 20rpx;
+    margin-right: 29rpx;
     &:nth-child(3n) {
         margin-right: 0;
     }
@@ -183,24 +268,19 @@ const handleCloseExchange = () => {
     padding: 16rpx 6rpx 14rpx;
     background-color: #fff;
     border-radius: 16rpx;
+    height: 210rpx;
 }
 
 .logo_placeholder {
     width: 68rpx;
     height: 68rpx;
     border-radius: 8rpx;
-    background: #f5f7fa;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    // margin-bottom: 12rpx;
     overflow: hidden;
-}
-
-.logo_img {
-    width: 56rpx;
-    height: 56rpx;
-    opacity: 0.35;
+    .logo_img {
+        width: 100%;
+        height: 100%;
+        display: block;
+    }
 }
 
 .platform_name {
@@ -208,7 +288,7 @@ const handleCloseExchange = () => {
     line-height: 34rpx;
     text-align: center;
     margin-bottom: 14rpx;
-    width: 100rpx;
+    // width: 100rpx;
     white-space: wrap;
 }
 

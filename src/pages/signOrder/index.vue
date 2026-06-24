@@ -161,7 +161,7 @@
     <!-- 订购成功 -->
     <order-success v-if="dialogVisible" :price="price" :name="productName" @close="closeSuccess" />
     <!-- 订购失败 -->
-    <order-failure v-if="dialogFailVisible" :error-msg="errorMsg" @close="closeFailure" />
+    <order-failure v-if="dialogFailVisible" :error-msg="errorMsg" title="订购失败" @close="closeFailure" />
 </template>
 
 <script lang="ts" setup type="module">

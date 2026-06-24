@@ -78,8 +78,8 @@
                 <view class="footer-box">
                     <view class="btn_box flex align-center py-14">
                         <template v-if="Number(orderDetail.status) === 1">
-                            <button type="primary" hover-class="none" @click="openEquity">权益兑换</button>
-                            <button type="primary" hover-class="none" @click="openUnreg">业务退订</button>
+                            <!-- <button type="primary" hover-class="none" @click="openEquity">权益兑换</button> -->
+                            <button type="primary" hover-class="none" @click="openUnreg">申请退款</button>
                         </template>
                         <button v-else type="primary" hover-class="none" @click="handlePayOrder">继续付款</button>
                     </view>
@@ -91,7 +91,7 @@
     <equity-cash v-if="dialogEquity" @close="openCash" />
     <!-- 权益兑换成功 -->
     <cash-success v-if="dialogVisible" :content="content" @close="handleClose" />
-    <!-- 业务退订 -->
+    <!-- 申请退款 -->
     <business-unreg v-if="dialogUnreg" @close="handleCloseUnreg" />
     <!-- 退订成功 -->
     <unreg-success v-if="dialogSuccess" @close="closeSuccessUnreg" />
@@ -161,7 +161,7 @@ const handleClose = () => {
     dialogVisible.value = false;
 };
 
-// 业务退订
+// 申请退款
 const dialogUnreg = ref(false);
 const openUnreg = () => {
     dialogUnreg.value = true;
