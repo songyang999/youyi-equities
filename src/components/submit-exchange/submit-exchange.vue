@@ -11,9 +11,7 @@
             </view>
             <image :src="props.iconUrl" mode="aspectFill" class="platform_icon" />
             <view class="dialog_title fs-34">{{ props.equityName }}</view>
-            <view class="dialog_subtitle fs-32">
-                {{ props.equityCount }}张兑换券，确认兑换{{ props.displayName }}
-            </view>
+            <view class="dialog_subtitle fs-32">1张兑换券，确认兑换{{ props.displayName }}</view>
             <view class="input_box">
                 <input
                     v-model="mobile"
@@ -24,9 +22,7 @@
                     type="number"
                 />
             </view>
-            <view class="tip_text fs-28">
-                您领取的权益将自动发放至上面所填手机号绑定的平台账号，请确认填写的手机号码无误，权益已经兑换无法退还，逾期视为自动放弃，请及时使用。
-            </view>
+            <view class="tip_text fs-28">您领取的权益将自动发放至上面所填手机号绑定的平台账号，请确认填写的手机号码无误，权益一经兑换无法退还，逾期视为自动放弃，请及时使用。</view>
             <view class="btn_group flex">
                 <button hover-class="none" class="flex1 cancel_btn" @click="close">我再想想</button>
                 <button hover-class="none" class="flex1 confirm_btn" @click="handleConfirm">确认兑换</button>
@@ -52,10 +48,6 @@ const props = defineProps({
     iconUrl: {
         type: String,
         default: "",
-    },
-    equityCount: {
-        type: Number,
-        default: 1,
     },
 });
 
@@ -144,7 +136,7 @@ const handleConfirm = () => {
         }
 
         .input_box {
-            background: #EBEBEB;
+            background: #ebebeb;
             border-radius: 16rpx;
             padding: 0 24rpx;
             margin-bottom: 30rpx;

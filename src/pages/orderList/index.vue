@@ -37,7 +37,7 @@
     <!-- 订购成功 -->
     <order-success v-if="dialogSuccessVisible" :price="orderDetail.price" :name="productName" @close="closeSuccess" />
     <!-- 订购失败 -->
-    <order-failure v-if="dialogFailVisible" :error-msg="errorMsg" @close="closeFailure" />
+    <order-failure v-if="dialogFailVisible" :error-msg="errorMsg" title="订购失败" @close="closeFailure" />
 </template>
 
 <script setup lang="ts">
@@ -85,7 +85,7 @@ const tabList = ref<TabItem[]>([
         orderList: [],
     },
     {
-        label: "已退订/过期",
+        label: "已退款",
         val: 4,
         listKey: "unsubscribeOrderListArray",
         orderList: [],
@@ -171,11 +171,11 @@ const orderDetail = ref<OrderItem>({});
 // 名称
 const productName = computed(() => {
     if (orderDetail.value.productKey === "EQ_P_0000002") {
-        return "视频会员"
+        return "视频会员";
     } else if (orderDetail.value.productKey === "EQ_P_0000003") {
-        return "音频会员"
+        return "音频会员";
     } else {
-        return orderDetail.value.productName
+        return orderDetail.value.productName;
     }
 });
 const dialogSuccessVisible = ref(false);
@@ -193,7 +193,7 @@ const closeFailure = () => {
 const handlePayOrder = async (data: OrderItem) => {
     try {
         orderDetail.value = data;
-        await payOrder({orderId: data.orderId})
+        await payOrder({ orderId: data.orderId });
         dialogSuccessVisible.value = true;
     } catch (error: any) {
         if (error?.result?.msg) {
@@ -201,7 +201,7 @@ const handlePayOrder = async (data: OrderItem) => {
             dialogFailVisible.value = true;
         }
     }
-}
+};
 </script>
 
 <style scoped lang="scss">

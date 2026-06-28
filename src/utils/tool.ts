@@ -420,24 +420,6 @@ export const dateFormat = (start, end) => {
     format += end === '至今' ? '-至今' : `-${end.replace(/-/g, '.')}`
     return format
 }
-
-/**
- * @description: 教育经历信息格式化
- * @param row 教育经历
- */
-export const eduFormat = (row) => {
-    const { education, is_recruit, major_name } = row
-    const { commonConst } = getApp().globalData as GlobalDataType
-    let format = education ? getItem(commonConst.talent_education || [], education, 'key')['val'] : ''
-    const recruits = {
-        1: '统招',
-        2: '非统招',
-    }
-    if (is_recruit) format += format ? ` · ${recruits[is_recruit]}` : recruits[is_recruit]
-    if (major_name) format += format ? ` · ${major_name}` : major_name
-    return format
-}
-
 /**
  * @description: 获取距离最近地址
  * @param arr 地址列表

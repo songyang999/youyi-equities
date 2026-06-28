@@ -185,28 +185,24 @@ const formData = ref({
 });
 
 const price = ref(0);
+let attribute = 0;
 onLoad((query: any) => {
     formData.value.productKey = query?.productKey || "";
+    attribute = Number(query?.attribute) || 0;
     price.value = Number(query?.price) || 0;
     getComboBank();
 });
 
 const productName = computed(() => {
-    if (formData.value.productKey === "EQ_P_0000002") {
-        return "视频会员"
-    } else if (formData.value.productKey === "EQ_P_0000003") {
-        return "音频会员"
+    if (attribute === 1) {
+        return "视频会员";
+    } else if (attribute === 2) {
+        return "音频会员";
     } else {
-        return ""
+        return "";
     }
 });
 
-const checkBank = (rule, value, data, callback) => {
-    if (!value) {
-        callback("请选择银行");
-    }
-    return true;
-};
 const rules = {
     account: {
         rules: [{ required: true, errorMessage: "请输入姓名" }],
@@ -224,7 +220,7 @@ const rules = {
         ],
     },
     bankInsCd: {
-        rules: [{ validateFunction: checkBank }],
+        rules: [{ required: true, errorMessage: "请选择银行" }],
     },
     cardNo: {
         rules: [

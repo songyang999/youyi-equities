@@ -20,7 +20,7 @@
                 class="service_li mb-30"
                 @click="goPage(`/pages/serviceDetail/index?orderId=${item.orderId}`)"
                 >
-                <view class="sub_text fs-24">{{item.conversionTime}} 开通服务</view>
+                <view class="sub_text fs-24">{{item.conversionTime || item.createTime}} 开通服务</view>
                 <view class="service_info fs-28 flex align-center justify-between">
                     <image
                     src="/static/images/service_ico.png"

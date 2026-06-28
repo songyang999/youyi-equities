@@ -47,10 +47,6 @@
                             <text class="copy">复制</text>
                         </view>
                     </view>
-                    <!-- <view class="info_li">
-                        <view class="info_li_label">成交时间</view>
-                        <view class="info_li_value">{{ orderDetail.createTime }}</view>
-                    </view>-->
                     <view class="info_li">
                         <view class="info_li_label">付款时间</view>
                         <view class="info_li_value">{{ orderDetail.feeTime }}</view>
@@ -67,10 +63,6 @@
                         <view class="info_li_label">兑换时间</view>
                         <view class="info_li_value">{{orderDetail.conversionTime}}</view>
                     </view>
-                    <!-- <view class="info_li">
-                        <view class="info_li_label">订购方式</view>
-                        <view class="info_li_value">微信</view>
-                    </view>-->
                 </view>
             </view>
             <template v-if="[-1, 1].includes(Number(orderDetail.status))">
@@ -92,20 +84,20 @@
     <!-- 权益兑换成功 -->
     <cash-success v-if="dialogVisible" :content="content" @close="handleClose" />
     <!-- 申请退款 -->
-    <business-unreg v-if="dialogUnreg" @close="handleCloseUnreg" />
+    <business-unreg v-if="dialogUnreg" :info="orderDetail" @close="handleCloseUnreg" />
     <!-- 退订成功 -->
     <unreg-success v-if="dialogSuccess" @close="closeSuccessUnreg" />
     <!-- 订购成功 -->
     <order-success v-if="dialogSuccessVisible" :price="orderDetail.price" :name="productName" @close="closeSuccess" />
     <!-- 订购失败 -->
-    <order-failure v-if="dialogFailVisible" :error-msg="errorMsg" @close="closeFailure" />
+    <order-failure v-if="dialogFailVisible" :error-msg="errorMsg" title="订购失败" @close="closeFailure" />
 </template>
 
 <script lang="ts" setup type="module">
 import { onLoad } from "@dcloudio/uni-app";
 import { ref, computed } from "vue";
 import { toast, separatorFilter } from "@/utils/tool";
-import { getOrder, agiotage, deleteOrder, payOrder } from "@/api/my";
+import { getOrder, agiotage, deleteOrder, payOrder, refund } from "@/api/my";
 import dayjs from "dayjs";
 onLoad((query: any) => {
     if (query?.orderId) {
@@ -166,12 +158,24 @@ const dialogUnreg = ref(false);
 const openUnreg = () => {
     dialogUnreg.value = true;
 };
-const handleCloseUnreg = () => {
-    dialogUnreg.value = false;
-    dialogSuccess.value = true;
+const handleCloseUnreg = async (data) => {
+    if (data?.reasonId) {
+        try {
+            await refund({ orderId: orderDetail.value.orderId, reasonId: data.reasonId });
+            // dialogSuccess.value = true;
+            toast("退款申请提交成功");
+            getOrderDetail(orderDetail.value.orderId);
+        } catch (error) {
+            //
+        } finally {
+            dialogUnreg.value = false;
+        }
+    } else {
+        dialogUnreg.value = false;
+    }
 };
 // 退订成功
-const dialogSuccess = ref(false);
+const dialogSuccess = ref(true);
 const closeSuccessUnreg = () => {
     dialogSuccess.value = false;
 };

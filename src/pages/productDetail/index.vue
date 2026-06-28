@@ -68,6 +68,7 @@ const detailInfo = ref<ProductItem>({
     productKey: "",
     productDetail: "",
     productSold: "0",
+    attribute: 0,
 });
 interface imgItem {
     index: number;
@@ -100,7 +101,7 @@ const singleOrder = (type: number) => {
         toast("功能暂未开通，敬请期待");
     } else {
         goPage(
-            `/pages/signOrder/index?productKey=${productKey.value}&price=${detailInfo.value.price}`
+            `/pages/signOrder/index?productKey=${productKey.value}&price=${detailInfo.value.price}&attribute=${detailInfo.value.attribute}`
         );
     }
 };

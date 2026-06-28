@@ -7,40 +7,35 @@
     <general-custom ref="general_custom" title="我的权益">
         <template #content>
             <view class="quanyi_wrap px-30 pb-40">
-                <view
-                    v-for="(section, index) in benefitSections"
-                    :key="index"
-                    class="benefit_card pr mb-30"
-                >
-                    <image :src="[isVideo(section.equityType) ? '/static/images/video_bac.png' : '/static/images/audio_bac.png']" mode="aspectFill" class="header_bg" />
+                <view v-for="(section, index) in benefitSections" :key="index" class="benefit_card pr mb-30">
+                    <image :src="[isVideo(section) ? '/static/images/video_bac.png' : '/static/images/audio_bac.png']" mode="aspectFill" class="header_bg" />
                     <view class="card_header pr">
                         <view class="header_content">
                             <view class="voucher_tip fs-32">
-                                <text class="count">{{ section.equityCount }}</text>
-                                张
-                                <text class="highlight">{{ isVideo(section.equityType) ? '视频会员' : '音频会员' }}</text>
-                                权益兑换券待使用
+                                <text class="count">{{ section.equityCount }}</text>张
+                                <text class="highlight">{{ isVideo(section) ? '视频会员' : '音频会员' }}</text>权益兑换券待使用
                             </view>
                             <view class="card_title fs-32">{{ section.theme }}</view>
                             <view class="card_subtitle fs-28">{{ section.explain }}</view>
                         </view>
                     </view>
                     <view class="dashed_line pr"></view>
-                    <view :class="[isVideo(section.equityType) ? 'grid_video' : 'grid_audio']" class="platform_grid pr">
+                    <view :class="[isVideo(section) ? 'grid_video' : 'grid_audio']" class="platform_grid pr">
                         <view class="grid_box">
-                            <view
-                                v-for="item in section.equityArray"
-                                :key="item.equityCode"
-                                class="platform_item flex flex-column align-center"
-                                >
+                            <view v-for="item in section.equityArray" :key="item.equityCode" class="platform_item flex flex-column align-center">
                                 <view class="logo_placeholder">
                                     <image :src="item.iconUrl" mode="aspectFit" class="logo_img" />
                                 </view>
-                                <view class="platform_name fs-24"><text>{{ item.displayName }}</text></view>
+                                <view class="platform_name fs-24">
+                                    <text>{{ item.displayName }}</text>
+                                </view>
                                 <view class="redeem_btn fs-24" @click="handleExchange(item, section)">立即兑换</view>
                             </view>
                         </view>
                     </view>
+                </view>
+                <view v-if="!benefitSections.length" class="no_wrap">
+                    <no-data />
                 </view>
             </view>
         </template>
@@ -54,38 +49,39 @@
         :equity-name="equityName"
         :display-name="displayName"
         :icon-url="iconUrl"
-        :equity-count="equityCount"
         @close="closeExchange"
         @confirm="confirmExchange"
     />
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { onLoad } from '@dcloudio/uni-app'
-import { getEquity, agiotage } from '@/api/my'
+import { ref } from "vue";
+import { onLoad } from "@dcloudio/uni-app";
+import { getEquity, agiotage } from "@/api/my";
 
 onLoad(() => {
-    getList()
-})
+    getList();
+});
 
 interface EquityItem {
     equityCode: string;
     iconUrl: string;
     equityName: string;
     displayName: string;
+    attribute: number;
 }
 interface BenefitSection {
     explain: string;
     equityCount: number;
     equityType: string;
     theme: string;
+    attribute: number;
     equityArray: EquityItem[];
 }
 
-const isVideo = (equityType) => {
-    return equityType.includes('视频会员')
-}
+const isVideo = (section: BenefitSection) => {
+    return section.attribute === 1;
+};
 // 权益名字格式化
 const formatDisplayName = (name: string) => {
     if (!name) return "";
@@ -95,51 +91,51 @@ const formatDisplayName = (name: string) => {
 };
 // 权益列表
 const benefitSections = ref<BenefitSection[]>([]);
-const getList = async() => {
+const getList = async () => {
     try {
         const res: any = await getEquity();
-        benefitSections.value = (res.data || []).map((section: BenefitSection) => ({
-            ...section,
-            equityArray: (section.equityArray || []).map((item) => ({
-                ...item,
-                displayName: formatDisplayName(item.displayName),
-            })),
-        }));
+        benefitSections.value = (res.data || []).map(
+            (section: BenefitSection) => ({
+                ...section,
+                attribute: section.equityArray[0]?.attribute || 1,
+                equityArray: (section.equityArray || []).map((item) => ({
+                    ...item,
+                    displayName: formatDisplayName(item.displayName),
+                })),
+            })
+        );
     } catch (error) {
         //
     }
-}
+};
 
 // 兑换成功
-const successVisible = ref(false)
+const successVisible = ref(false);
 const closeSuccess = () => {
-    successVisible.value = false
-}
+    successVisible.value = false;
+};
 
 const exchangeVisible = ref(false);
 const equityName = ref("");
 const displayName = ref("");
 const equityCode = ref("");
 const iconUrl = ref("");
-const equityCount = ref(0);
 const handleExchange = (item: EquityItem, section: BenefitSection) => {
     exchangeVisible.value = true;
     equityName.value = item.equityName;
     displayName.value = item.displayName.replace("\n", "");
     equityCode.value = item.equityCode;
     iconUrl.value = item.iconUrl;
-    equityCount.value = section.equityCount;
-}
+};
 
 // 关闭兑换
 const closeExchange = () => {
-    exchangeVisible.value = false
+    exchangeVisible.value = false;
     equityName.value = "";
     displayName.value = "";
     equityCode.value = "";
     iconUrl.value = "";
-    equityCount.value = 0;
-}
+};
 
 const dialogFailVisible = ref(false);
 const errorMsg = ref("");
@@ -147,25 +143,24 @@ const closeFailure = () => {
     dialogFailVisible.value = false;
 };
 // 确认兑换
-const confirmExchange = async(data) => {
+const confirmExchange = async (data) => {
     try {
         const params = {
             equityCode: equityCode.value,
-            boundMobile: data.mobile
+            boundMobile: data.mobile,
         };
         await agiotage(params);
-        getList()
-        successVisible.value = true
+        getList();
+        successVisible.value = true;
     } catch (error: any) {
         if (error?.result?.msg) {
             errorMsg.value = error.result.msg;
             dialogFailVisible.value = true;
         }
     } finally {
-        closeExchange()
+        closeExchange();
     }
-    
-}
+};
 </script>
 
 <style scoped lang="scss">
@@ -199,7 +194,7 @@ const confirmExchange = async(data) => {
 }
 
 .dashed_line {
-    border-bottom: 1px dashed #BDD9F2;
+    border-bottom: 1px dashed #bdd9f2;
     margin: 24rpx 44rpx;
 }
 
@@ -248,7 +243,7 @@ const confirmExchange = async(data) => {
 .grid_video .platform_item {
     width: calc(25% - 12rpx);
     margin-bottom: 24rpx;
-    margin-right: 16rpx;
+    margin-right: 14rpx;
     &:nth-child(4n) {
         margin-right: 0;
     }
@@ -257,7 +252,7 @@ const confirmExchange = async(data) => {
 .grid_audio .platform_item {
     width: calc(33.33% - 20rpx);
     margin-bottom: 24rpx;
-    margin-right: 29rpx;
+    margin-right: 28rpx;
     &:nth-child(3n) {
         margin-right: 0;
     }
@@ -295,8 +290,15 @@ const confirmExchange = async(data) => {
 .redeem_btn {
     color: $--color-primary;
     line-height: 34rpx;
-    background-color: #ECF5FE;
+    background-color: #ecf5fe;
     padding: 0rpx 12rpx;
     border-radius: 30rpx;
+}
+
+.no_wrap {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
 }
 </style>

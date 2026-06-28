@@ -76,6 +76,7 @@ interface ProductItem {
     productKey: string;
     productDetail: string;
     productSold: string;
+    attribute: number;
 }
 
 // 订单数据
@@ -112,4 +113,5 @@ interface ServiceItem {
     productName: string;
     productTypeId: string;
     conversionTime: string;
+    createTime: string;
 }

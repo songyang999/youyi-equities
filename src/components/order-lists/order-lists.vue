@@ -26,8 +26,10 @@
                     <view class="card_head flex justify-between align-center">
                         <view>{{ item.createTime }}</view>
                         <view class="flex align-center">
-                            {{ item.statusInfo }}
-                            <text class="ml-15 mr-10">|</text>
+                            <template v-if="[-1].includes(Number(item.status))">
+                                {{ item.statusInfo }}
+                                <text class="ml-15 mr-10">|</text>
+                            </template>
                             <image src="/static/images/delete_icon.png" class="delete_icon" @click.stop="handleDelete(item)" />
                         </view>
                     </view>
@@ -48,12 +50,12 @@
                                 <text class="salary">{{ separatorFilter(item.price, 2) }}</text>
                             </view>
                         </view>
-                        <view v-if="[-1, 1].includes(Number(item.status))" class="flex justify-end mt-8" @click.stop>
-                            <template v-if="Number(item.status) === 1">
-                                <!-- <button type="default" hover-class="none" class="danger_btn" @click="handleCash(item)">权益兑换</button> -->
+                        <view v-if="[-1].includes(Number(item.status))" class="flex justify-end mt-8" @click.stop>
+                            <!-- <template v-if="Number(item.status) === 1">
+                                <button type="default" hover-class="none" class="danger_btn" @click="handleCash(item)">权益兑换</button>
                                 <button type="default" hover-class="none" class="common_btn" @click="handleUnreg(item)">申请退款</button>
-                            </template>
-                            <button v-else type="default" hover-class="none" class="primary_btn" @click="handleRefresh(item)">继续付款</button>
+                            </template>-->
+                            <button type="default" hover-class="none" class="primary_btn" @click="handleRefresh(item)">继续付款</button>
                         </view>
                     </view>
                 </view>
@@ -117,7 +119,7 @@ const emit = defineEmits([
     "cash",
     "unreg",
     "delete",
-    "refresh"
+    "refresh",
 ]);
 const triggered = ref(false);
 const enabled = ref(false);

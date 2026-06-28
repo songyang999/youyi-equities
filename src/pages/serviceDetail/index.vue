@@ -9,7 +9,7 @@
             <view class="px-30">
                 <view class="order_item pr mt-50">
                     <view class="card_head">
-                        <view>{{ detail?.conversionTime }} 开通服务</view>
+                        <view>{{ detail?.conversionTime || detail?.createTime }} 开通服务</view>
                     </view>
                     <view class="card_main px-20 flex justify-between align-center">
                         <image src="/static/images/order_img.png" class="order_img" />

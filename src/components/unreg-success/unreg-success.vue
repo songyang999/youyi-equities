@@ -12,7 +12,7 @@
       <image class="yes_icon" src="/static/images/success.png" />
       <view class="yes_content fs-28 px-28">
         <text
-          >平台将于2个工作日内审核通过，\n审核通过后此笔订单退款，\n包月业务关系退订，\n费用将原路退回，\n支付渠道到账时间以实际为准</text
+          >退款申请提交成功</text
         >
       </view>
     </view>
