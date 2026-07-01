@@ -35,6 +35,7 @@ const props = defineProps({
 
 // 直接咨询
 const consult = () => {
+    uni.reLaunch({ url: "/pages/myQuanyi/index" });
     emit("close");
 };
 </script>

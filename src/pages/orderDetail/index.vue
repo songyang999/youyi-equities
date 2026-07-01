@@ -175,7 +175,7 @@ const handleCloseUnreg = async (data) => {
     }
 };
 // 退订成功
-const dialogSuccess = ref(true);
+const dialogSuccess = ref(false);
 const closeSuccessUnreg = () => {
     dialogSuccess.value = false;
 };
